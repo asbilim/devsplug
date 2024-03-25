@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button"
+import { ThemeToggle } from "@/components/buttons/toggle-theme"
 export default function Page(){
 
     return (
@@ -6,6 +7,7 @@ export default function Page(){
       <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
         Camerdevs : discover who we are and  our goals
       </h1>
+      <ThemeToggle />
       <Button size="lg">Get started now for free</Button>
       <p className="text-center tracking-wider">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Doloremque vero sunt praesentium ipsum facilis quam quis minus suscipit exercitationem. Rem temporibus quisquam adipisci accusantium corrupti expedita explicabo cum placeat! Possimus!</p>
       <div className="flex flex-col gap-16 items-center justify-center">
