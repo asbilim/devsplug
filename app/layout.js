@@ -1,6 +1,8 @@
-import { Inter,Poppins } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/providers/theme-provider"
+import { AuthProvider } from "@/providers/next-auth";
+
 const poppins = Poppins({ subsets: ["latin"] ,weight:["100","200","300","400","500","600","700","800","900"]})
 export const metadata = {
   title: "Devsplug",
@@ -15,14 +17,19 @@ export default function RootLayout({ children }) {
     >
       
         <body className={poppins.className}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnchange
-          >
-            {children}
-          </ThemeProvider>    
+          <AuthProvider>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+                disableTransitionOnchange
+              >
+    
+                  {children}
+
+              </ThemeProvider>    
+          </AuthProvider>
+
         </body>
       
     </html>

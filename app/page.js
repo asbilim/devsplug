@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/buttons/toggle-theme"
+import LoginButton from "@/components/signin"
+
 export default function Page(){
 
     return (
@@ -22,6 +24,8 @@ export default function Page(){
       <h2 className="scroll-m-20 text-2xl font-extrabold tracking-tight pb-2 border-b">
         Camerdevs : discover who we are and  our goals
       </h2>
+      
+      <LoginButton />
     </main>
       
     )
