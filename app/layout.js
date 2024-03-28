@@ -1,37 +1,34 @@
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/providers/theme-provider"
+import { ThemeProvider } from "@/providers/theme-provider";
 import { AuthProvider } from "@/providers/next-auth";
-
-const poppins = Poppins({ subsets: ["latin"] ,weight:["100","200","300","400","500","600","700","800","900"]})
+import { Toaster } from "@/components/ui/toaster";
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
 export const metadata = {
   title: "Devsplug",
-  description: "Devsplug Join an amazing dev community with youth cameroonians , learn grow and challenge other developers",
+  description:
+    "Devsplug Join an amazing dev community with youth cameroonians , learn grow and challenge other developers",
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html 
-      suppressHydrationWarning
-      lang="en"
-    >
-      
-        <body className={poppins.className}>
-          <AuthProvider>
-              <ThemeProvider
-                attribute="class"
-                defaultTheme="system"
-                enableSystem
-                disableTransitionOnchange
-              >
-    
-                  {children}
-
-              </ThemeProvider>    
-          </AuthProvider>
-
-        </body>
-      
+    <html suppressHydrationWarning lang="en">
+      <body className={poppins.className}>
+        <AuthProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnchange
+          >
+            <Toaster />
+            {children}
+          </ThemeProvider>
+        </AuthProvider>
+      </body>
     </html>
   );
 }
