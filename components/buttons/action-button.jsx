@@ -12,6 +12,7 @@ export default function ActionButton({
   iSize = 22,
   type = "",
   disabled = false,
+  variant = "outline",
   children,
 }) {
   return (
@@ -20,6 +21,7 @@ export default function ActionButton({
       onClick={onclick}
       type={type}
       disabled={isLoading || disabled}
+      variant={variant}
     >
       {icon &&
         React.createElement(icon, { className: iClassName, size: iSize })}

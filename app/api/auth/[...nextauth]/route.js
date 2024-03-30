@@ -76,6 +76,7 @@ const auth = NextAuth({
       session.user.title = user[0].title;
       session.user.score = user[0].score;
       session.user.motivation = user[0].motivation;
+      session.user.problems = user[0].problems;
 
       return session;
     },
