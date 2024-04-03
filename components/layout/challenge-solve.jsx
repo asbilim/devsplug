@@ -68,7 +68,9 @@ export default function ChallengeSolve({ problem, quiz }) {
         { problem_slug: problem.slug },
         session?.accessToken
       );
-      setFull(result?.is_full || false);
+
+      console.log(result[0]?.is_full);
+      setFull(result[0]?.is_full);
       setLoading(true);
       setQuizzes(result);
       setShowQuiz(!showQuiz);
@@ -89,7 +91,11 @@ export default function ChallengeSolve({ problem, quiz }) {
   return (
     <div className="flex px-12 my-24 items-center justify-center flex-col gap-24">
       <div className="flex gap-12  w-full max-w-6xl">
-        <Button className="w-full">Back to problem</Button>
+        <Button className="w-full">
+          <Link href={`/problems/details/${problem.slug}`}>
+            Back to problem
+          </Link>
+        </Button>
         <Button variant="secondary" className="w-full border-4">
           Submit my answer
         </Button>
@@ -281,6 +287,7 @@ const CodeForm = () => {
 };
 
 const QuizLayout = ({ quiz, token, slug, setquiz, is_full }) => {
+  console.log(is_full);
   const size = quiz?.length;
   const [loading, setLoading] = useState(false);
   const [score, setScore] = useState(false);
@@ -338,7 +345,7 @@ const QuizLayout = ({ quiz, token, slug, setquiz, is_full }) => {
           <AlertTitle>Hey Hero </AlertTitle>
           <AlertDescription>
             <p>You have completed this challenge already!!</p>
-            {is_full && <UploadCode token={token} slug={slug} />}
+            {!is_full && <UploadCode token={token} slug={slug} />}
           </AlertDescription>
         </Alert>
         {score && (
@@ -442,11 +449,9 @@ const RenderQuestion = ({
     }
   };
 
-  console.log(content);
-
   return (
     <div className="flex flex-col gap-6">
-      <h3 className="font-semibold text-2xl">{content?.title}</h3>
+      <h3 className="font-semibold text-lg">{content?.title}</h3>
       <RadioGroup
         className="flex flex-col gap-6 "
         onValueChange={(value) => {

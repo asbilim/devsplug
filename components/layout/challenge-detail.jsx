@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "../ui/button";
 import RateChallenge from "../pages/challenge/rating";
-
+import Link from "next/link";
 export default function ChallengeDetail({ problem }) {
   const content = problem?.content;
 
@@ -11,7 +11,9 @@ export default function ChallengeDetail({ problem }) {
         <Button variant="secondary" className="w-full border-4">
           Challenge Details
         </Button>
-        <Button className="w-full">Submit my answer</Button>
+        <Button className="w-full">
+          <Link href={`/problems/solve/${problem.slug}`}>Submit my answer</Link>
+        </Button>
       </div>
       <div className="flex gap-12  w-full max-w-6xl flex-col">
         <h1 className="text-4xl font-bold p-6 text-center border-dashed   border-4">
