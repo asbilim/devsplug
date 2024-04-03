@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "../ui/button";
 import RateChallenge from "../pages/challenge/rating";
+
 export default function ChallengeDetail({ problem }) {
   const content = problem?.content;
 
