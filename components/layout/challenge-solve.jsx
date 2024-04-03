@@ -44,7 +44,7 @@ export default function ChallengeSolve({ problem, quiz }) {
   const [loading, setLoading] = useState(false);
   const [quizzes, setQuizzes] = useState([]);
   const { data: session, update } = useSession();
-
+  const [full, setFull] = useState(false);
   const onclick = async () => {
     const slug = problem.slug;
     const token = session?.accessToken;
@@ -68,7 +68,7 @@ export default function ChallengeSolve({ problem, quiz }) {
         { problem_slug: problem.slug },
         session?.accessToken
       );
-
+      setFull(result?.is_full || false);
       setLoading(true);
       setQuizzes(result);
       setShowQuiz(!showQuiz);
@@ -106,6 +106,7 @@ export default function ChallengeSolve({ problem, quiz }) {
           token={session?.accessToken}
           slug={problem.slug}
           setquiz={setQuizzes}
+          is_full={full}
         />
       )}
 
@@ -209,7 +210,7 @@ const CodeForm = () => {
         onValueChange={(value) => setCode(value)}
         {...register("codeValue", { required: true })}
       />
-      <div className="flex">
+      <div className="flex gap-3">
         <Select
           {...register("language", { required: true })}
           onValueChange={(value) => {
@@ -252,7 +253,6 @@ const CodeForm = () => {
             </SelectGroup>
           </SelectContent>
         </Select>
-        <Input placeholder={`enter a name default:${unique_id}`} />
         <Button type="submit" onClick={() => onclick()}>
           Generate
         </Button>
@@ -280,7 +280,7 @@ const CodeForm = () => {
   );
 };
 
-const QuizLayout = ({ quiz, token, slug, setquiz }) => {
+const QuizLayout = ({ quiz, token, slug, setquiz, is_full }) => {
   const size = quiz?.length;
   const [loading, setLoading] = useState(false);
   const [score, setScore] = useState(false);
@@ -338,7 +338,7 @@ const QuizLayout = ({ quiz, token, slug, setquiz }) => {
           <AlertTitle>Hey Hero </AlertTitle>
           <AlertDescription>
             <p>You have completed this challenge already!!</p>
-            <UploadCode token={token} slug={slug} />
+            {is_full && <UploadCode token={token} slug={slug} />}
           </AlertDescription>
         </Alert>
         {score && (
