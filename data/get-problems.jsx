@@ -6,6 +6,7 @@ const problemQuizStatusPath =
   process.env.NEXT_PUBLIC_PROBLEM_QUIZ_CHECK_RESULTS;
 
 const problemGetScore = process.env.NEXT_PUBLIC_PROBLEM_GET_SCORE_PATH;
+const problemRatingGetPath = process.env.NEXT_PUBLIC_PROBLEM_RATINGS_GET_PATH;
 
 export const getProblems = async () => {
   const endpoint = backendUrl + productPath;
@@ -76,6 +77,40 @@ export const getProblemScore = async (token, data) => {
 
   return fetch(endpoint, {
     next: { revalidate: 460, tags: ["problem"] },
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(data),
+  })
+    .then((answer) => answer.json())
+    .then((response) => response)
+    .catch((error) => console.log(error));
+};
+
+export const getProblemRating = async (slug) => {
+  const endpoint = backendUrl + problemRatingGetPath + slug + "/";
+
+  return fetch(endpoint, {
+    next: { revalidate: 460, tags: ["ratings"] },
+    method: "GET",
+    headers: {
+      "Content-type": "application/json",
+    },
+  })
+    .then((answer) => answer.json())
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => console.log(error.message));
+};
+
+export const addProblemRating = async (token, slug, data) => {
+  const endpoint = backendUrl + problemRatingGetPath + slug + "/";
+
+  return fetch(endpoint, {
+    next: { revalidate: 460, tags: [""] },
     method: "POST",
     headers: {
       "Content-type": "application/json",

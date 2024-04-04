@@ -2,7 +2,7 @@
 import { Button } from "../ui/button";
 import RateChallenge from "../pages/challenge/rating";
 import Link from "next/link";
-export default function ChallengeDetail({ problem }) {
+export default function ChallengeDetail({ problem, ratings, slug }) {
   const content = problem?.content;
 
   return (
@@ -25,7 +25,7 @@ export default function ChallengeDetail({ problem }) {
           dangerouslySetInnerHTML={{ __html: content }}
         ></div>
       </div>
-      <RateChallenge />
+      <RateChallenge initialRatings={ratings} slug={slug} />
     </div>
   );
 }
