@@ -1,16 +1,30 @@
+"use client";
+import { useSession } from "next-auth/react";
+import ReactMarkdown from "react-markdown";
+import { Button } from "../ui/button";
+import rehypeHighlight from "rehype-highlight";
+import { Maximize } from "lucide-react";
+
 export default function Motivation() {
+  const { data: session } = useSession();
+  const decoded = session?.user ? atob(session?.user?.motivation) : "";
   return (
-    <div className="flex items-center justify-center mx-8">
-      <div className="flex border-4 mt-24 w-full max-w-3xl">
-        <p className="p-6 tracking-wider leading-relaxed text-sm">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis
-          voluptas molestiae quidem doloremque incidunt exercitationem vel,
-          assumenda neque non. Accusamus aliquid voluptatem necessitatibus,
-          ipsam facere officia minima provident natus ipsa. Lorem ipsum dolor
-          sit amet consectetur adipisicing elit. Enim, nam iure distinctio ullam
-          iusto ducimus ipsa optio vitae! Tempore sed quaerat placeat esse
-          consequuntur sunt culpa nemo ipsa perferendis facilis.
-        </p>
+    <div className="flex items-center justify-start mx-8 h-auto flex-col mt-16">
+      <h2 className="text-start w-full max-w-6xl text-lg my-4">Your bio:</h2>
+      <div className="flex border-4   w-full max-w-6xl ">
+        <div
+          className="p-6 tracking-wider leading-relaxed text-sm  max-h-[35vh] overflow-auto prose dark:prose-invert !w-full min-w-[100%]"
+          style={{ margin: 0 }}
+        >
+          <ReactMarkdown rehypePlugins={rehypeHighlight}>
+            {decoded}
+          </ReactMarkdown>
+        </div>
+      </div>
+      <div className="text-start w-full max-w-6xl text-lg my-4">
+        <Button className="px-24">
+          Expand <Maximize className="mx-4" size={24} />
+        </Button>
       </div>
     </div>
   );

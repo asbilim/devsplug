@@ -9,7 +9,7 @@ export default function Dashboard() {
   return (
     <div className="flex flex-col">
       <Header />
-      <Motivation />
+      {/* <Motivation /> */}
       <ChallengeLegend />
       <AccordionChallenge />
       <div className="flex items-center justify-center">

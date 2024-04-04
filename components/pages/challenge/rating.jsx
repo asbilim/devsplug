@@ -236,6 +236,8 @@ const CommentChild = ({
   slug = "",
   ratings = {},
   updateRating,
+  replying = false,
+  parentName = "",
 }) => {
   const [showReplies, setShowReplies] = useState(false);
   const [addReply, setAddReply] = useState(false);
@@ -270,7 +272,12 @@ const CommentChild = ({
             Posted{" "}
             {formatDistanceToNow(parseISO(created_at), { addSuffix: true })}
           </p>
-          <p>{message}</p>
+          <p>
+            {replying && (
+              <span className="link underline">@{parentName + " "}</span>
+            )}
+            {message}
+          </p>
           <div className="flex gap-4">
             {replies.length > 0 && (
               <div
@@ -317,6 +324,8 @@ const CommentChild = ({
             depth={depth + 1}
             ratings={ratings}
             updateRating={updateRating}
+            replying={true}
+            parentName={user.username}
           />
         ))}
     </div>
