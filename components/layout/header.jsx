@@ -6,7 +6,8 @@ import useDarkMode from "@/providers/dark-mode-checker";
 import logo from "@/public/logo-dark.png";
 import logoLight from "@/public/logo-light.png";
 import Image from "next/image";
-
+import { Button } from "../ui/button";
+import { Menu } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,24 +16,38 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 export default function Header() {
   const isDarkMode = useDarkMode();
   return (
-    <div className="header flex px-12 items-center py-4 border-b gap-4">
+    <div className="header flex md:px-12 px-4 items-center py-4 border-b gap-4">
       <div className="items-container flex items-center justify-start gap-4 w-full ">
         <Image
           src={isDarkMode ? logo : logoLight}
           alt="devsplug logo"
-          className="md:w-44 w-22"
+          className="md:w-44 w-32"
         />
       </div>
-      <div className="items-container flex items-center justify-end gap-8 w-full ">
-        <Link href="/" className="underline">
+      <div className="items-container md:flex items-center justify-end gap-4 lg:gap-8 w-full hidden text-sm lg:text-md">
+        <Link href="/" className="font-medium hover:text-[#8482ee]">
           Leaderboard
         </Link>
-        <Link href="/" className="underline">
-          Learning
+        <Link href="/challenges" className="font-medium hover:text-[#8482ee]">
+          challenges
+        </Link>
+        <Link href="/" className="font-medium hover:text-[#8482ee] ">
+          community
+        </Link>
+        <Link href="/" className="font-medium hover:text-[#8482ee]">
+          Learn
         </Link>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -60,6 +75,71 @@ export default function Header() {
           </DropdownMenuContent>
         </DropdownMenu>
         <ThemeToggle />
+      </div>
+      <div className="flex md:hidden gap-3">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Avatar className="cursor-pointer">
+              <AvatarImage
+                src="https://cdn.pixabay.com/photo/2022/02/14/02/52/monkey-7012380_960_720.png"
+                alt="@l@sd3p1k"
+              />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="">
+            <DropdownMenuRadioGroup>
+              <DropdownMenuRadioItem value="top">
+                <Link href="/">Profile</Link>
+              </DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="bottom">
+                <Link href="/">Settings</Link>
+              </DropdownMenuRadioItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuRadioItem value="right">
+                <Link href="/">Logout</Link>
+              </DropdownMenuRadioItem>
+            </DropdownMenuRadioGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <ThemeToggle />
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button variant="outline" className="p-2 border-0">
+              <Menu className="" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="right">
+            <SheetHeader>
+              <SheetTitle className="flex items-center justify-center">
+                <Image
+                  src={isDarkMode ? logo : logoLight}
+                  alt="devsplug logo"
+                  className="md:w-44 w-32"
+                />
+              </SheetTitle>
+              <SheetDescription>
+                <div className="flex flex-col gap-8 items-center mt-24 ">
+                  <Link href="/" className="font-medium hover:text-[#8482ee]">
+                    Leaderboard
+                  </Link>
+                  <Link
+                    href="/challenges"
+                    className="font-medium hover:text-[#8482ee]"
+                  >
+                    challenges
+                  </Link>
+                  <Link href="/" className="font-medium hover:text-[#8482ee] ">
+                    community
+                  </Link>
+                  <Link href="/" className="font-medium hover:text-[#8482ee]">
+                    Learn
+                  </Link>
+                </div>
+              </SheetDescription>
+            </SheetHeader>
+          </SheetContent>
+        </Sheet>
       </div>
     </div>
   );

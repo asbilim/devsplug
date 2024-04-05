@@ -1,7 +1,7 @@
 "use client";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { SlidersHorizontal, BadgePlus, BadgeMinus } from "lucide-react";
+import { SlidersHorizontal } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -23,6 +23,7 @@ import { addProblem } from "@/data/add-problem";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { LuBadgePlus, LuBadgeMinus } from "react-icons/lu";
 
 export default function ChallengeComponent({ problems }) {
   const [loading, setLoading] = useState(false);
@@ -82,14 +83,14 @@ export default function ChallengeComponent({ problems }) {
                   {session?.user?.problems?.find(
                     (element) => element.id == item.id
                   ) ? (
-                    <BadgeMinus
-                      size={44}
+                    <LuBadgeMinus
+                      className="md:text-4xl lg:text-5xl text-2xl"
                       color="red"
                       onClick={() => enrollProblem(item.id, true)}
                     />
                   ) : (
-                    <BadgePlus
-                      size={44}
+                    <LuBadgePlus
+                      className="md:text-4xl text-2xl lg:text-5xl"
                       onClick={() => enrollProblem(item.id, false)}
                     />
                   )}

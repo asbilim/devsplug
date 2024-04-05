@@ -3,6 +3,7 @@ import Header from "@/components/layout/header";
 import ChallengeDetail from "@/components/layout/challenge-detail";
 import { revalidateTag } from "next/cache";
 import { getProblemRating } from "@/data/get-problems";
+import Footer from "@/components/layout/footer";
 export default async function Page({ params }) {
   const { slug } = params;
   const problem = await getSingleProblem({ slug: slug });
@@ -15,6 +16,7 @@ export default async function Page({ params }) {
     <div>
       <Header />
       <ChallengeDetail problem={problem} ratings={ratings} slug={slug} />
+      <Footer />
     </div>
   );
 }

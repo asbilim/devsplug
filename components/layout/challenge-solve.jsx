@@ -38,7 +38,7 @@ import { answerQuestion } from "@/data/add-problem";
 import { createProblemQuiz } from "@/data/add-problem";
 import { getProblemScore } from "@/data/get-problems";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Smile, Camera, SendHorizontal } from "lucide-react";
+import { Smile, Camera, SendHorizontal, TriangleAlert } from "lucide-react";
 export default function ChallengeSolve({ problem, quiz }) {
   const [showQuiz, setShowQuiz] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -89,8 +89,8 @@ export default function ChallengeSolve({ problem, quiz }) {
   };
 
   return (
-    <div className="flex px-12 my-24 items-center justify-center flex-col gap-24">
-      <div className="flex gap-12  w-full max-w-6xl">
+    <div className="flex px-12 my-24 items-center justify-center flex-col gap-24 overflow-hidden">
+      <div className="flex md:gap-12 gap-2  md:w-full max-w-sm  md:max-w-6xl">
         <Button className="w-full">
           <Link href={`/problems/details/${problem.slug}`}>
             Back to problem
@@ -180,7 +180,7 @@ const CodeForm = () => {
   const onclick = () => {
     if (imageRef.current) {
       html2canvas(imageRef.current, {
-        scale: 4,
+        scale: 8,
       }).then((canvas) => {
         // Convert the canvas to an image
         const image = canvas.toDataURL("image/png");
@@ -206,7 +206,7 @@ const CodeForm = () => {
 
   return (
     <form
-      className="grid gap-6 w-full max-w-6xl"
+      className="flex flex-col px-12 md:px-0 md:gap-12 gap-2  md:w-full  w-[25rem]   md:max-w-6xl"
       onSubmit={handleSubmit(onSubmit)}
     >
       <Textarea
@@ -216,7 +216,7 @@ const CodeForm = () => {
         onValueChange={(value) => setCode(value)}
         {...register("codeValue", { required: true })}
       />
-      <div className="flex gap-3">
+      <div className="flex gap-3 flex-wrap">
         <Select
           {...register("language", { required: true })}
           onValueChange={(value) => {
@@ -264,7 +264,15 @@ const CodeForm = () => {
         </Button>
       </div>
       <div
-        className="flex w-full flex-col image  bg-primary p-4"
+        variant="outline"
+        className="my-4 border-2 p-4 text-sm tracking-wider border-yellow-300 flex md:max-w-lg items-center"
+      >
+        <TriangleAlert size={75} className="mr-4" />
+        {"don't"} worry if the component overflows , it allow us to generate
+        high quality image screenshot
+      </div>
+      <div
+        className="flex w-auto flex-col image  bg-primary p-4 min-w-max"
         ref={imageRef}
       >
         <div className="flex justify-between   p-3 rounded-lg">

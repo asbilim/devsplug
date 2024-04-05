@@ -23,7 +23,9 @@ export default function RateChallenge({ initialRatings, slug }) {
   return (
     <div className="flex w-full max-w-6xl  flex-col gap-12">
       <div className="flex items-center justify-between w-full">
-        <h2 className="font-medium">You like this challenge? Rate it</h2>
+        <h2 className="font-medium hidden md:block">
+          You like this challenge? Rate it
+        </h2>
         <SmartRating rating={rating} setRating={setRating} />
       </div>
       <div className="comment-section">

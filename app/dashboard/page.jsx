@@ -5,6 +5,7 @@ import { AccordionChallenge } from "@/components/layout/challenges";
 import { CirclePlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import Footer from "@/components/layout/footer";
 export default function Dashboard() {
   return (
     <div className="flex flex-col">
@@ -20,6 +21,7 @@ export default function Dashboard() {
           </Button>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
