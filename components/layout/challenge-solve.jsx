@@ -39,15 +39,15 @@ import { createProblemQuiz } from "@/data/add-problem";
 import { getProblemScore } from "@/data/get-problems";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Smile, Camera, SendHorizontal, TriangleAlert } from "lucide-react";
-export default function ChallengeSolve({ problem, quiz }) {
+export default function ChallengeSolve({ problem, quiz, slug }) {
   const [showQuiz, setShowQuiz] = useState(false);
   const [loading, setLoading] = useState(false);
   const [quizzes, setQuizzes] = useState([]);
   const { data: session, update } = useSession();
   const [full, setFull] = useState(false);
   const onclick = async () => {
-    const slug = problem.slug;
     const token = session?.accessToken;
+
     if (!token) {
       return toast("Please we are still fetching your informations", {
         description:
@@ -68,17 +68,16 @@ export default function ChallengeSolve({ problem, quiz }) {
         { problem_slug: problem.slug },
         session?.accessToken
       );
-
-      console.log(result[0]?.is_full);
-      setFull(result[0]?.is_full);
+      console.log(result);
+      // console.log(result[0]?.is_full);
+      // setFull(result[0]?.is_full);
       setLoading(true);
       setQuizzes(result);
       setShowQuiz(!showQuiz);
       setLoading(false);
     } catch (e) {
       return toast("Please we are still fetching your informations", {
-        description:
-          "The system is still fetching your datas , wait few seconds and try again",
+        description: e.message,
 
         action: {
           label: "retry",

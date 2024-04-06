@@ -61,7 +61,7 @@ export default function ChallengeComponent({ problems }) {
   };
 
   return (
-    <div className="flex flex-col mt-24 px-12 items-center justify-center w-full ">
+    <div className="flex flex-col mt-24 px-4 md:px-12 items-center justify-center w-full ">
       <FilterComponent />
       <div className="challenges flex justify-center flex-col my-12 mt-24 items-start  w-full max-w-6xl gap-12">
         <h2 className="font-medium text-start text-xl">Challenges</h2>
@@ -140,10 +140,10 @@ const FilterComponent = () => {
 const SingleChallenge = ({ title = "", description = "" }) => {
   return (
     <AccordionItem value={title} className="py-8">
-      <AccordionTrigger className="text-sm tracking-tight md:text-lg">
+      <AccordionTrigger className="text-sm tracking-tight md:text-lg ">
         {title}
       </AccordionTrigger>
-      <AccordionContent className="tracking-wider leading-loose">
+      <AccordionContent className="tracking-wider text-center md:text-md leading-loose text-xs">
         {description}
       </AccordionContent>
     </AccordionItem>

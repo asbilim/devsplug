@@ -8,7 +8,7 @@ import Link from "next/link";
 import Footer from "@/components/layout/footer";
 export default function Dashboard() {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col overflow-x-hidden">
       <Header />
       {/* <Motivation /> */}
       <ChallengeLegend />

@@ -8,6 +8,7 @@ import logoLight from "@/public/logo-light.png";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { Menu } from "lucide-react";
+import { useSession, signOut } from "next-auth/react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,6 +27,8 @@ import {
 } from "@/components/ui/sheet";
 
 export default function Header() {
+  const { data: session } = useSession();
+
   const isDarkMode = useDarkMode();
   return (
     <div className="header flex md:px-12 px-4 items-center py-4 border-b gap-4">
@@ -37,39 +40,56 @@ export default function Header() {
         />
       </div>
       <div className="items-container md:flex items-center justify-end gap-4 lg:gap-8 w-full hidden text-sm lg:text-md">
-        <Link href="/" className="font-medium hover:text-[#8482ee]">
+        <Link href="/leaderboard" className="font-medium hover:text-[#8482ee]">
           Leaderboard
         </Link>
         <Link href="/challenges" className="font-medium hover:text-[#8482ee]">
           challenges
         </Link>
-        <Link href="/" className="font-medium hover:text-[#8482ee] ">
+        <Link href="/community" className="font-medium hover:text-[#8482ee] ">
           community
         </Link>
-        <Link href="/" className="font-medium hover:text-[#8482ee]">
+        <Link href="/learn" className="font-medium hover:text-[#8482ee]">
           Learn
         </Link>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Avatar className="cursor-pointer">
               <AvatarImage
-                src="https://cdn.pixabay.com/photo/2022/02/14/02/52/monkey-7012380_960_720.png"
-                alt="@l@sd3p1k"
+                src={
+                  session?.user?.profile ||
+                  "https://cdn.pixabay.com/photo/2022/02/14/02/52/monkey-7012380_960_720.png"
+                }
+                alt={
+                  session?.user?.username + " devsplug profile" ||
+                  "devsplug user profile"
+                }
+                className="object-cover ring-2"
               />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="">
+            {session?.user?.username && (
+              <>
+                <DropdownMenuRadioItem value="bottom">
+                  <Link href={"/user/" + session?.user?.username}>
+                    Portfolio
+                  </Link>
+                </DropdownMenuRadioItem>
+                <DropdownMenuSeparator />
+              </>
+            )}
             <DropdownMenuRadioGroup>
               <DropdownMenuRadioItem value="top">
-                <Link href="/">Profile</Link>
+                <Link href="/dashboard">Profile</Link>
               </DropdownMenuRadioItem>
               <DropdownMenuRadioItem value="bottom">
-                <Link href="/">Settings</Link>
+                <Link href="/settings/user/profile">Settings</Link>
               </DropdownMenuRadioItem>
               <DropdownMenuSeparator />
               <DropdownMenuRadioItem value="right">
-                <Link href="/">Logout</Link>
+                <span onClick={() => signOut()}>Logout</span>
               </DropdownMenuRadioItem>
             </DropdownMenuRadioGroup>
           </DropdownMenuContent>
@@ -81,7 +101,11 @@ export default function Header() {
           <DropdownMenuTrigger asChild>
             <Avatar className="cursor-pointer">
               <AvatarImage
-                src="https://cdn.pixabay.com/photo/2022/02/14/02/52/monkey-7012380_960_720.png"
+                src={
+                  session?.user?.profile ||
+                  "https://cdn.pixabay.com/photo/2022/02/14/02/52/monkey-7012380_960_720.png"
+                }
+                className="object-cover ring-2"
                 alt="@l@sd3p1k"
               />
               <AvatarFallback>CN</AvatarFallback>
@@ -89,15 +113,26 @@ export default function Header() {
           </DropdownMenuTrigger>
           <DropdownMenuContent className="">
             <DropdownMenuRadioGroup>
+              {session?.user?.username && (
+                <>
+                  <DropdownMenuRadioItem value="bottom">
+                    <Link href={"/user/" + session?.user?.username}>
+                      Portfolio
+                    </Link>
+                  </DropdownMenuRadioItem>
+                  <DropdownMenuSeparator />
+                </>
+              )}
+              <DropdownMenuSeparator />
               <DropdownMenuRadioItem value="top">
-                <Link href="/">Profile</Link>
+                <Link href="/dashboard">Profile</Link>
               </DropdownMenuRadioItem>
               <DropdownMenuRadioItem value="bottom">
-                <Link href="/">Settings</Link>
+                <Link href="/settings/user/profile">Settings</Link>
               </DropdownMenuRadioItem>
               <DropdownMenuSeparator />
               <DropdownMenuRadioItem value="right">
-                <Link href="/">Logout</Link>
+                <span onClick={() => signOut()}>Logout</span>
               </DropdownMenuRadioItem>
             </DropdownMenuRadioGroup>
           </DropdownMenuContent>
@@ -120,7 +155,10 @@ export default function Header() {
               </SheetTitle>
               <SheetDescription>
                 <div className="flex flex-col gap-8 items-center mt-24 ">
-                  <Link href="/" className="font-medium hover:text-[#8482ee]">
+                  <Link
+                    href="/leaderboard"
+                    className="font-medium hover:text-[#8482ee]"
+                  >
                     Leaderboard
                   </Link>
                   <Link
@@ -129,10 +167,16 @@ export default function Header() {
                   >
                     challenges
                   </Link>
-                  <Link href="/" className="font-medium hover:text-[#8482ee] ">
+                  <Link
+                    href="/community"
+                    className="font-medium hover:text-[#8482ee] "
+                  >
                     community
                   </Link>
-                  <Link href="/" className="font-medium hover:text-[#8482ee]">
+                  <Link
+                    href="/learn"
+                    className="font-medium hover:text-[#8482ee]"
+                  >
                     Learn
                   </Link>
                 </div>

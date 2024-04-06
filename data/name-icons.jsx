@@ -31,9 +31,9 @@ const titleMapping = [
 ];
 
 export function getTitleAttribute(title, flag) {
-  const normalizedTitle = title.toLowerCase();
+  const normalizedTitle = title?.toLowerCase();
   const titleObj = titleMapping.find(
-    (obj) => obj.title.toLowerCase() === normalizedTitle
+    (obj) => obj.title?.toLowerCase() === normalizedTitle
   );
 
   if (!titleObj) {

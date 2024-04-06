@@ -15,7 +15,7 @@ export default async function Page({ params }) {
   return (
     <div>
       <Header />
-      <ChallengeSolve problem={problem} quiz={problemQuiz} />
+      <ChallengeSolve problem={problem} quiz={problemQuiz} slug={slug} />
       <Footer />
     </div>
   );

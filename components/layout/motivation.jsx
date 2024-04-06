@@ -7,7 +7,7 @@ import { Maximize } from "lucide-react";
 
 export default function Motivation() {
   const { data: session } = useSession();
-  const decoded = session?.user ? atob(session?.user?.motivation) : "";
+  const decoded = session?.user ? session?.user?.motivation : "";
   return (
     <div className="flex items-center justify-start mx-8 h-auto flex-col mt-16">
       <h2 className="text-start w-full max-w-6xl text-lg my-4">Your bio:</h2>

@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { editMotivation } from "@/data/user-edit";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const mdStr = `
 # Markdown Tutorial | don't worry we style it for you , just create a skeleton of your bio
@@ -119,9 +120,16 @@ Remember, the effectiveness of these markdown elements can vary slightly dependi
 `;
 
 export default function BioEdit() {
+  const { data: session, update } = useSession();
   const [markdown, setMarkdown] = useState(mdStr);
   const [loading, setLoading] = useState(false);
-  const { data: session, update } = useSession();
+
+  useEffect(() => {
+    const dat = session?.user?.motivation ? session.user.motivation : null;
+
+    dat && setMarkdown(dat);
+  }, [session]);
+
   const router = useRouter();
 
   const onsubmit = async () => {
@@ -129,7 +137,7 @@ export default function BioEdit() {
 
     try {
       const result = await editMotivation(
-        { motivation: btoa(markdown) },
+        { motivation: markdown },
         session?.accessToken
       );
       console.log(result);
@@ -137,9 +145,11 @@ export default function BioEdit() {
       toast("Modifying bio status", {
         description: result.error || result.success || result.detail,
         action: {
-          label: result.detail ? "retry" : "Go to dashboard",
+          label: result.detail ? "retry" : "View as visitor",
           onClick: () => {
-            result.detail ? onsubmit() : router.push("/dashboard");
+            result.detail
+              ? onsubmit()
+              : router.push("/user/" + session.user.username);
           },
         },
       });
@@ -156,8 +166,8 @@ export default function BioEdit() {
     }
   };
   return (
-    <div className="flex items-center justify-center w-full flex-col">
-      <div className="grid grid-cols-2 my-8  w-full max-w-6xl h-[60vh] gap-12 ">
+    <div className="flex items-center justify-center w-full flex-col px-4 min-h-screen">
+      <div className="md:grid md:grid-cols-2 flex flex-col my-8  w-full max-w-6xl lg:h-[60vh] gap-12 ">
         <MarkdownEditor
           value={markdown}
           onChange={(value, viewUpdate) => setMarkdown(value)}
