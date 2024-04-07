@@ -48,7 +48,7 @@ export default function UserPasswordChange() {
   const onSubmit = (data) => {
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
     const change_path = process.env.NEXT_PUBLIC_USER_CHANGE_PASSWORD_PATH;
-    console.log(token);
+
     setLoading(true);
     fetch(backendUrl + change_path, {
       method: "POST",
@@ -78,10 +78,7 @@ export default function UserPasswordChange() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="bg-white shadow rounded p-8"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className=" shadow rounded p-8">
       <SnackbarProvider />
       <div className="mb-6">
         <h2 className="text-2xl font-semibold mb-2 text-[#202142]">

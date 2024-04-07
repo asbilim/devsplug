@@ -6,13 +6,16 @@ import { CirclePlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Footer from "@/components/layout/footer";
+import { Suspense } from "react";
+import DashboardLoading from "@/components/pages/states/dashboard-loading";
 export default function Dashboard() {
   return (
     <div className="flex flex-col overflow-x-hidden">
       <Header />
-      {/* <Motivation /> */}
       <ChallengeLegend />
-      <AccordionChallenge />
+      <Suspense fallback={<p>loading...</p>}>
+        <AccordionChallenge />
+      </Suspense>
       <div className="flex items-center justify-center">
         <div className="flex w-full max-w-6xl mb-24 px-12 lg:px-0">
           <Button className="px-24 py-6">

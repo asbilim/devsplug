@@ -63,7 +63,9 @@ export default function UserInfoDetails({ user }) {
         className="flex w-full flex-col max-w-6xl  border p-3 prose prose-slate dark:prose-invert"
         style={{ margin: 0 }}
       >
-        <Markdown>{user && user?.motivation}</Markdown>
+        {user?.motivation && (
+          <Markdown>{user?.motivation && user?.motivation}</Markdown>
+        )}
       </div>
     </div>
   );

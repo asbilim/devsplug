@@ -140,7 +140,7 @@ export default function BioEdit() {
         { motivation: markdown },
         session?.accessToken
       );
-      console.log(result);
+     
       result.success && update();
       toast("Modifying bio status", {
         description: result.error || result.success || result.detail,

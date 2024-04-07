@@ -27,7 +27,9 @@ export const getUserInfo = async (user) => {
       "Content-type": "application/json",
     },
   })
-    .then((answer) => answer.json())
+    .then((answer) => {
+      return answer.json();
+    })
     .then((response) => response)
-    .catch((error) => console.log(error));
+    .catch((error) => console.log(error.message));
 };

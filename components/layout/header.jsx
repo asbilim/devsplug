@@ -8,7 +8,7 @@ import logoLight from "@/public/logo-light.png";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { Menu } from "lucide-react";
-import { useSession, signOut } from "next-auth/react";
+import { useSession, signOut, signIn } from "next-auth/react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -89,7 +89,11 @@ export default function Header() {
               </DropdownMenuRadioItem>
               <DropdownMenuSeparator />
               <DropdownMenuRadioItem value="right">
-                <span onClick={() => signOut()}>Logout</span>
+                {session?.user ? (
+                  <span onClick={() => signOut()}>Logout</span>
+                ) : (
+                  <span onClick={() => signIn()}>Login</span>
+                )}
               </DropdownMenuRadioItem>
             </DropdownMenuRadioGroup>
           </DropdownMenuContent>

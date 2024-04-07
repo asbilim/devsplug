@@ -49,7 +49,7 @@ export default function AddLocationForm({ token, userId }) {
     })
       .then((answer) => answer.json())
       .then((response) => {
-        console.log(response);
+   
         if (response.status == "success") {
           enqueueSnackbar(response.content, { variant: "success" });
         } else {

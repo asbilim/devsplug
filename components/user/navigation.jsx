@@ -6,7 +6,7 @@ export default function UserNavigation() {
 
         <a
           href="/settings/user/profile/"
-          class="flex items-center px-3 py-2.5 font-bold bg-white   border rounded-full"
+          class="flex items-center px-3 py-2.5 font-bold border rounded-full"
         >
           Pubic Profile
         </a>

@@ -39,12 +39,14 @@ import { createProblemQuiz } from "@/data/add-problem";
 import { getProblemScore } from "@/data/get-problems";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Smile, Camera, SendHorizontal, TriangleAlert } from "lucide-react";
+import { useRouter } from "next/navigation";
 export default function ChallengeSolve({ problem, quiz, slug }) {
   const [showQuiz, setShowQuiz] = useState(false);
   const [loading, setLoading] = useState(false);
   const [quizzes, setQuizzes] = useState([]);
   const { data: session, update } = useSession();
   const [full, setFull] = useState(false);
+  const router = useRouter();
   const onclick = async () => {
     const token = session?.accessToken;
 
@@ -68,9 +70,7 @@ export default function ChallengeSolve({ problem, quiz, slug }) {
         { problem_slug: problem.slug },
         session?.accessToken
       );
-      console.log(result);
-      // console.log(result[0]?.is_full);
-      // setFull(result[0]?.is_full);
+
       setLoading(true);
       setQuizzes(result);
       setShowQuiz(!showQuiz);
@@ -122,7 +122,7 @@ export default function ChallengeSolve({ problem, quiz, slug }) {
           icon={CircleChevronRight}
           iClassName="mx-4"
           isLoading={loading}
-          onclick={() => alert("coming soon")}
+          onclick={() => router.push("/leaderboard")}
         >
           View the leaderboard
         </ActionButton>
@@ -173,17 +173,15 @@ const CodeForm = () => {
 
   const onSubmit = (data) => {
     setCode(data.codeValue);
-    console.log(data);
   };
 
   const onclick = () => {
     if (imageRef.current) {
       html2canvas(imageRef.current, {
-        scale: 8,
+        scale: 4,
       }).then((canvas) => {
-        // Convert the canvas to an image
-        const image = canvas.toDataURL("image/png");
-        // Create a link to trigger the download
+        const image = canvas.toDataURL("image/jpeg");
+
         const link = document.createElement("a");
         link.href = image;
         link.download = user ? user.username + "-" + unique_id : unique_id;
@@ -220,7 +218,6 @@ const CodeForm = () => {
           {...register("language", { required: true })}
           onValueChange={(value) => {
             setLanguage(value);
-            console.log(value);
           }}
         >
           <SelectTrigger className="w-[180px]">
@@ -294,7 +291,6 @@ const CodeForm = () => {
 };
 
 const QuizLayout = ({ quiz, token, slug, setquiz, is_full }) => {
-  console.log(is_full);
   const size = quiz?.length;
   const [loading, setLoading] = useState(false);
   const [score, setScore] = useState(false);

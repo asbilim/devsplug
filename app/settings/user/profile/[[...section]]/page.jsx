@@ -14,7 +14,7 @@ export default async function Test({ params }) {
   return (
     <div className="flex flex-col gap-12">
       <Header />
-      <div class="bg-white w-full flex flex-col gap-5 px-3 md:px-16 lg:px-28 md:flex-row text-[#161931]">
+      <div class="w-full flex flex-col gap-5 px-3 md:px-16 lg:px-28 md:flex-row ">
         <UserNavigation />
         <main class="w-full min-h-screen py-1 md:w-2/3 lg:w-3/4">
           <div class="p-2 md:p-4">

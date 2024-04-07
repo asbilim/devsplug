@@ -1,12 +1,12 @@
 export default function UserNotification() {
   return (
-    <div class="bg-white shadow rounded-lg p-8 my-8">
+    <div class="shadow p-8 my-8">
       <div class="mb-6">
         <h2 class="text-2xl font-semibold mb-4 text-[#202142]">
           Recent Notifications
         </h2>
         <div class="space-y-4 max-h-64 overflow-y-auto">
-          <div class="bg-indigo-50 border border-indigo-300 rounded-lg p-4 flex justify-between items-start">
+          <div class=" border  p-4 flex justify-between items-start">
             <div class="flex-grow">
               <h3 class="font-medium text-indigo-900">
                 Welcome to our service!

@@ -57,7 +57,7 @@ const schema = yup.object({
       try {
         return isValidFileType(file.name, "image");
       } catch (e) {
-        console.log(e.message);
+    
         return false;
       }
     })

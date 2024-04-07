@@ -11,7 +11,7 @@ export function AccordionChallenge() {
   const { data: session } = useSession();
   const hasProblems = session?.user?.problems || false;
   const problems = hasProblems ? session.user?.problems : [];
-  console.log(problems[0]?.problems);
+
   return (
     <div className="flex w-full items-center justify-center  flex-col gap-12 my-24  px-12 lg:px-0">
       <Accordion

@@ -54,7 +54,7 @@ export default function RegisterComponent() {
   });
 
   const onSubmit = async (data) => {
-    console.log(data);
+  
     setLoading(true);
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}${process.env.NEXT_PUBLIC_USER_CREATE_PATH}`,

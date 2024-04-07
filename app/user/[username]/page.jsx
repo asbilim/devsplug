@@ -9,6 +9,9 @@ export default async function UserProfile({ params }) {
   const userInfo = await getUserInfo(decodeURIComponent(username));
   const error = userInfo?.error && true;
 
+  const infos = JSON.parse(userInfo);
+
+
   return (
     <div className="flex flex-col">
       <Header />
@@ -17,7 +20,7 @@ export default async function UserProfile({ params }) {
           something went wrong , we {"can't"} fetch {username}
         </p>
       ) : (
-        <UserInfoDetails user={JSON.parse(userInfo)} />
+        <UserInfoDetails user={infos} />
       )}
       <Footer />
     </div>
