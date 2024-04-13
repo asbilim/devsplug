@@ -12,7 +12,7 @@ export default function UserNotification() {
                 Welcome to our service!
               </h3>
               <p class="text-sm text-indigo-700">
-                Thanks for signing up. We're thrilled to have you onboard.
+                Thanks for signing up. {"We're"} thrilled to have you onboard.
               </p>
               <span class="text-xs text-indigo-500">2h ago</span>
             </div>
