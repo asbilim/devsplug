@@ -38,16 +38,18 @@ import { answerQuestion } from "@/data/add-problem";
 import { createProblemQuiz } from "@/data/add-problem";
 import { getProblemScore } from "@/data/get-problems";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Smile, Camera, SendHorizontal } from "lucide-react";
-export default function ChallengeSolve({ problem, quiz }) {
+import { Smile, Camera, SendHorizontal, TriangleAlert } from "lucide-react";
+import { useRouter } from "next/navigation";
+export default function ChallengeSolve({ problem, quiz, slug }) {
   const [showQuiz, setShowQuiz] = useState(false);
   const [loading, setLoading] = useState(false);
   const [quizzes, setQuizzes] = useState([]);
   const { data: session, update } = useSession();
   const [full, setFull] = useState(false);
+  const router = useRouter();
   const onclick = async () => {
-    const slug = problem.slug;
     const token = session?.accessToken;
+
     if (!token) {
       return toast("Please we are still fetching your informations", {
         description:
@@ -65,20 +67,17 @@ export default function ChallengeSolve({ problem, quiz }) {
       });
 
       const res = await createProblemQuiz(
-        { problem_slug: problem.slug },
+        { problem_slug: problem?.slug },
         session?.accessToken
       );
 
-      console.log(result[0]?.is_full);
-      setFull(result[0]?.is_full);
       setLoading(true);
       setQuizzes(result);
       setShowQuiz(!showQuiz);
       setLoading(false);
     } catch (e) {
       return toast("Please we are still fetching your informations", {
-        description:
-          "The system is still fetching your datas , wait few seconds and try again",
+        description: e.message,
 
         action: {
           label: "retry",
@@ -89,10 +88,10 @@ export default function ChallengeSolve({ problem, quiz }) {
   };
 
   return (
-    <div className="flex px-12 my-24 items-center justify-center flex-col gap-24">
-      <div className="flex gap-12  w-full max-w-6xl">
+    <div className="flex px-12 my-24 items-center justify-center flex-col gap-24 overflow-hidden">
+      <div className="flex md:gap-12 gap-2  md:w-full max-w-sm  md:max-w-6xl">
         <Button className="w-full">
-          <Link href={`/problems/details/${problem.slug}`}>
+          <Link href={`/problems/details/${problem?.slug}`}>
             Back to problem
           </Link>
         </Button>
@@ -110,7 +109,7 @@ export default function ChallengeSolve({ problem, quiz }) {
         <QuizLayout
           quiz={quizzes}
           token={session?.accessToken}
-          slug={problem.slug}
+          slug={problem?.slug}
           setquiz={setQuizzes}
           is_full={full}
         />
@@ -123,7 +122,7 @@ export default function ChallengeSolve({ problem, quiz }) {
           icon={CircleChevronRight}
           iClassName="mx-4"
           isLoading={loading}
-          onclick={() => alert("coming soon")}
+          onclick={() => router.push("/leaderboard")}
         >
           View the leaderboard
         </ActionButton>
@@ -174,7 +173,6 @@ const CodeForm = () => {
 
   const onSubmit = (data) => {
     setCode(data.codeValue);
-    console.log(data);
   };
 
   const onclick = () => {
@@ -182,9 +180,8 @@ const CodeForm = () => {
       html2canvas(imageRef.current, {
         scale: 4,
       }).then((canvas) => {
-        // Convert the canvas to an image
-        const image = canvas.toDataURL("image/png");
-        // Create a link to trigger the download
+        const image = canvas.toDataURL("image/jpeg");
+
         const link = document.createElement("a");
         link.href = image;
         link.download = user ? user.username + "-" + unique_id : unique_id;
@@ -206,7 +203,7 @@ const CodeForm = () => {
 
   return (
     <form
-      className="grid gap-6 w-full max-w-6xl"
+      className="flex flex-col px-12 md:px-0 md:gap-12 gap-2  md:w-full  w-[25rem]   md:max-w-6xl"
       onSubmit={handleSubmit(onSubmit)}
     >
       <Textarea
@@ -216,12 +213,11 @@ const CodeForm = () => {
         onValueChange={(value) => setCode(value)}
         {...register("codeValue", { required: true })}
       />
-      <div className="flex gap-3">
+      <div className="flex gap-3 flex-wrap">
         <Select
           {...register("language", { required: true })}
           onValueChange={(value) => {
             setLanguage(value);
-            console.log(value);
           }}
         >
           <SelectTrigger className="w-[180px]">
@@ -264,7 +260,15 @@ const CodeForm = () => {
         </Button>
       </div>
       <div
-        className="flex w-full flex-col image  bg-primary p-4"
+        variant="outline"
+        className="my-4 border-2 p-4 text-sm tracking-wider border-yellow-300 flex md:max-w-lg items-center"
+      >
+        <TriangleAlert size={75} className="mr-4" />
+        {"don't"} worry if the component overflows , it allow us to generate
+        high quality image screenshot
+      </div>
+      <div
+        className="flex w-auto flex-col image  bg-primary p-4 min-w-max"
         ref={imageRef}
       >
         <div className="flex justify-between   p-3 rounded-lg">
@@ -287,7 +291,6 @@ const CodeForm = () => {
 };
 
 const QuizLayout = ({ quiz, token, slug, setquiz, is_full }) => {
-  console.log(is_full);
   const size = quiz?.length;
   const [loading, setLoading] = useState(false);
   const [score, setScore] = useState(false);

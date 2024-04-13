@@ -11,6 +11,7 @@ import { addProblemRating } from "@/data/get-problems";
 import { useSession } from "next-auth/react";
 import { signIn } from "next-auth/react";
 import { toast } from "sonner";
+import { EmptyState } from "../states/empty";
 export default function RateChallenge({ initialRatings, slug }) {
   const { data: session } = useSession();
   const [rating, setRating] = useState(0);
@@ -23,7 +24,9 @@ export default function RateChallenge({ initialRatings, slug }) {
   return (
     <div className="flex w-full max-w-6xl  flex-col gap-12">
       <div className="flex items-center justify-between w-full">
-        <h2 className="font-medium">You like this challenge? Rate it</h2>
+        <h2 className="font-medium hidden md:block">
+          You like this challenge? Rate it
+        </h2>
         <SmartRating rating={rating} setRating={setRating} />
       </div>
       <div className="comment-section">
@@ -236,6 +239,8 @@ const CommentChild = ({
   slug = "",
   ratings = {},
   updateRating,
+  replying = false,
+  parentName = "",
 }) => {
   const [showReplies, setShowReplies] = useState(false);
   const [addReply, setAddReply] = useState(false);
@@ -270,7 +275,12 @@ const CommentChild = ({
             Posted{" "}
             {formatDistanceToNow(parseISO(created_at), { addSuffix: true })}
           </p>
-          <p>{message}</p>
+          <p>
+            {replying && (
+              <span className="link underline">@{parentName + " "}</span>
+            )}
+            {message}
+          </p>
           <div className="flex gap-4">
             {replies.length > 0 && (
               <div
@@ -317,6 +327,8 @@ const CommentChild = ({
             depth={depth + 1}
             ratings={ratings}
             updateRating={updateRating}
+            replying={true}
+            parentName={user.username}
           />
         ))}
     </div>
@@ -326,7 +338,7 @@ const CommentChild = ({
 const CommentSections = ({ ratings, session, slug, updateRating }) => {
   return (
     <div className="flex w-full flex-col gap-4">
-      {ratings.map((item, index) => {
+      {ratings?.map((item, index) => {
         return (
           <CommentChild
             session={session}
@@ -338,6 +350,9 @@ const CommentSections = ({ ratings, session, slug, updateRating }) => {
           />
         );
       })}
+      {!ratings?.length && (
+        <EmptyState message="no comment was added for this challenge" />
+      )}
     </div>
   );
 };

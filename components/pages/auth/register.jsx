@@ -21,7 +21,7 @@ const schema = yup.object().shape({
       /^(?=.*[A-Za-z])(?=.*\d).{8,}$/,
       "only  letters, numbers, underscores, and hyphens allowed"
     )
-    .min(6, "Name must be at least 2 characters"),
+    .min(6, "Name must be at least 6 characters"),
   email: yup
     .string()
     .required("Email is required")
@@ -54,7 +54,6 @@ export default function RegisterComponent() {
   });
 
   const onSubmit = async (data) => {
-    console.log(data);
     setLoading(true);
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}${process.env.NEXT_PUBLIC_USER_CREATE_PATH}`,
@@ -103,9 +102,9 @@ export default function RegisterComponent() {
               <Input {...field} id="name" placeholder="l@sd3p1k" />
             )}
           />
-          {errors.name && (
+          {errors.username && (
             <p className="text-red-500 text-sm lowercase">
-              {errors.name.message}
+              {errors.username.message}
             </p>
           )}
         </div>
