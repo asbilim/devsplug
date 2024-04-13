@@ -13,7 +13,7 @@ export default function Dashboard() {
     <div className="flex flex-col overflow-x-hidden">
       <Header />
       <ChallengeLegend />
-      <Suspense fallback={<p>loading...</p>}>
+      <Suspense fallback={<DashboardLoading />}>
         <AccordionChallenge />
       </Suspense>
       <div className="flex items-center justify-center">

@@ -67,7 +67,7 @@ export default function ChallengeSolve({ problem, quiz, slug }) {
       });
 
       const res = await createProblemQuiz(
-        { problem_slug: problem.slug },
+        { problem_slug: problem?.slug },
         session?.accessToken
       );
 
@@ -91,7 +91,7 @@ export default function ChallengeSolve({ problem, quiz, slug }) {
     <div className="flex px-12 my-24 items-center justify-center flex-col gap-24 overflow-hidden">
       <div className="flex md:gap-12 gap-2  md:w-full max-w-sm  md:max-w-6xl">
         <Button className="w-full">
-          <Link href={`/problems/details/${problem.slug}`}>
+          <Link href={`/problems/details/${problem?.slug}`}>
             Back to problem
           </Link>
         </Button>
@@ -109,7 +109,7 @@ export default function ChallengeSolve({ problem, quiz, slug }) {
         <QuizLayout
           quiz={quizzes}
           token={session?.accessToken}
-          slug={problem.slug}
+          slug={problem?.slug}
           setquiz={setQuizzes}
           is_full={full}
         />

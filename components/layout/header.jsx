@@ -9,6 +9,7 @@ import Image from "next/image";
 import { Button } from "../ui/button";
 import { Menu } from "lucide-react";
 import { useSession, signOut, signIn } from "next-auth/react";
+import { useState, useEffect } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -28,13 +29,18 @@ import {
 
 export default function Header() {
   const { data: session } = useSession();
-
+  const [mode, setMode] = useState("dark");
   const isDarkMode = useDarkMode();
+
+  useEffect(() => {
+    setMode(isDarkMode);
+  }, [isDarkMode]);
+
   return (
-    <div className="header flex md:px-12 px-4 items-center py-4 border-b gap-4">
+    <div className="fixed py-3 md:px-12 px-4 border-b-[1px] top-0 z-40 w-full bg-white dark:border-b-slate-700 dark:bg-background flex items-center gap-4">
       <div className="items-container flex items-center justify-start gap-4 w-full ">
         <Image
-          src={isDarkMode ? logo : logoLight}
+          src={mode ? logo : logoLight}
           alt="devsplug logo"
           className="md:w-44 w-32"
         />

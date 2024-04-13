@@ -2,6 +2,7 @@
 import { Button } from "../ui/button";
 import RateChallenge from "../pages/challenge/rating";
 import Link from "next/link";
+import { EmptyState } from "../pages/states/empty";
 export default function ChallengeDetail({ problem, ratings, slug }) {
   const content = problem?.content;
 
@@ -12,7 +13,9 @@ export default function ChallengeDetail({ problem, ratings, slug }) {
           Challenge Details
         </Button>
         <Button className="w-full">
-          <Link href={`/problems/solve/${problem.slug}`}>Submit my answer</Link>
+          <Link href={`/problems/solve/${problem?.slug}`}>
+            Submit my answer
+          </Link>
         </Button>
       </div>
       <div className="flex gap-12  w-full max-w-6xl flex-col">
@@ -24,6 +27,9 @@ export default function ChallengeDetail({ problem, ratings, slug }) {
           style={{ margin: 0 }}
           dangerouslySetInnerHTML={{ __html: content }}
         ></div>
+        {!content && (
+          <EmptyState message="we are currently having a problem fetching this challenge, make sure it exists or recheck the url" />
+        )}
       </div>
       <RateChallenge initialRatings={ratings} slug={slug} />
     </div>

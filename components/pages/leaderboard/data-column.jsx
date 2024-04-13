@@ -24,7 +24,7 @@ export const columns = [
           className="hover:underline"
           style={{ color: getTitleAttribute(title, 0) }}
         >
-          <Link href="/">{username}</Link>
+          <Link href={"/user/" + username + "/"}>{username}</Link>
         </div>
       );
     },

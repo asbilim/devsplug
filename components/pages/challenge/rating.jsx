@@ -11,6 +11,7 @@ import { addProblemRating } from "@/data/get-problems";
 import { useSession } from "next-auth/react";
 import { signIn } from "next-auth/react";
 import { toast } from "sonner";
+import { EmptyState } from "../states/empty";
 export default function RateChallenge({ initialRatings, slug }) {
   const { data: session } = useSession();
   const [rating, setRating] = useState(0);
@@ -337,7 +338,7 @@ const CommentChild = ({
 const CommentSections = ({ ratings, session, slug, updateRating }) => {
   return (
     <div className="flex w-full flex-col gap-4">
-      {ratings.map((item, index) => {
+      {ratings?.map((item, index) => {
         return (
           <CommentChild
             session={session}
@@ -349,6 +350,9 @@ const CommentSections = ({ ratings, session, slug, updateRating }) => {
           />
         );
       })}
+      {!ratings?.length && (
+        <EmptyState message="no comment was added for this challenge" />
+      )}
     </div>
   );
 };

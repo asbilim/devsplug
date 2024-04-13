@@ -24,7 +24,8 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { LuBadgePlus, LuBadgeMinus } from "react-icons/lu";
-
+import { MessageSquareWarning } from "lucide-react";
+import { EmptyState } from "./states/empty";
 export default function ChallengeComponent({ problems }) {
   const [loading, setLoading] = useState(false);
   const { data: session, update } = useSession();
@@ -64,8 +65,18 @@ export default function ChallengeComponent({ problems }) {
     <div className="flex flex-col mt-24 px-4 md:px-12 items-center justify-center w-full my-24">
       <FilterComponent />
       <div className="challenges flex justify-center flex-col my-12 mt-24 items-start  w-full max-w-6xl gap-12">
-        <h2 className="font-medium text-start text-xl">Challenges</h2>
-        {problems.map((item, index) => {
+        <h2 className="font-semibold border-b-2 border-b-primary py-2 text-start text-3xl">
+          Challenges
+        </h2>
+        <div className="flex w-full flex-col p-4 border-2 border-yellow-500 items-center gap-1 md:flex-row">
+          <MessageSquareWarning size={50} className="mx-4 min-w-20" />
+          <span ca>
+            Sharing challenge solutions or using AI is against our rules and
+            detracts from the learning experience. Violators will be permanently
+            banned. Please respect the integrity of the challenges.
+          </span>
+        </div>
+        {problems?.map((item, index) => {
           return (
             <>
               <div className="challenge flex gap-12 w-full justify-between items-center ">
@@ -99,6 +110,9 @@ export default function ChallengeComponent({ problems }) {
             </>
           );
         })}
+        {!problems?.length && (
+          <EmptyState message="we faced some difficulties showing challenges" />
+        )}
       </div>
     </div>
   );
@@ -143,7 +157,7 @@ const SingleChallenge = ({ title = "", description = "" }) => {
       <AccordionTrigger className="text-sm tracking-tight md:text-lg ">
         {title}
       </AccordionTrigger>
-      <AccordionContent className="tracking-wider text-center md:text-md leading-loose text-xs">
+      <AccordionContent className="tracking-wider md:text-start text-center md:text-md leading-loose text-xs">
         {description}
       </AccordionContent>
     </AccordionItem>

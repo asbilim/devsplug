@@ -6,6 +6,7 @@ import { getTitleAttribute } from "@/data/name-icons";
 import useIsOwner from "@/providers/is-owner";
 import { Pen } from "lucide-react";
 import Link from "next/link";
+import { EmptyState } from "../states/empty";
 export default function UserInfoDetails({ user }) {
   const isOwner = useIsOwner(user);
 
@@ -60,11 +61,14 @@ export default function UserInfoDetails({ user }) {
         )}
       </div>
       <div
-        className="flex w-full flex-col max-w-6xl  border p-3 prose prose-slate dark:prose-invert"
+        className="flex w-full flex-col max-w-6xl  border p-3 prose prose-slate dark:prose-invert overflow-x-hidden"
         style={{ margin: 0 }}
       >
         {user?.motivation && (
           <Markdown>{user?.motivation && user?.motivation}</Markdown>
+        )}
+        {!user?.motivation && (
+          <EmptyState message={`${user?.username} did not add any bio`} />
         )}
       </div>
     </div>

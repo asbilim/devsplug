@@ -12,7 +12,7 @@ export default async function Test({ params }) {
   }
 
   return (
-    <div className="flex flex-col gap-12">
+    <div className="flex flex-col gap-12 my-16">
       <Header />
       <div class="w-full flex flex-col gap-5 px-3 md:px-16 lg:px-28 md:flex-row ">
         <UserNavigation />
