@@ -5,7 +5,7 @@ export default function Bio() {
   return (
     <div className="flex flex-col">
       <Header />
-      <BioEdit />;
+      {/* <BioEdit />; */}
       <Footer />
     </div>
   );
