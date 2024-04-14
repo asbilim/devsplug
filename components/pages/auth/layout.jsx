@@ -27,7 +27,7 @@ export default function AuthLayout({ children }) {
             </p>
             <p>click here to go back!!</p>
             <Button>
-              <Link href="/">Go back to website</Link>
+              <Link href="/dashboard">Go back to website</Link>
             </Button>
           </div>
         </div>

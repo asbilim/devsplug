@@ -62,7 +62,7 @@ export default function ChallengeComponent({ problems }) {
   };
 
   return (
-    <div className="flex flex-col mt-24 px-4 md:px-12 items-center justify-center w-full my-24">
+    <div className="flex flex-col mt-24 px-4 md:px-12 items-center justify-center w-full my-24 min-h-screen">
       <FilterComponent />
       <div className="challenges flex justify-center flex-col my-12 mt-24 items-start  w-full max-w-6xl gap-12">
         <h2 className="font-semibold border-b-2 border-b-primary py-2 text-start text-3xl">

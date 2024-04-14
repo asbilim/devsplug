@@ -12,7 +12,7 @@ function addPositionToUsers(data) {
 }
 export default function LeaderBoard({ users }) {
   return (
-    <div className="flex w-full items-center justify-start flex-col my-16 min-h-screen px-4 lg:px-0">
+    <div className="flex w-full items-center justify-start flex-col  min-h-screen px-4 lg:px-0 my-36">
       <div className="flex w-full max-w-6xl flex-col gap-6">
         <div className="w-full flex gap-4 flex-col">
           <h1 className="text-2xl font-medium">Devsplug ranking </h1>
