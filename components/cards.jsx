@@ -10,7 +10,7 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Check, Linkedin } from "lucide-react";
-import { LightBulbIcon } from "./Icons";
+import { LightBulbIcon } from "@/components/icons";
 import { LuGithub } from "react-icons/lu";
 
 export const HeroCards = () => {
