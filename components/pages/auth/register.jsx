@@ -76,7 +76,7 @@ export default function RegisterComponent() {
   };
 
   return (
-    <div className="register md:flex-row flex-col flex gap-12 mt-16 mx-16">
+    <div className="register md:flex-row flex-col flex gap-12 mt-16 md:mx-16">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="mx-auto md:max-w-2xl md:w-full space-y-6 border p-4"
