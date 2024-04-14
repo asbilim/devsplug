@@ -108,7 +108,7 @@ export default async function UserProfile({ params }) {
   const infos = !error && JSON.parse(userInfo);
 
   return (
-    <div className="flex flex-col my-12">
+    <div className="flex flex-col mt-12">
       <Header />
       {error ? (
         <div className="flex items-center justify-center w-full min-h-screen">

@@ -1,6 +1,6 @@
 export default function ChallengeLegend() {
   return (
-    <div className="flex items-center justify-center mt-24 px-12">
+    <div className="flex items-center justify-center mt-48 px-12">
       <div className="flex w-full lg:max-w-6xl flex-col md:max-w-4xl gap-12">
         <h1 className="font-semibold text-3xl">List of challenges</h1>
         <div className="legends flex flex-col gap-6">

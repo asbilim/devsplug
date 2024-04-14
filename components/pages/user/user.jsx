@@ -11,7 +11,7 @@ export default function UserInfoDetails({ user }) {
   const isOwner = useIsOwner(user);
 
   return (
-    <div className="flex w-full flex-col items-center justify-center my-12 md:my-16 lg:my-24 gap-12 px-4 lg:px-2">
+    <div className="flex w-full flex-col items-center justify-center my-12 md:my-16 lg:my-48 gap-12 px-4 lg:px-2 ">
       <div className="flex w-full max-w-6xl">
         <h1 className="font-semibold tracking-widest text-lg">
           {" "}
@@ -22,7 +22,10 @@ export default function UserInfoDetails({ user }) {
         <div className="flex items-center justify-center gap-4 flex-col md:flex-row">
           <Avatar className="w-20 h-20 md:w-30 md:h-30 lg:w-40 lg:h-40 ">
             <AvatarImage
-              src={user?.profile?.url || "https://github.com/shadcn.png"}
+              src={
+                user?.profile ||
+                "https://images.pexels.com/photos/92129/pexels-photo-92129.jpeg?auto=compress&cs=tinysrgb&w=600"
+              }
               alt={user?.username + "on devsplug , view profile "}
             />
             <AvatarFallback>

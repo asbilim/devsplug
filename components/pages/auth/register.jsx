@@ -18,7 +18,7 @@ const schema = yup.object().shape({
     .string()
     .required("Name is required")
     .matches(
-      /^(?=.*[A-Za-z])(?=.*\d).{8,}$/,
+      /^[A-Za-z\d_-]*$/,
       "only  letters, numbers, underscores, and hyphens allowed"
     )
     .min(6, "Name must be at least 6 characters"),
@@ -51,6 +51,7 @@ export default function RegisterComponent() {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
+    mode: "onChange",
   });
 
   const onSubmit = async (data) => {

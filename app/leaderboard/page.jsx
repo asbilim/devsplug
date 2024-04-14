@@ -46,7 +46,7 @@ export default async function Dashboard() {
   const leaderBoard = await getLeaderBoard();
 
   return (
-    <div className="flex flex-col my-6">
+    <div className="flex flex-col mt-6">
       <Header />
       <LeaderBoard users={leaderBoard} />
       <Footer />
