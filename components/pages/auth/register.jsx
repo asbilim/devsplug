@@ -12,6 +12,16 @@ import founder from "@/public/author.jpg";
 import Image from "next/image";
 import ActionButton from "@/components/buttons/action-button";
 import { useRouter } from "next/navigation";
+import { PasswordInput } from "@/components/inputs/password";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const schema = yup.object().shape({
   username: yup
@@ -43,6 +53,7 @@ const schema = yup.object().shape({
 export default function RegisterComponent() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [isDialogOpen, setDialogOpen] = useState(false);
   const router = useRouter();
 
   const {
@@ -67,10 +78,11 @@ export default function RegisterComponent() {
       }
     );
     setLoading(false);
+
     const result = await response.json();
 
     if (result.status == "success") {
-      router.push("/auth/login");
+      setDialogOpen(true);
     } else {
       setError(true);
     }
@@ -78,9 +90,33 @@ export default function RegisterComponent() {
 
   return (
     <div className="register md:flex-row flex-col flex gap-12 mt-16 md:mx-16">
+      <Dialog
+        modal={true}
+        defaultOpen={isDialogOpen}
+        onOpenChange={() => setDialogOpen(!isDialogOpen)}
+        open={isDialogOpen}
+      >
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Account created</DialogTitle>
+            <DialogDescription>
+              You are now one step ahead to join the devsplug community , check
+              your email inbox and verify your email address to activate your
+              account
+            </DialogDescription>
+          </DialogHeader>
+
+          <DialogFooter className="mt-12">
+            <Button type="submit">
+              <Link href="/auth/account/confirm">Continue</Link>
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="mx-auto md:max-w-2xl md:w-full space-y-6 border p-4"
+        className="md:mx-auto md:max-w-2xl md:w-full space-y-6 border-2 shadow-md p-4 mx-4"
       >
         <div className="space-y-2 text-center">
           <h1 className="text-4xl font-bold">Register</h1>
@@ -88,9 +124,14 @@ export default function RegisterComponent() {
             Enter your information to create an account
           </p>
           {error && (
-            <p className="text-red-500 font-medium text-xs">
-              something went wrong!!
-            </p>
+            <div className="flex over">
+              <div className="bg-red-950 p-3">
+                <p className="text-red-200 font-medium text-xs tracking-widest">
+                  the user you are trying to create already exists , please go
+                  to the login page and try to login with the same credentials
+                </p>
+              </div>
+            </div>
           )}
         </div>
 
@@ -132,7 +173,7 @@ export default function RegisterComponent() {
             name="password"
             control={control}
             render={({ field }) => (
-              <Input {...field} id="password" type="password" />
+              <PasswordInput {...field} id="password" value="dzd" />
             )}
           />
           {errors.password && (
@@ -148,7 +189,7 @@ export default function RegisterComponent() {
             name="confirmPassword"
             control={control}
             render={({ field }) => (
-              <Input {...field} id="confirmPassword" type="password" />
+              <PasswordInput {...field} id="confirmPassword" value="dzdzdz" />
             )}
           />
           {errors.confirmPassword && (
@@ -172,6 +213,9 @@ export default function RegisterComponent() {
             </Link>
           </Label>
         </div>
+        <ActionButton className="w-full" type="submit" isLoading={loading}>
+          Register
+        </ActionButton>
         <p className="my-2 text-center">or</p>
         <hr />
         <div className="flex justify-between">
@@ -186,11 +230,8 @@ export default function RegisterComponent() {
           </p>
         )}
         {/* Submit button */}
-        <ActionButton className="w-full" type="submit" isLoading={loading}>
-          Register
-        </ActionButton>
       </form>
-      <div className="author flex flex-col items-center justify-center p-4 md:max-w-2xl w-full gap-4">
+      <div className="author lg:flex flex-col items-center justify-center p-4 md:max-w-2xl w-full gap-4 hidden">
         <div className="cover w-44 h-44 p-1  rounded-full border-4">
           <Image
             src={founder}
