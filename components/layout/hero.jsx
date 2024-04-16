@@ -5,9 +5,9 @@ import { buttonVariants } from "../ui/button";
 import { HeroCards } from "../cards";
 export default function Hero() {
   return (
-    <section className="grid lg:px-24 md:px-12 px-8 lg:grid-cols-2 place-items-center pt-36 pb-24 md:pt-48 gap-10">
+    <section className="grid lg:px-24 md:px-12 px-12 lg:grid-cols-2 place-items-center pt-36 pb-24 md:pt-48 gap-10  overflow-x-hidden place-content-center">
       <div className="text-center lg:text-start space-y-6 ">
-        <main className="text-5xl md:text-6xl font-bold flex flex-col md:gap-6 ">
+        <main className="text-3xl md:text-3xl lg:text-6xl font-bold flex flex-col md:gap-6 ">
           <h1 className="inline">
             <span className="inline bg-gradient-to-r from-primary  to-[#8482ee] text-transparent bg-clip-text">
               Devsplug
