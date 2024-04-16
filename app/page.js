@@ -43,11 +43,12 @@ export const metadata = {
 
 export default function Page() {
   return (
-    <main>
+    <main className="">
       <Header />
       <Hero />
       <Sponsors />
       <DemoCode />
+      <div className="flex my-12"></div>
       <Footer />
     </main>
   );

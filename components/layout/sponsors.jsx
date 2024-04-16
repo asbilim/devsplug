@@ -18,7 +18,10 @@ const sponsors = [
 
 export const Sponsors = () => {
   return (
-    <section id="sponsors" className="container py-24 sm:py-32 gap-4 ">
+    <section
+      id="sponsors"
+      className="container py-24 sm:py-32 gap-4 hidden md:block"
+    >
       <div className="flex flex-wrap justify-center items-center gap-4 md:gap-8 my-4">
         {sponsors.map(({ iconType, name }) => (
           <div
