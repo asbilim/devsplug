@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/providers/theme-provider";
 import { AuthProvider } from "@/providers/next-auth";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as SonnerToaster } from "@/components/ui/sonner";
+
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -15,15 +16,15 @@ export const metadata = {
     "Devsplug Join an amazing dev community with youth cameroonians , learn grow and challenge other developers",
 };
 
+export const viewport = {
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
+
 export default function RootLayout({ children }) {
   return (
     <html suppressHydrationWarning lang="en">
-      <head>
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
-        />
-      </head>
       <body className={poppins.className}>
         <AuthProvider>
           <ThemeProvider
