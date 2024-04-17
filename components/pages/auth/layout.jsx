@@ -16,7 +16,7 @@ export default function AuthLayout({ children }) {
         <Image
           src={isDarkMode ? logo : logoLight}
           alt="devsplug logo"
-          className="object-contain  "
+          className="object-contain w-28 md:w-auto"
         />
       </div>
       {session ? (

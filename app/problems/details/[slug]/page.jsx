@@ -4,7 +4,8 @@ import ChallengeDetail from "@/components/layout/challenge-detail";
 import { revalidateTag } from "next/cache";
 import { getProblemRating } from "@/data/get-problems";
 import Footer from "@/components/layout/footer";
-
+import { Suspense } from "react";
+import ChallengeLoading from "@/components/pages/states/challenge-loading";
 export async function generateMetadata({ params }, parent) {
   revalidateTag("problem");
   const { slug } = params;
@@ -87,7 +88,9 @@ export default async function Page({ params }) {
   return (
     <div>
       <Header />
-      <ChallengeDetail problem={problem} ratings={ratings} slug={slug} />
+      <Suspense fallback={<ChallengeLoading />}>
+        <ChallengeDetail problem={problem} ratings={ratings} slug={slug} />
+      </Suspense>
       <Footer />
     </div>
   );

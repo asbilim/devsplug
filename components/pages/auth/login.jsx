@@ -28,6 +28,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useSearchParams } from "next/navigation";
 export default function LoginComponent() {
   const [loading, setLoading] = useState(false);
   const [cloading, setCLoading] = useState(false);
@@ -37,6 +38,9 @@ export default function LoginComponent() {
   const [user, setUser] = useState("");
   const router = useRouter();
   const { toast } = useToast();
+  const searchParams = useSearchParams();
+  const callback = searchParams.get("callbackUrl");
+
   const {
     register,
     handleSubmit,
@@ -58,7 +62,7 @@ export default function LoginComponent() {
     const result = await signIn("credentials", { redirect: false, ...data });
     setLoading(false);
     if (result.ok) {
-      return router.push("/dashboard");
+      return callback ? router.push(callback) : router.push("/dashboard");
     } else {
       setError(true);
     }

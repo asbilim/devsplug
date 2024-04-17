@@ -13,17 +13,17 @@ export default function ChallengeDetail({ problem, ratings, slug }) {
           Challenge Details
         </Button>
         <Button className="w-full">
-          <Link href={`/problems/solve/${problem?.slug}`}>
+          <Link href={`/problems/solve/${problem?.slug}`} target="_blank">
             Submit my answer
           </Link>
         </Button>
       </div>
       <div className="flex gap-12  w-full max-w-6xl flex-col">
-        <h1 className="text-4xl font-bold p-6 text-center border-dashed   border-4">
+        <h1 className="md:text-4xl font-bold p-6 text-center border-dashed   border-4">
           {problem?.title}
         </h1>
         <div
-          className="!w-full min-w-[100%] prose   prose-slate dark:prose-invert"
+          className="!w-full min-w-[100%] prose prose-sm md:prose-md lg:prose-lg  prose-slate dark:prose-invert"
           style={{ margin: 0 }}
           dangerouslySetInnerHTML={{ __html: content }}
         ></div>
