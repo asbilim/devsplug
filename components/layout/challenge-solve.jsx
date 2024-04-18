@@ -5,10 +5,10 @@ import { Textarea } from "../ui/textarea";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import html2canvas from "html2canvas";
 import { CircleChevronRight, ImageDown, Plus, X } from "lucide-react";
-import { toast } from "sonner";
+
 import { submitCodeImage } from "@/data/add-problem";
 import { Badge } from "@/components/ui/badge";
-
+import { addProblemSolution } from "@/data/get-problems";
 import {
   a11yDark,
   a11yLight,
@@ -107,7 +107,7 @@ import {
   xt256,
   zenburn,
 } from "react-syntax-highlighter/dist/esm/styles/hljs";
-
+import { useToast } from "../ui/use-toast";
 import supportedLanguages from "react-syntax-highlighter/dist/cjs/languages/hljs/supported-languages";
 import { useSession } from "next-auth/react";
 import { Input } from "../ui/input";
@@ -348,7 +348,7 @@ export default function ChallengeSolve({ problem, quiz, slug }) {
   const [loading, setLoading] = useState(false);
   const [quizzes, setQuizzes] = useState([]);
   const { data: session, update } = useSession();
-
+  const { toast } = useToast();
   const [full, setFull] = useState(false);
 
   const router = useRouter();
@@ -409,7 +409,7 @@ export default function ChallengeSolve({ problem, quiz, slug }) {
           {problem?.title}
         </h1>
       </div>
-      <CodeForm quiz={quiz} />
+      <CodeForm quiz={quiz} slug={slug} />
       {showQuiz && (
         <Suspense fallback={<ChallengeLoading />}>
           <QuizLayout
@@ -449,7 +449,9 @@ export default function ChallengeSolve({ problem, quiz, slug }) {
   );
 }
 
-const CodeForm = () => {
+const CodeForm = ({ slug = "" }) => {
+  const { toast } = useToast();
+
   const {
     register,
     handleSubmit,
@@ -468,10 +470,94 @@ const CodeForm = () => {
   const [showErrorMessage, setErrorMessage] = useState(false);
   const [partList, setPartList] = useState([]);
   const [isModalOpen, setModalOpen] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+    setLoading(true);
+
     data.parts = partList;
-    console.log(data);
+    data.code = data.codeValue;
+    data.problem_item = slug;
+
+    try {
+      const response = await addProblemSolution(
+        session.accessToken,
+        slug,
+        data
+      );
+
+      if (response.status == "success") {
+        toast({
+          title: "your solution was added successfully",
+          description: (
+            <div className="mt-2 w-[340px] rounded-md bg-green-950 p-4">
+              <code className="text-green-200 overflow-auto">
+                {JSON.stringify(
+                  {
+                    data: response?.content,
+                  },
+                  null,
+                  2
+                )}
+              </code>
+            </div>
+          ),
+        });
+      } else if (response.status == "error") {
+        toast({
+          title: "Something went wrong",
+          description: (
+            <div className="mt-2 w-[340px] rounded-md bg-red-950 p-4">
+              <code className="text-red-200 overflow-auto">
+                {JSON.stringify(
+                  {
+                    data: response?.content,
+                  },
+                  null,
+                  2
+                )}
+              </code>
+            </div>
+          ),
+        });
+      } else {
+        toast({
+          title: "An error occured",
+          description: (
+            <div className="mt-2 w-[340px] rounded-md bg-green-950 p-4">
+              <code className="text-green-200 overflow-auto">
+                {JSON.stringify(
+                  {
+                    data: "we cannot determine the origin of this error , try again if the problem persists , report to admin@devsplug.com",
+                  },
+                  null,
+                  2
+                )}
+              </code>
+            </div>
+          ),
+        });
+      }
+    } catch (e) {
+      toast({
+        title: "Something went wrong",
+        description: (
+          <div className="mt-2 w-[340px] rounded-md bg-red-950 p-4">
+            <code className="text-red-200 overflow-auto">
+              {JSON.stringify(
+                {
+                  data: e.message,
+                },
+                null,
+                2
+              )}
+            </code>
+          </div>
+        ),
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const onclick = () => {
@@ -492,8 +578,6 @@ const CodeForm = () => {
   };
 
   const onError = (errors, e) => {
-    console.log(errors);
-    console.log(e);
     setErrorMessage(true);
   };
 
@@ -751,17 +835,19 @@ const CodeForm = () => {
           Add code parts <Plus className="mx-2" />{" "}
         </span>
 
-        <Button type="submit">I submit my code</Button>
+        <ActionButton variant="" type="submit" isLoading={isLoading}>
+          I submit my code
+        </ActionButton>
       </div>
       <div className="flex">
-        <div className="grid grid-cols-4 gap-4 place-items-center justify-center">
+        <div className="grid md:grid-cols-4 gap-4 place-items-start justify-center">
           {partList.map((item, index) => {
             return (
               <div key={index}>
-                <Badge className="text-center">
+                <Badge className="text-center truncate text-wrap text-xs">
                   {item.name}
                   <span
-                    className={` cursor-pointer ${buttonVariants({})}`}
+                    className={` cursor-pointer text-xs ${buttonVariants({})}`}
                     onClick={() => {
                       setPartList(
                         partList.filter(
@@ -1160,9 +1246,9 @@ const ReusableCodeForm = ({
             {...register("partname", { required: true })}
             defaultValue={partname}
             placeholder="your code part name"
-            maxLength="25"
+            maxLength="100"
             onValueChange={(value) => {
-              if (value.length > 25) {
+              if (value.length > 100) {
                 return false;
               }
               setPartName(value);

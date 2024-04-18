@@ -8,6 +8,9 @@ const problemQuizStatusPath =
 const problemGetScore = process.env.NEXT_PUBLIC_PROBLEM_GET_SCORE_PATH;
 const problemRatingGetPath = process.env.NEXT_PUBLIC_PROBLEM_RATINGS_GET_PATH;
 
+const problemSolutionAddPath =
+  process.env.NEXT_PUBLIC_CHALLENGE_SOLUTION_ADD_PATH;
+
 export const getProblems = async () => {
   const endpoint = backendUrl + productPath;
 
@@ -108,6 +111,23 @@ export const getProblemRating = async (slug) => {
 
 export const addProblemRating = async (token, slug, data) => {
   const endpoint = backendUrl + problemRatingGetPath + slug + "/";
+
+  return fetch(endpoint, {
+    next: { revalidate: 460, tags: [""] },
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(data),
+  })
+    .then((answer) => answer.json())
+    .then((response) => response)
+    .catch((error) => console.log(error));
+};
+
+export const addProblemSolution = async (token, slug, data) => {
+  const endpoint = backendUrl + problemSolutionAddPath + slug + "/";
 
   return fetch(endpoint, {
     next: { revalidate: 460, tags: [""] },
