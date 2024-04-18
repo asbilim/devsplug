@@ -7,7 +7,8 @@ const problemQuizStatusPath =
 
 const problemGetScore = process.env.NEXT_PUBLIC_PROBLEM_GET_SCORE_PATH;
 const problemRatingGetPath = process.env.NEXT_PUBLIC_PROBLEM_RATINGS_GET_PATH;
-
+const getChallengeSolutionPath =
+  process.env.NEXT_PUBLIC_GET_CHALLENGE_SOLUTIONS;
 const problemSolutionAddPath =
   process.env.NEXT_PUBLIC_CHALLENGE_SOLUTION_ADD_PATH;
 
@@ -16,6 +17,21 @@ export const getProblems = async () => {
 
   return fetch(endpoint, {
     next: { revalidate: 460, tags: ["problems"] },
+    method: "GET",
+    headers: {
+      "Content-type": "application/json",
+    },
+  })
+    .then((answer) => answer.json())
+    .then((response) => response)
+    .catch((error) => console.log(error));
+};
+
+export const getSolutions = async () => {
+  const endpoint = backendUrl + getChallengeSolutionPath;
+
+  return fetch(endpoint, {
+    next: { revalidate: 460, tags: ["solutions"] },
     method: "GET",
     headers: {
       "Content-type": "application/json",
