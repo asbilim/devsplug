@@ -1,3 +1,7 @@
 {
-  "cSpell.words": ["setquiz"]
+  "cSpell.words": [
+    "setquiz"
+  ],
+  "prettier.bracketSameLine": true,
+  "vs-code-prettier-eslint.prettierLast": true
 }

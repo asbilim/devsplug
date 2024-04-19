@@ -11,7 +11,9 @@ const getChallengeSolutionPath =
   process.env.NEXT_PUBLIC_GET_CHALLENGE_SOLUTIONS;
 const problemSolutionAddPath =
   process.env.NEXT_PUBLIC_CHALLENGE_SOLUTION_ADD_PATH;
-
+  const getSolutionLikesPath = process.env.NEXT_PUBLIC_GET_SOLUTION_LIKES
+  const getSolutionDisLikesPath = process.env.NEXT_PUBLIC_GET_SOLUTION_DISLIKES
+  const getSolutionCommentsPath = process.env.NEXT_PUBLIC_GET_SOLUTION_COMMENTS
 export const getProblems = async () => {
   const endpoint = backendUrl + productPath;
 
@@ -32,6 +34,52 @@ export const getSolutions = async () => {
 
   return fetch(endpoint, {
     next: { revalidate: 460, tags: ["solutions"] },
+    method: "GET",
+    headers: {
+      "Content-type": "application/json",
+    },
+  })
+    .then((answer) => answer.json())
+    .then((response) => response)
+    .catch((error) => console.log(error));
+};
+
+export const getSolutionsLikes = async (uid) => {
+  const endpoint = backendUrl + getSolutionLikesPath+uid+"/";
+
+  return fetch(endpoint, {
+    next: { revalidate: 460, tags: ["likes"] },
+    method: "GET",
+    headers: {
+      "Content-type": "application/json",
+    },
+  })
+    .then((answer) => answer.json())
+    .then((response) => response)
+    .catch((error) => console.log(error));
+};
+
+
+export const getSolutionsDisLikes = async (uid) => {
+  const endpoint = backendUrl + getSolutionDisLikesPath+uid+"/";
+
+  return fetch(endpoint, {
+    next: { revalidate: 460, tags: ["dislikes"] },
+    method: "GET",
+    headers: {
+      "Content-type": "application/json",
+    },
+  })
+    .then((answer) => answer.json())
+    .then((response) => response)
+    .catch((error) => console.log(error));
+};
+
+export const getSolutionsComments = async (uid) => {
+  const endpoint = backendUrl + getSolutionCommentsPath+uid+"/";
+
+  return fetch(endpoint, {
+    next: { revalidate: 460, tags: ["comments"] },
     method: "GET",
     headers: {
       "Content-type": "application/json",

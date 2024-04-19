@@ -5,7 +5,7 @@ import { Textarea } from "../ui/textarea";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import html2canvas from "html2canvas";
 import { CircleChevronRight, ImageDown, Plus, X } from "lucide-react";
-
+import { Label } from "@radix-ui/react-dropdown-menu";
 import { submitCodeImage } from "@/data/add-problem";
 import { Badge } from "@/components/ui/badge";
 import { addProblemSolution } from "@/data/get-problems";
@@ -125,7 +125,7 @@ import { useState, useEffect, useRef, Suspense } from "react";
 import { useForm } from "react-hook-form";
 import uuid from "react-uuid";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
+
 import { getSingleProblemQuizStatus } from "@/data/get-problems";
 import ActionButton from "../buttons/action-button";
 import { answerQuestion } from "@/data/add-problem";
@@ -478,7 +478,7 @@ const CodeForm = ({ slug = "" }) => {
     data.parts = partList;
     data.code = data.codeValue;
     data.problem_item = slug;
-
+    console.log(data);
     try {
       const response = await addProblemSolution(
         session.accessToken,
@@ -816,6 +816,12 @@ const CodeForm = ({ slug = "" }) => {
           and style
         </div>
       )}
+      <div className="flex flex-col md:w-2/4">
+        <Label htmlFor="description">Tell us about this code ,and how to use it</Label>
+        <Textarea {...register("description")} placeholder="this code takes params as input and...." name="description" />
+      </div>
+
+
       <div className="flex gap-3 flex-wrap">
         <div className="flex">
           <Input
@@ -858,9 +864,28 @@ const CodeForm = ({ slug = "" }) => {
                               item.code.toLowerCase().replaceAll(" ")
                         )
                       );
+                      toast({
+                        title: `${item.name} was removed `,
+                        description: (
+                          <div className="mt-2 w-[340px] rounded-md bg-red-950 p-4">
+                            <code className="text-red-200 overflow-auto">
+                              {JSON.stringify(
+                                {
+                                  data: `${item.name} was removed to the list of functions`,
+                                },
+                                null,
+                                2
+                              )}
+                            </code>
+                          </div>
+                        ),
+                      });
+                      
                     }}
                   >
-                    <X size={20} className="" />
+                    <X size={20} className="" onClick={()=>{
+                      
+                    }} />
                   </span>
                 </Badge>
               </div>
@@ -1196,7 +1221,8 @@ const ReusableCodeForm = ({
   const { user } = session || false;
   const imagePartRef = useRef(null);
   const unique_id = uuid();
-
+  const [description,setDescription] = useState("")
+  const {toast} = useToast()
   const onSubmit = (data) => {
     console.log(data);
   };
@@ -1225,6 +1251,9 @@ const ReusableCodeForm = ({
       if (name === "partname") {
         setPartName(value.partname);
       }
+      if (name === "part-description") {
+        setDescription(value.part-description);
+      }
     });
     return () => subscription.unsubscribe();
   }, [watch]);
@@ -1239,7 +1268,10 @@ const ReusableCodeForm = ({
         onValueChange={(value) => setCode(value)}
         {...register("codeValue", { required: true })}
       />
-
+      <div className="flex flex-col md:w-2/4">
+          <Label htmlFor="part-description">Tell us about this part of your solution</Label>
+          <Textarea defaultValue={description} onValueChange={(value)=>{setDescription(value)}} {...register("part-description")} placeholder="this code takes params as input and...." id="part-description" />
+      </div>
       <div className="flex gap-3 flex-wrap">
         <div className="flex">
           <Input
@@ -1281,13 +1313,30 @@ const ReusableCodeForm = ({
             );
 
             if (!exists[0]) {
-              setpartlist([...partlist, { code: code, name: partname }]);
+              toast({
+                title: `${partname} was added to the functions`,
+                description: (
+                  <div className="mt-2 w-[340px] rounded-md bg-green-950 p-4">
+                    <code className="text-green-200 overflow-auto">
+                      {JSON.stringify(
+                        {
+                          data: `${partname} is now in the list of your main code funcions`,
+                        },
+                        null,
+                        2
+                      )}
+                    </code>
+                  </div>
+                ),
+              });
+              setpartlist([...partlist, { code: code, name: partname,description: description}]);
             }
           }}
         >
           Add to code <Plus className="mx-4" />
         </Button>
       </div>
+      
 
       <div
         className="flex w-auto flex-col image  bg-primary p-4 min-w-max"
