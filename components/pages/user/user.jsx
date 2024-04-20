@@ -64,9 +64,8 @@ export default function UserInfoDetails({ user }) {
         )}
       </div>
       <div
-        className="flex w-full flex-col max-w-6xl  border p-3 prose prose-slate dark:prose-invert overflow-x-hidden"
-        style={{ margin: 0 }}
-      >
+        className="flex w-full flex-col max-w-6xl   p-3 prose prose-slate dark:prose-invert overflow-x-hidden"
+        style={{ margin: 0 }}>
         {user?.motivation && (
           <Markdown>{user?.motivation && user?.motivation}</Markdown>
         )}

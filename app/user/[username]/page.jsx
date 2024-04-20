@@ -47,7 +47,7 @@ export async function generateMetadata({ params }, parent) {
     "https://images.pexels.com/photos/92129/pexels-photo-92129.jpeg?auto=compress&cs=tinysrgb&w=600";
   const truncatedBio =
     user?.motivation?.length > 157
-      ? user.bio.substring(0, 157) + "..."
+      ? user.motivation.substring(0, 157) + "..."
       : user?.motivation;
 
   return {

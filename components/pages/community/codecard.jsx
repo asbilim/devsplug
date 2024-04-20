@@ -109,6 +109,7 @@ import {
     zenburn,
   } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { ArrowBigDown, ArrowBigUp, MessageSquareMore } from "lucide-react";
+import { getTitleAttribute } from "@/data/name-icons";
 const switchStyle = (styleName) => {
     switch (styleName) {
       case "a11yDark":
@@ -523,7 +524,7 @@ const switchStyle = (styleName) => {
     return (
       <div className="flex  flex-col gap-3 max-w-[22rem] md:max-w-5xl">
   
-        <div className="card  border-2 w-full p-4 flex flex-col h-[20rem] overflow-auto gap-3 cursor-pointer" >
+        <div className="card  border-2 w-full p-4 flex flex-col h-[20rem] overflow-auto gap-3 cursor-pointer" onClick={()=>router.push("/community/"+props?.unique_code)} >
           <div className="flex justify-between">
             <div className="flex gap-2">
               <div className="w-4 h-4 rounded-full bg-red-500"></div>
@@ -552,7 +553,7 @@ const switchStyle = (styleName) => {
                 {props?.user?.username.slice(0, 2).toUpperCase()}
               </AvatarFallback>
             </Avatar>
-            <h3 className="text-xs font-semibold">{props?.user?.username}</h3>
+            <h3 className="text-xs font-semibold" style={{ color: getTitleAttribute(props?.user?.title, 0) }}>{props?.user?.username}</h3>
           </div>
           <div className="actions flex gap-2">
             <Suspense fallback={<Skeleton className="w-22" />}>
