@@ -5,9 +5,11 @@ import { SolutionDetailCard } from "./cards";
 import { useState, useEffect } from "react";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import Comments from "./comments";
+
 export default function SolutionDetail(props) {
   const [code, setCode] = useState("");
   const [description, setDescription] = useState("");
+
 
   const onclick = (data) => {
     setCode(data?.code);
@@ -25,7 +27,7 @@ export default function SolutionDetail(props) {
           {props?.problem_item?.title}
         </h1>
         <div className="user-infos flex gap-1  justify-center items-start flex-col">
-          <div className="flex  items-center justify-center gap-1">
+          <div className="flex  items-center justify-center gap-1" id="code">
             <Avatar>
               <AvatarImage
                 src={
@@ -55,12 +57,12 @@ export default function SolutionDetail(props) {
         </div>
         <div className="content flex  w-full justify-center  md:px-0 mb-24">
           <div className="md:grid flex flex-col md:grid-cols-6 gap-6 w-full max-w-6xl gap-y-16 grid-rows-1">
-            <div className="md:col-span-5 col-span-6 flex-col gap-12 flex w-full">
+            <div className="md:col-span-6  col-span-6 flex-col gap-12 flex w-full">
               <SolutionDetailCard {...props} code={code} />
               <p>{description || "user did not add context."}</p>
             </div>
             <p className="md:hidden underline">select a function to inspect</p>
-            <div className="grid gap-3 grid-cols-3 md:grid-cols-1">
+            <div className="grid gap-3 grid-cols-3 md:grid-cols-3 col-span-6">
               <div
                 className="card w-full p-4 flex flex-col md:h-[7rem] min-h-[5rem] lg:h-[10rem] overflow-auto gap-3 cursor-pointer  bg-muted text-sm items-center justify-center text-center border-4"
                 onClick={() => onclick(props)}>
@@ -69,14 +71,15 @@ export default function SolutionDetail(props) {
               {props?.parts?.map((item, index) => {
                 const isActive = item.code === code;
                 return (
-                  <div
-                    className={`card w-full p-4 flex flex-col md:h-[7rem] min-h-[5rem] lg:h-[10rem] overflow-auto gap-3 cursor-pointer  bg-muted text-sm items-center justify-center text-center transition-colors   ${`${
-                      isActive ? "border-2" : ""
-                    }`}`}
-                    key={index + ""}
-                    onClick={() => onclick(item)}>
-                    {item.name}
-                  </div>
+                  <a href={"#code"} key={index + ""}>
+                    <div
+                      className={`card w-full p-4 flex flex-col md:h-[7rem] min-h-[5rem] lg:h-[10rem] overflow-auto gap-3 cursor-pointer  bg-muted text-sm items-center justify-center text-center transition-colors   ${`${
+                        isActive ? "border-2" : ""
+                      }`}`}
+                      onClick={() => onclick(item)}>
+                      {item.name}
+                    </div>
+                  </a>
                 );
               })}
             </div>

@@ -5,6 +5,9 @@ import { revalidateTag } from "next/cache";
 import { getSolutions } from "@/data/get-problems";
 export default async function community() {
   revalidateTag("solutions");
+  revalidateTag("comments");
+  revalidateTag("likes");
+  revalidateTag("dislikes");
   const solutions = await getSolutions();
   return (
     <div className="flex flex-col">
