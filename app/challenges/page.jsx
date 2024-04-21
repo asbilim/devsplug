@@ -49,7 +49,7 @@ export default async function Challenges() {
   return (
     <div className="flex flex-col">
       <Header />
-      <Suspense fallback={<ChallengeLoading />}>
+      <Suspense unstable_expectedLoadTime fallback={<ChallengeLoading />}>
         <ChallengeComponent problems={problems} />
       </Suspense>
       <Footer />

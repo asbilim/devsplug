@@ -1,6 +1,7 @@
 import { getSingleProblem, getSingleProblemQuiz } from "@/data/get-problems";
 import Header from "@/components/layout/header";
-import ChallengeDetail from "@/components/layout/challenge-detail";
+import { Suspense } from "react";
+import ChallengeLoading from "@/components/pages/states/challenge-loading";
 import { revalidateTag } from "next/cache";
 import ChallengeSolve from "@/components/layout/challenge-solve";
 import Footer from "@/components/layout/footer";
@@ -15,7 +16,9 @@ export default async function Page({ params }) {
   return (
     <div>
       <Header />
-      <ChallengeSolve problem={problem} quiz={problemQuiz} slug={slug} />
+      <Suspense fallback={<ChallengeLoading />}>
+        <ChallengeSolve problem={problem} quiz={problemQuiz} slug={slug} />
+      </Suspense>
       <Footer />
     </div>
   );

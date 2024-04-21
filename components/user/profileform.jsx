@@ -57,7 +57,6 @@ const schema = yup.object({
       try {
         return isValidFileType(file.name, "image");
       } catch (e) {
-    
         return false;
       }
     })
@@ -158,8 +157,7 @@ export default function UserProfilePage() {
   return (
     <form
       className="grid max-w-2xl mx-auto mt-8"
-      onSubmit={handleSubmit(onSubmit)}
-    >
+      onSubmit={handleSubmit(onSubmit)}>
       <SnackbarProvider />
       <div className="flex flex-col items-center space-y-5 sm:flex-row sm:space-y-0">
         <label htmlFor="profile">
@@ -185,8 +183,7 @@ export default function UserProfilePage() {
           <ActionButton
             type="button"
             variant="outline"
-            className="border text-red-500 border-red-500"
-          >
+            className="border text-red-500 border-red-500">
             Delete picture
           </ActionButton>
         </div>
@@ -255,8 +252,7 @@ export default function UserProfilePage() {
             isLoading={loading}
             type="submit"
             variant=""
-            className="px-12"
-          >
+            className="px-12">
             Save
           </ActionButton>
         </div>

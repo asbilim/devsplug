@@ -90,8 +90,7 @@ const SmartRating = ({ rating, setRating }) => {
           display: "inline-flex",
           position: "relative",
           fontSize: "24px",
-        }}
-      >
+        }}>
         <Star
           style={{ color: isFullStar ? "var(--ternary)" : "var(--primary)" }}
         />
@@ -113,8 +112,7 @@ const SmartRating = ({ rating, setRating }) => {
           cursor: "pointer",
           display: "inline-flex",
           alignItems: "center",
-        }}
-      >
+        }}>
         {renderStarIcon(index + 1)}
       </span>
     ));
@@ -219,8 +217,7 @@ function CommentAdd({
           isLoading={loading}
           variant=""
           disabled={message.length < 10}
-          onclick={onsubmit}
-        >
+          onclick={onsubmit}>
           Send message
         </ActionButton>
       </div>
@@ -257,12 +254,14 @@ const CommentChild = ({
   return (
     <div
       style={{ marginLeft: `${marginLeft}px` }}
-      className="flex flex-col gap-4"
-    >
+      className="flex flex-col gap-4">
       <div className="flex items-start space-x-4">
         <Avatar>
           <AvatarImage
-            src={user.profile || "https://github.com/child-avatar.png"}
+            src={
+              user.profile ||
+              "https://i.pinimg.com/564x/13/df/f6/13dff65f79f3134edfc8d8e38e350ca8.jpg"
+            }
             alt="User Profile"
           />
           <AvatarFallback>{user.username.slice(0, 2)}</AvatarFallback>
@@ -285,8 +284,7 @@ const CommentChild = ({
             {replies.length > 0 && (
               <div
                 className="flex items-center text-gray-500 cursor-pointer"
-                onClick={handleShowRepliesClick}
-              >
+                onClick={handleShowRepliesClick}>
                 <MessageSquare
                   className={`transition ${showReplies ? "rotate-180" : ""}`}
                   size={16}
@@ -297,8 +295,7 @@ const CommentChild = ({
 
             <div
               className="flex items-center text-gray-500 cursor-pointer"
-              onClick={handleAddReplyClick}
-            >
+              onClick={handleAddReplyClick}>
               <MessageSquarePlus
                 className={`transition ${addReply ? "rotate-180" : ""}`}
                 size={16}
