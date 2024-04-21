@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { SolutionDetailCard } from "./cards";
 import { useState, useEffect } from "react";
 import { formatDistanceToNow, parseISO } from "date-fns";
+import Comments from "./comments";
 export default function SolutionDetail(props) {
   const [code, setCode] = useState("");
   const [description, setDescription] = useState("");
@@ -27,7 +28,10 @@ export default function SolutionDetail(props) {
           <div className="flex  items-center justify-center gap-1">
             <Avatar>
               <AvatarImage
-                src={props?.user?.profile || "https://github.com/shadcn.png"}
+                src={
+                  props?.user?.profile ||
+                  "https://i.pinimg.com/564x/13/df/f6/13dff65f79f3134edfc8d8e38e350ca8.jpg"
+                }
                 alt={"@" + props?.user?.username}
               />
               <AvatarFallback>
@@ -79,6 +83,7 @@ export default function SolutionDetail(props) {
           </div>
         </div>
       </div>
+      <Comments slug={props?.unique_code} comments={props.comments} />
     </div>
   );
 }

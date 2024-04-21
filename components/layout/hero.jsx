@@ -31,18 +31,16 @@ export default function Hero() {
           <Link
             href="/dashboard"
             target="_blank"
-            className={`w-full md:w-1/3 ${buttonVariants({})}`}
-          >
+            className={`w-full md:w-1/3 ${buttonVariants({})}`}>
             Get started
           </Link>
 
           <Link
-            href="https://github.com/leoMirandaa/shadcn-landing-page.git"
+            href="https://github.com/asbilim"
             target="_blank"
             className={`w-full md:w-1/3 ${buttonVariants({
               variant: "outline",
-            })}`}
-          >
+            })}`}>
             Github Repository
             <LuGithub className="ml-2 w-5 h-5" />
           </Link>
