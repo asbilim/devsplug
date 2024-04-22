@@ -390,11 +390,10 @@ export const SolutionDetailCard = (props) => {
     user: props?.user,
     unique_id: "devsplug-code",
     normalClass: "border-2",
-    captureClass: "w-[500rem]",
+    captureClass: "w-fit",
   });
 
   const generateSchreenshot = (scale) => {
-  
     setScale(scale);
     downloadImage();
     setOpen(false);
@@ -404,9 +403,9 @@ export const SolutionDetailCard = (props) => {
 
   return (
     <div className="flex  flex-col gap-3 md:max-w-5xl   ">
-      <div className="flex w-full ">
+      <div className={`flex overflow-visible ${className} `}>
         <div
-          className={`card  w-full p-4 flex flex-col  overflow-visible gap-3 ${className}  `}
+          className={`card  w-full p-4 flex flex-col  overflow-visible gap-3   `}
           ref={imageRef}>
           <div className="flex justify-between">
             <div className="flex gap-2">
