@@ -45,6 +45,7 @@ export default async function Dashboard() {
   revalidateTag("classement");
   const leaderBoard = await getLeaderBoard();
 
+
   return (
     <div className="flex flex-col mt-6">
       <Header />
