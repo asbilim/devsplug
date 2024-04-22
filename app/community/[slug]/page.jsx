@@ -5,7 +5,6 @@ import Header from "@/components/layout/header";
 import { EmptyState } from "@/components/pages/states/empty";
 import SolutionDetail from "@/components/pages/community/details";
 export default async function Page({ params }) {
-  revalidateTag("comments-content");
   const { slug } = params;
   const posts = await getSolutions();
   const comments = await getSolutionsCommentsContent(slug);
