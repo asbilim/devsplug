@@ -8,25 +8,25 @@ export default async function sitemap() {
   // Static URLs
   const staticUrls = [
     {
-      url: "https://devsplug.com/",
+      url: "https://www.devsplug.com/",
       lastModified: new Date(),
       changeFrequency: "yearly",
       priority: 1,
     },
     {
-      url: "https://devsplug.com/challenges",
+      url: "https://www.devsplug.com/challenges",
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
-      url: "https://devsplug.com/leaderboard",
+      url: "https://www.devsplug.com/leaderboard",
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.5,
     },
     {
-      url: "https://devsplug.com/auth/register",
+      url: "https://www.devsplug.com/auth/register",
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.5,
@@ -36,7 +36,7 @@ export default async function sitemap() {
   // Dynamic URLs from problems
   const dynamicUrls = problems.flatMap((problem) =>
     problem.problems.map((subProblem) => ({
-      url: `https://devsplug.com/problems/details/${subProblem.slug}`,
+      url: `https://www.devsplug.com/problems/details/${subProblem.slug}`,
       lastModified: new Date(subProblem.created_at), // Assuming 'created_at' is a date
       changeFrequency: "weekly", // You can adjust this as necessary
       priority: 0.6, // You can adjust this as necessary
