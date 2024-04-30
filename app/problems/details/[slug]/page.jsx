@@ -1,4 +1,4 @@
-import { getSingleProblem } from "@/data/get-problems";
+import { getProblems, getSingleProblem } from "@/data/get-problems";
 import Header from "@/components/layout/header";
 import ChallengeDetail from "@/components/layout/challenge-detail";
 import { revalidateTag } from "next/cache";
@@ -79,6 +79,8 @@ export async function generateMetadata({ params }, parent) {
 }
 
 export default async function Page({ params }) {
+  revalidateTag("problems");
+
   const { slug } = params;
   const problem = await getSingleProblem({ slug: slug });
   const ratings = await getProblemRating(slug);
@@ -93,5 +95,17 @@ export default async function Page({ params }) {
       </Suspense>
       <Footer />
     </div>
+  );
+}
+
+export async function generateStaticParams() {
+  revalidateTag("problems");
+
+  const problems = await getProblems();
+
+  return problems.flatMap((problem) =>
+    problem.problems.map((subProblem) => ({
+      slug: subProblem.slug,
+    }))
   );
 }

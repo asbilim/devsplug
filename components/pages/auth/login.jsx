@@ -164,8 +164,7 @@ export default function LoginComponent() {
         modal={true}
         defaultOpen={isDialogOpen}
         onOpenChange={() => setDialogOpen(!isDialogOpen)}
-        open={isDialogOpen}
-      >
+        open={isDialogOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Claim verification code</DialogTitle>
@@ -196,8 +195,7 @@ export default function LoginComponent() {
         modal={true}
         defaultOpen={success}
         onOpenChange={() => setDialogOpen(!success)}
-        open={success}
-      >
+        open={success}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Verification code sent</DialogTitle>
@@ -213,7 +211,7 @@ export default function LoginComponent() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      <Card className="mx-auto max-w-xs w-full md:max-w-md md:w-full mt-16 shadow-md border-2">
+      <Card className="mx-auto max-w-xs w-full md:max-w-md md:w-full mt-16  border-2">
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
           <CardDescription>
@@ -227,8 +225,7 @@ export default function LoginComponent() {
                 variant="link"
                 className="p-0 text-xs  text-red-200 underline"
                 onclick={() => setDialogOpen(true)}
-                isLoading={isDialogOpen}
-              >
+                isLoading={isDialogOpen}>
                 request a new verification code
               </ActionButton>
             </CardDescription>
@@ -259,8 +256,7 @@ export default function LoginComponent() {
                   <Label htmlFor="password">Password</Label>
                   <Link
                     href="#"
-                    className="ml-auto inline-block text-sm underline"
-                  >
+                    className="ml-auto inline-block text-sm underline">
                     Forgot your password?
                   </Link>
                 </div>
@@ -277,8 +273,7 @@ export default function LoginComponent() {
                 isLoading={loading}
                 type="submit"
                 className="w-full"
-                loading={loading}
-              >
+                loading={loading}>
                 Login
               </ActionButton>
               <span className="text-center">or</span>
@@ -294,8 +289,7 @@ export default function LoginComponent() {
                 variant="outline"
                 type="disabled"
                 className="w-full bg-secondary cursor-not-allowed"
-                disabled
-              >
+                disabled>
                 Login with Github
               </Button>
             </div>

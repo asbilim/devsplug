@@ -94,8 +94,7 @@ export default function RegisterComponent() {
         modal={true}
         defaultOpen={isDialogOpen}
         onOpenChange={() => setDialogOpen(!isDialogOpen)}
-        open={isDialogOpen}
-      >
+        open={isDialogOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Account created</DialogTitle>
@@ -116,8 +115,7 @@ export default function RegisterComponent() {
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="md:mx-auto md:max-w-2xl md:w-full space-y-6 border-2 shadow-md p-4 mx-4"
-      >
+        className="md:mx-auto md:max-w-2xl md:w-full space-y-6 border-2  p-4 mx-4">
         <div className="space-y-2 text-center">
           <h1 className="text-4xl font-bold">Register</h1>
           <p className="text-gray-500">
