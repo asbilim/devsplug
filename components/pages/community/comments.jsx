@@ -21,7 +21,7 @@ export default function Comments({ comments, slug }) {
   const [disabled, setDisabled] = useState(false);
 
   useEffect(() => {
-    setDatas(comments.slice(0, 1));
+    setDatas(comments);
   }, [comments]);
 
   return (
@@ -92,7 +92,7 @@ export const SingleComment = ({
 
   return (
     <div
-      className="flex flex-col w-full solution-comments"
+      className="flex flex-col w-full solution-comments "
       id="solution-comments">
       <div className={`single-comment flex py-2 `}>
         <div className="user-infos flex gap-1 items-center ">
@@ -108,18 +108,17 @@ export const SingleComment = ({
                 />
                 <AvatarFallback>{comment.user.username[0]}</AvatarFallback>
               </Avatar>
-              {!isChild && (
-                <div className="flex min-h-12 my-2 w-[0.10rem] bg-muted"></div>
-              )}
+
+              <div className="flex min-h-12 my-2 w-[0.10rem] bg-muted"></div>
             </div>
             <div className="flex flex-col items-center justify-center h-auto gap-2 overflow-auto">
               <div className="flex items-start justify-start w-full gap-3">
                 <h3
-                  className="text-xs font-semibold"
+                  className="text-[0.5rem] md:text-xs font-semibold"
                   style={{ color: getTitleAttribute(comment?.user?.title, 0) }}>
                   {comment?.user?.username}
                 </h3>
-                <h4 className="text-xs  font-medium">
+                <h4 className="text-[0.5rem] md:text-xs  font-medium">
                   {formatDistanceToNow(
                     parseISO(created_at || "2024-04-20 23:23:33.374047+00:00"),
                     {
@@ -129,29 +128,10 @@ export const SingleComment = ({
                 </h4>
               </div>
               <div className="prose overflow-auto">
-                <pre className="text-sm h-auto text-wrap no-scrollbar overflow-auto">
+                <pre className="text-xs h-auto text-wrap no-scrollbar overflow-auto">
                   {comment?.content}
                 </pre>
               </div>
-              <div className="flex justify-start w-full ">
-                <Button
-                  variant="link"
-                  className="mx-0"
-                  onClick={() => setReplying(!isReplying)}>
-                  <MessageSquare size={20} />{" "}
-                  {isReplying ? <ChevronUp /> : <ChevronDown />}
-                </Button>
-              </div>
-              {isReplying && (
-                <div className="flex justify-start w-full">
-                  <CommentInput
-                    comments={comments}
-                    update={update}
-                    slug={slug}
-                    parent={parent}
-                  />
-                </div>
-              )}
             </div>
           </div>
         </div>

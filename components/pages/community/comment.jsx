@@ -39,7 +39,7 @@ export default function CommentInput({
         parent: parent,
       });
 
-      update([...comments, result]);
+      update([result, ...comments]);
 
       if (result.id) {
         toast("Your message was sent successfully", {

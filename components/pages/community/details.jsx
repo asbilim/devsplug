@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import Comments from "./comments";
 
+
 export default function SolutionDetail(props) {
   const [code, setCode] = useState("");
   const [description, setDescription] = useState("");

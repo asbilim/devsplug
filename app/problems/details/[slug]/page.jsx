@@ -1,4 +1,4 @@
-import { getSingleProblem } from "@/data/get-problems";
+import { getProblems, getSingleProblem } from "@/data/get-problems";
 import Header from "@/components/layout/header";
 import ChallengeDetail from "@/components/layout/challenge-detail";
 import { revalidateTag } from "next/cache";
@@ -17,6 +17,7 @@ export async function generateMetadata({ params }, parent) {
       description:
         "Explore our range of programming challenges as this one couldn’t be found.",
       canonical: "https://www.devsplug.com/",
+      robots: "index, follow",
       image:
         "https://images.pexels.com/photos/208087/pexels-photo-208087.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       openGraph: {
@@ -67,6 +68,7 @@ export async function generateMetadata({ params }, parent) {
       type: "article",
       siteName: "Devsplug",
     },
+    robots: "index, follow",
     twitter: {
       card: "summary_large_image",
       site: "@devsplug",
@@ -79,6 +81,8 @@ export async function generateMetadata({ params }, parent) {
 }
 
 export default async function Page({ params }) {
+  revalidateTag("problems");
+
   const { slug } = params;
   const problem = await getSingleProblem({ slug: slug });
   const ratings = await getProblemRating(slug);
@@ -93,5 +97,17 @@ export default async function Page({ params }) {
       </Suspense>
       <Footer />
     </div>
+  );
+}
+
+export async function generateStaticParams() {
+  revalidateTag("problems");
+
+  const problems = await getProblems();
+
+  return problems.flatMap((problem) =>
+    problem.problems.map((subProblem) => ({
+      slug: subProblem.slug,
+    }))
   );
 }

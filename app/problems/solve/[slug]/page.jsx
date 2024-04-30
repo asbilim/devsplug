@@ -1,4 +1,8 @@
-import { getSingleProblem, getSingleProblemQuiz } from "@/data/get-problems";
+import {
+  getProblems,
+  getSingleProblem,
+  getSingleProblemQuiz,
+} from "@/data/get-problems";
 import Header from "@/components/layout/header";
 import { Suspense } from "react";
 import ChallengeLoading from "@/components/pages/states/challenge-loading";
@@ -21,5 +25,17 @@ export default async function Page({ params }) {
       </Suspense>
       <Footer />
     </div>
+  );
+}
+
+export async function generateStaticParams() {
+  revalidateTag("problems");
+
+  const problems = await getProblems();
+
+  return problems.flatMap((problem) =>
+    problem.problems.map((subProblem) => ({
+      slug: subProblem.slug,
+    }))
   );
 }
