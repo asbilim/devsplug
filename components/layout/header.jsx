@@ -167,26 +167,22 @@ export default function Header() {
                 <div className="flex flex-col gap-8 items-center mt-24 ">
                   <Link
                     href="/leaderboard"
-                    className="font-medium hover:text-[#8482ee]"
-                  >
+                    className="font-medium hover:text-[#8482ee]">
                     Leaderboard
                   </Link>
                   <Link
                     href="/challenges"
-                    className="font-medium hover:text-[#8482ee]"
-                  >
+                    className="font-medium hover:text-[#8482ee]">
                     challenges
                   </Link>
                   <Link
                     href="/community"
-                    className="font-medium hover:text-[#8482ee] "
-                  >
+                    className="font-medium hover:text-[#8482ee] ">
                     community
                   </Link>
                   <Link
                     href="/learn"
-                    className="font-medium hover:text-[#8482ee]"
-                  >
+                    className="font-medium hover:text-[#8482ee]">
                     Learn
                   </Link>
                 </div>

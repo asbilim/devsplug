@@ -17,6 +17,7 @@ export async function generateMetadata({ params }, parent) {
       description:
         "Explore our range of programming challenges as this one couldn’t be found.",
       canonical: "https://www.devsplug.com/",
+      robots: "index, follow",
       image:
         "https://images.pexels.com/photos/208087/pexels-photo-208087.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       openGraph: {
@@ -67,6 +68,7 @@ export async function generateMetadata({ params }, parent) {
       type: "article",
       siteName: "Devsplug",
     },
+    robots: "index, follow",
     twitter: {
       card: "summary_large_image",
       site: "@devsplug",
