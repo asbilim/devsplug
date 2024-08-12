@@ -9,11 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Suspense, useState, useEffect } from "react";
-import ChallengeLoading from "../states/challenge-loading";
-import { revalidateTag } from "next/cache";
-
 import supportedLanguages from "react-syntax-highlighter/dist/cjs/languages/hljs/supported-languages";
-
 import { SolutionCard } from "./codecard";
 import { RotateCw } from "lucide-react";
 import ActionButton from "@/components/buttons/action-button";
