@@ -5,16 +5,32 @@ import { SolutionDetailCard } from "./cards";
 import { useState, useEffect } from "react";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import Comments from "./comments";
+import ReactMarkdown from "react-markdown";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
 
+// Function to unescape Markdown content
+const unescapeMarkdown = (content) => {
+  return content
+    .replace(/\\#/g, "#")
+    .replace(/\\\*/g, "*")
+    .replace(/\\_/g, "_")
+    .replace(/\\~/g, "~")
+    .replace(/\\\[/g, "[")
+    .replace(/\\\]/g, "]")
+    .replace(/\\\(/g, "(")
+    .replace(/\\\)/g, ")")
+    .replace(/\\`/g, "`")
+    .replace(/\\\\/g, "\\");
+};
 
 export default function SolutionDetail(props) {
   const [code, setCode] = useState("");
   const [description, setDescription] = useState("");
 
-
   const onclick = (data) => {
     setCode(data?.code);
-    setDescription(data?.description);
+    setDescription(unescapeMarkdown(data?.description || ""));
   };
 
   useEffect(() => {
@@ -22,13 +38,13 @@ export default function SolutionDetail(props) {
   }, [props]);
 
   return (
-    <div className="flex w-full items-center flex-col min-h-screen  pt-36 px-4">
+    <div className="flex w-full items-center flex-col min-h-screen pt-36 px-4">
       <div className="flex max-w-6xl flex-col w-full gap-12">
         <h1 className="font-extrabold md:text-xl text-lg lg:text-3xl">
           {props?.problem_item?.title}
         </h1>
-        <div className="user-infos flex gap-1  justify-center items-start flex-col">
-          <div className="flex  items-center justify-center gap-1" id="code">
+        <div className="user-infos flex gap-1 justify-center items-start flex-col">
+          <div className="flex items-center justify-center gap-1" id="code">
             <Avatar>
               <AvatarImage
                 src={
@@ -56,16 +72,37 @@ export default function SolutionDetail(props) {
             </p>
           )}
         </div>
-        <div className="content flex  w-full justify-center  md:px-0 mb-24">
+        <div className="content flex w-full justify-center md:px-0 mb-24">
           <div className="md:grid flex flex-col md:grid-cols-6 gap-6 w-full max-w-6xl gap-y-16 grid-rows-1">
-            <div className="md:col-span-6  col-span-6 flex-col gap-12 flex w-full">
+            <div className="md:col-span-6 col-span-6 flex-col gap-12 flex w-full ">
               <SolutionDetailCard {...props} code={code} />
-              <p>{description || "user did not add context."}</p>
+              <ReactMarkdown
+                className="prose dark:prose-invert max-w-none"
+                components={{
+                  code({ node, inline, className, children, ...props }) {
+                    const match = /language-(\w+)/.exec(className || "");
+                    return !inline && match ? (
+                      <SyntaxHighlighter
+                        style={vscDarkPlus}
+                        language={match[1]}
+                        PreTag="div"
+                        {...props}>
+                        {String(children).replace(/\n$/, "")}
+                      </SyntaxHighlighter>
+                    ) : (
+                      <code className={className} {...props}>
+                        {children}
+                      </code>
+                    );
+                  },
+                }}>
+                {description || "User did not add context."}
+              </ReactMarkdown>
             </div>
             <p className="md:hidden underline">select a function to inspect</p>
             <div className="grid gap-3 grid-cols-3 md:grid-cols-3 col-span-6">
               <div
-                className="card w-full p-4 flex flex-col md:h-[7rem] min-h-[5rem] lg:h-[10rem] overflow-auto gap-3 cursor-pointer  bg-muted text-sm items-center justify-center text-center border-4"
+                className="card w-full p-4 flex flex-col md:h-[7rem] min-h-[5rem] lg:h-[10rem] overflow-auto gap-3 cursor-pointer bg-muted text-sm items-center justify-center text-center border-4"
                 onClick={() => onclick(props)}>
                 {props?.name}
               </div>
@@ -74,9 +111,9 @@ export default function SolutionDetail(props) {
                 return (
                   <a href={"#code"} key={index + ""}>
                     <div
-                      className={`card w-full p-4 flex flex-col md:h-[7rem] min-h-[5rem] lg:h-[10rem] overflow-auto gap-3 cursor-pointer  bg-muted text-sm items-center justify-center text-center transition-colors   ${`${
+                      className={`card w-full p-4 flex flex-col md:h-[7rem] min-h-[5rem] lg:h-[10rem] overflow-auto gap-3 cursor-pointer bg-muted text-sm items-center justify-center text-center transition-colors ${
                         isActive ? "border-2" : ""
-                      }`}`}
+                      }`}
                       onClick={() => onclick(item)}>
                       {item.name}
                     </div>

@@ -220,7 +220,150 @@ const CodeForm = ({ slug = "" }) => {
           <SelectContent>
             <SelectGroup>
               <SelectLabel>Styles</SelectLabel>
-              {/* Add SelectItems for each style as needed */}
+              <SelectItem value="docco">Docco</SelectItem>
+              <SelectItem value="dracula">Dracula</SelectItem>
+              <SelectItem value="a11yLight">A11y Light</SelectItem>
+              <SelectItem value="a11yDark">A11y Dark</SelectItem>
+              <SelectItem value="agate">Agate</SelectItem>
+              <SelectItem value="dark">Dark</SelectItem>
+              <SelectItem value="anOldHope">An Old Hope</SelectItem>
+              <SelectItem value="androidstudio">Android Studio</SelectItem>
+              <SelectItem value="arduinoLight">Arduino Light</SelectItem>
+              <SelectItem value="arta">Arta</SelectItem>
+              <SelectItem value="ascetic">Ascetic</SelectItem>
+              <SelectItem value="atelierCaveDark">Atelier Cave Dark</SelectItem>
+              <SelectItem value="atelierCaveLight">
+                Atelier Cave Light
+              </SelectItem>
+              <SelectItem value="atelierDuneDark">Atelier Dune Dark</SelectItem>
+              <SelectItem value="atelierDuneLight">
+                Atelier Dune Light
+              </SelectItem>
+              <SelectItem value="atelierEstuaryDark">
+                Atelier Estuary Dark
+              </SelectItem>
+              <SelectItem value="atelierEstuaryLight">
+                Atelier Estuary Light
+              </SelectItem>
+              <SelectItem value="atelierForestDark">
+                Atelier Forest Dark
+              </SelectItem>
+              <SelectItem value="atelierForestLight">
+                Atelier Forest Light
+              </SelectItem>
+              <SelectItem value="atelierHeathDark">
+                Atelier Heath Dark
+              </SelectItem>
+              <SelectItem value="atelierHeathLight">
+                Atelier Heath Light
+              </SelectItem>
+              <SelectItem value="atelierLakesideDark">
+                Atelier Lakeside Dark
+              </SelectItem>
+              <SelectItem value="atelierLakesideLight">
+                Atelier Lakeside Light
+              </SelectItem>
+              <SelectItem value="atelierPlateauDark">
+                Atelier Plateau Dark
+              </SelectItem>
+              <SelectItem value="atelierPlateauLight">
+                Atelier Plateau Light
+              </SelectItem>
+              <SelectItem value="atelierSavannaDark">
+                Atelier Savanna Dark
+              </SelectItem>
+              <SelectItem value="atelierSavannaLight">
+                Atelier Savanna Light
+              </SelectItem>
+              <SelectItem value="atelierSeasideDark">
+                Atelier Seaside Dark
+              </SelectItem>
+              <SelectItem value="atelierSeasideLight">
+                Atelier Seaside Light
+              </SelectItem>
+              <SelectItem value="atelierSulphurpoolDark">
+                Atelier Sulphurpool Dark
+              </SelectItem>
+              <SelectItem value="atelierSulphurpoolLight">
+                Atelier Sulphurpool Light
+              </SelectItem>
+              <SelectItem value="atomOneDarkReasonable">
+                Atom One Dark Reasonable
+              </SelectItem>
+              <SelectItem value="atomOneDark">Atom One Dark</SelectItem>
+              <SelectItem value="atomOneLight">Atom One Light</SelectItem>
+              <SelectItem value="brownPaper">Brown Paper</SelectItem>
+              <SelectItem value="codepenEmbed">Codepen Embed</SelectItem>
+              <SelectItem value="colorBrewer">Color Brewer</SelectItem>
+              <SelectItem value="darcula">Darcula</SelectItem>
+              <SelectItem value="defaultStyle">Default Style</SelectItem>
+              <SelectItem value="far">FAR</SelectItem>
+              <SelectItem value="foundation">Foundation</SelectItem>
+              <SelectItem value="githubGist">Github Gist</SelectItem>
+              <SelectItem value="github">Github</SelectItem>
+              <SelectItem value="gml">GML</SelectItem>
+              <SelectItem value="googlecode">Google Code</SelectItem>
+              <SelectItem value="gradientDark">Gradient Dark</SelectItem>
+              <SelectItem value="grayscale">Grayscale</SelectItem>
+              <SelectItem value="gruvboxDark">Gruvbox Dark</SelectItem>
+              <SelectItem value="gruvboxLight">Gruvbox Light</SelectItem>
+              <SelectItem value="hopscotch">Hopscotch</SelectItem>
+              <SelectItem value="hybrid">Hybrid</SelectItem>
+              <SelectItem value="idea">IDEA</SelectItem>
+              <SelectItem value="irBlack">IR Black</SelectItem>
+              <SelectItem value="isblEditorDark">ISBL Editor Dark</SelectItem>
+              <SelectItem value="isblEditorLight">ISBL Editor Light</SelectItem>
+              <SelectItem value="kimbieDark">Kimbie Dark</SelectItem>
+              <SelectItem value="kimbieLight">Kimbie Light</SelectItem>
+              <SelectItem value="lightfair">Lightfair</SelectItem>
+              <SelectItem value="lioshi">Lioshi</SelectItem>
+              <SelectItem value="magula">Magula</SelectItem>
+              <SelectItem value="monoBlue">Mono Blue</SelectItem>
+              <SelectItem value="monokaiSublime">Monokai Sublime</SelectItem>
+              <SelectItem value="monokai">Monokai</SelectItem>
+              <SelectItem value="nightOwl">Night Owl</SelectItem>
+              <SelectItem value="nnfxDark">NNFX Dark</SelectItem>
+              <SelectItem value="nnfx">NNFX</SelectItem>
+              <SelectItem value="nord">Nord</SelectItem>
+              <SelectItem value="obsidian">Obsidian</SelectItem>
+              <SelectItem value="ocean">Ocean</SelectItem>
+              <SelectItem value="paraisoDark">Paraiso Dark</SelectItem>
+              <SelectItem value="paraisoLight">Paraiso Light</SelectItem>
+              <SelectItem value="pojoaque">Pojoaque</SelectItem>
+              <SelectItem value="purebasic">PureBasic</SelectItem>
+              <SelectItem value="qtcreatorDark">Qt Creator Dark</SelectItem>
+              <SelectItem value="qtcreatorLight">Qt Creator Light</SelectItem>
+              <SelectItem value="railscasts">RailsCasts</SelectItem>
+              <SelectItem value="rainbow">Rainbow</SelectItem>
+              <SelectItem value="routeros">RouterOS</SelectItem>
+              <SelectItem value="schoolBook">School Book</SelectItem>
+              <SelectItem value="shadesOfPurple">Shades of Purple</SelectItem>
+              <SelectItem value="solarizedDark">Solarized Dark</SelectItem>
+              <SelectItem value="solarizedLight">Solarized Light</SelectItem>
+              <SelectItem value="srcery">Srcery</SelectItem>
+              <SelectItem value="stackoverflowDark">
+                Stack Overflow Dark
+              </SelectItem>
+              <SelectItem value="stackoverflowLight">
+                Stack Overflow Light
+              </SelectItem>
+              <SelectItem value="sunburst">Sunburst</SelectItem>
+              <SelectItem value="tomorrowNightBlue">
+                Tomorrow Night Blue
+              </SelectItem>
+              <SelectItem value="tomorrowNightBright">
+                Tomorrow Night Bright
+              </SelectItem>
+              <SelectItem value="tomorrowNightEighties">
+                Tomorrow Night Eighties
+              </SelectItem>
+              <SelectItem value="tomorrowNight">Tomorrow Night</SelectItem>
+              <SelectItem value="tomorrow">Tomorrow</SelectItem>
+              <SelectItem value="vs">VS</SelectItem>
+              <SelectItem value="vs2015">VS 2015</SelectItem>
+              <SelectItem value="xcode">Xcode</SelectItem>
+              <SelectItem value="xt256">XT 256</SelectItem>
+              <SelectItem value="zenburn">Zenburn</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>
