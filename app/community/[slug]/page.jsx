@@ -92,8 +92,6 @@ export default async function Page({ params }) {
   const datas = posts.filter((post) => post.unique_code == slug);
   const exists = datas.length || false;
 
-  console.log(datas[0].user);
-
   return (
     <div className="flex flex-col">
       <Header />
