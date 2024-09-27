@@ -18,14 +18,24 @@ export async function generateMetadata({ params }, parent) {
         "Explore our range of solutions for various challenges, even if this one isn't found.",
       canonical: "https://www.devsplug.com/community",
       robots: "index, follow",
-      image:
-        "https://images.pexels.com/photos/3184298/pexels-photo-3184298.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       openGraph: {
         title: "Solution Not Found - Devsplug",
         description:
           "Couldn't find the solution you were looking for? Explore more solutions in the Devsplug community.",
         url: "https://www.devsplug.com/community",
         type: "website",
+        images: [
+          {
+            url: `https://www.devsplug.com/api/og?title=${encodeURIComponent(
+              "Solution Not Found"
+            )}&subtitle=${encodeURIComponent(
+              "Explore more solutions in the Devsplug community"
+            )}`,
+            width: 1200,
+            height: 630,
+            alt: "Solution Not Found",
+          },
+        ],
       },
       twitter: {
         card: "summary_large_image",
@@ -33,9 +43,6 @@ export async function generateMetadata({ params }, parent) {
         title: "Solution Not Found - Devsplug",
         description:
           "Discover more solutions at Devsplug, even if this one is unavailable.",
-        image:
-          "https://images.pexels.com/photos/3184298/pexels-photo-3184298.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-        imageAlt: "Solution Not Found",
       },
     };
   }
@@ -48,15 +55,12 @@ export async function generateMetadata({ params }, parent) {
     datas[0]?.description?.length > 157
       ? datas[0]?.description?.substring(0, 157) + "..."
       : datas[0]?.description;
-  let solutionImage = {
-    url:
-      user?.image ||
-      "https://images.pexels.com/photos/3184298/pexels-photo-3184298.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    width: 800,
-    height: 600,
-    alt: `${user?.username} - Solution author`,
-    type: "image/jpeg",
-  };
+
+  const imageTitle = `${solution?.name} - ${challenge?.title}`;
+  const imageSubtitle = `Solution by ${user?.username}`;
+  const imageUrl = `https://www.devsplug.com/api/og?title=${encodeURIComponent(
+    imageTitle
+  )}&subtitle=${encodeURIComponent(imageSubtitle)}`;
 
   return {
     title: `${solution?.name} - ${challenge?.title} Solution at Devsplug`,
@@ -64,12 +68,18 @@ export async function generateMetadata({ params }, parent) {
     canonical: `https://www.devsplug.com/community/${solution?.unique_code}`,
     keywords:
       "Coding Solution, Devsplug, Programming Challenge Solution, Code Functions, Developer Community",
-    images: [solutionImage],
     openGraph: {
       title: `${solution?.name} - ${challenge?.title} Solution at Devsplug`,
       description: truncatedDescription,
       url: `https://www.devsplug.com/solutions/${solution?.unique_code}`,
-      images: [solutionImage],
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${solution?.name} - ${challenge?.title} Solution by ${user?.username}`,
+        },
+      ],
       type: "article",
       siteName: "Devsplug",
     },
@@ -77,10 +87,8 @@ export async function generateMetadata({ params }, parent) {
     twitter: {
       card: "summary_large_image",
       site: "@devsplug",
-      title: `${solution?.name} - ${challenge?.title} Solution by  ${user?.username}`,
+      title: `${solution?.name} - ${challenge?.title} Solution by ${user?.username}`,
       description: truncatedDescription,
-      image: solutionImage.url,
-      imageAlt: `${user?.username} - Solution Image`,
     },
   };
 }
