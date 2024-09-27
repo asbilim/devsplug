@@ -68,6 +68,8 @@ const ToolbarButton = React.memo(({ icon, tooltip, onClick, isActive }) => (
   </TooltipProvider>
 ));
 
+ToolbarButton.displayName = "ToolbarButton";
+
 const lowlight = createLowlight();
 
 // Function to unescape Markdown content
