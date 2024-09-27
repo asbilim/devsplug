@@ -85,12 +85,12 @@ const unescapeMarkdown = (content) => {
     .replace(/\\\\/g, "\\");
 };
 
-const MarkdownInput = ({
+export default function MarkdownInput({
   initialContent = "",
   onSave,
   readOnly = false,
   placeholder = "Start writing...",
-}) => {
+}) {
   const [activeTab, setActiveTab] = useState("write");
   const [linkUrl, setLinkUrl] = useState("");
   const [mediaUrl, setMediaUrl] = useState("");
@@ -385,6 +385,4 @@ const MarkdownInput = ({
       </Tabs>
     </div>
   );
-};
-
-export default MarkdownInput;
+}
