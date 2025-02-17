@@ -1,0 +1,20 @@
+{
+  "Home": {
+    "title": "Website in Entwicklung",
+    "description": "Willkommen bei Devsplug - Ihre Entwickler-Community-Hub",
+    "status": "Wir arbeiten gerade an etwas Großartigem!"
+  },
+  "Navigation": {
+    "language": "Sprache",
+    "theme": "Theme",
+    "themes": {
+      "system": "System",
+      "light": "Hell",
+      "dark": "Dunkel",
+      "blue": "Blau",
+      "green": "Grün",
+      "purple": "Lila",
+      "rose": "Rosa"
+    }
+  }
+}
