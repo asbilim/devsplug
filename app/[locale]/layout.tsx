@@ -9,18 +9,15 @@ const inter = Inter({ subsets: ["latin"] });
 
 type LayoutProps = {
   children: React.ReactNode;
-  params: {
-    locale: string;
-  };
+  params: { locale: string };
 };
 
 export default async function RootLayout({ children, params }: LayoutProps) {
-  const locale = params.locale;
-
-  // Type guard for locale
-  if (!routing.locales.includes(locale)) {
-    notFound();
-  }
+  // Validate locale
+  const validLocales = ["en", "de", "fr"] as const;
+  const locale = validLocales.includes(params.locale as any)
+    ? params.locale
+    : "en";
 
   try {
     const messages = (await import(`../../messages/${locale}.json`)).default;
@@ -37,7 +34,7 @@ export default async function RootLayout({ children, params }: LayoutProps) {
         </body>
       </html>
     );
-  } catch (error) {
+  } catch {
     notFound();
   }
 }

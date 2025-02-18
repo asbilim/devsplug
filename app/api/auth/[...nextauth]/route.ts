@@ -4,7 +4,6 @@ import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import GitLabProvider from "next-auth/providers/gitlab";
 import type { DefaultSession, NextAuthOptions, User } from "next-auth";
-import { getServerSession } from "next-auth/next";
 
 // Extend the User type to include backendTokens
 interface ExtendedUser extends User {
@@ -66,6 +65,7 @@ export const authOptions: NextAuthOptions = {
       authorization: {
         params: {
           prompt: "consent",
+          scope: "read:user user:email",
         },
       },
     }),
@@ -77,6 +77,7 @@ export const authOptions: NextAuthOptions = {
           prompt: "consent",
           access_type: "offline",
           response_type: "code",
+          scope: "openid email profile",
         },
       },
     }),
@@ -86,6 +87,7 @@ export const authOptions: NextAuthOptions = {
       authorization: {
         params: {
           prompt: "consent",
+          scope: "read_user",
         },
       },
     }),
@@ -102,7 +104,7 @@ export const authOptions: NextAuthOptions = {
         }
 
         try {
-          const tokenUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/token/`;
+          const tokenUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/api/token/`;
           console.log("Attempting token fetch from:", tokenUrl);
 
           const response = await fetch(tokenUrl, {
@@ -153,8 +155,8 @@ export const authOptions: NextAuthOptions = {
           return {
             ...user,
             backendTokens: {
-              accessToken: tokens.access,
-              refreshToken: tokens.refresh,
+              accessToken: tokens.access_token,
+              refreshToken: tokens.refresh_token,
             },
           } as ExtendedUser;
         } catch (error) {
@@ -174,19 +176,144 @@ export const authOptions: NextAuthOptions = {
     error: "/auth/error",
   },
   callbacks: {
+    async signIn({ user, account, profile }) {
+      console.log("SignIn Callback:", {
+        provider: account?.provider,
+        hasUser: !!user,
+        hasProfile: !!profile,
+      });
+
+      if (account?.provider !== "credentials") {
+        try {
+          const socialData = {
+            access_token: account?.access_token,
+            id_token: account?.id_token,
+            email: user.email,
+            name: user.name,
+            ...(account?.provider === "github" && {
+              username: profile?.login,
+            }),
+            ...(account?.provider === "google" && {
+              first_name: profile?.given_name,
+              last_name: profile?.family_name,
+            }),
+            ...(account?.provider === "gitlab" && {
+              username: profile?.username,
+            }),
+          };
+
+          // Use provider-specific endpoints
+          const endpoint = `/users/auth/${account?.provider}/`;
+          console.log("Attempting social login with endpoint:", endpoint);
+          console.log("Social login data:", socialData);
+
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}${endpoint}`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(socialData),
+            }
+          );
+
+          if (!response.ok) {
+            const errorText = await response.text();
+            console.error("Social login failed:", {
+              status: response.status,
+              statusText: response.statusText,
+              error: errorText,
+            });
+            return false;
+          }
+
+          const tokens = await response.json();
+          console.log("this is the token:", tokens);
+          console.log("Social login successful, received tokens");
+
+          // Add backend tokens to the user object
+          user.backendTokens = {
+            accessToken: tokens.access_token,
+            refreshToken: tokens.refresh_token,
+          };
+
+          // Fetch additional user data
+          const userResponse = await fetch(
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/api/user/me/`,
+            {
+              headers: {
+                Authorization: `Bearer ${tokens.access_token}`,
+              },
+            }
+          );
+
+          if (!userResponse.ok) {
+            const errorText = await userResponse.text();
+            console.error("User data fetch failed:", {
+              status: userResponse.status,
+              statusText: userResponse.statusText,
+              error: errorText,
+            });
+            return false;
+          }
+
+          const userData = await userResponse.json();
+          console.log("User data fetch successful");
+          Object.assign(user, userData);
+        } catch (error) {
+          console.error("Social auth error:", {
+            name: error.name,
+            message: error.message,
+            stack: error.stack,
+          });
+          return false;
+        }
+      }
+
+      return true;
+    },
     async jwt({ token, user, account }) {
       console.log("JWT Callback:", {
         hasToken: !!token,
         hasUser: !!user,
         hasAccount: !!account,
-        accountDetails: account,
-        userDetails: user,
       });
 
-      if (account && user) {
+      if (user) {
         token.backendTokens = (user as ExtendedUser).backendTokens;
         token.user = user;
       }
+
+      // Check if access token needs refresh
+      if (token.backendTokens) {
+        const tokenExpiry = token.backendTokens.exp;
+        if (tokenExpiry && Date.now() >= tokenExpiry * 1000) {
+          try {
+            const response = await fetch(
+              `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/token/refresh/`,
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  refresh: token.backendTokens.refreshToken,
+                }),
+              }
+            );
+
+            const tokens = await response.json();
+
+            if (!response.ok) throw tokens;
+
+            token.backendTokens = {
+              accessToken: tokens.access,
+              refreshToken: tokens.refresh,
+            };
+          } catch (error) {
+            console.error("Token refresh error:", error);
+            return { ...token, error: "RefreshAccessTokenError" };
+          }
+        }
+      }
+
       return token;
     },
     async session({ session, token }) {
@@ -206,16 +333,6 @@ export const authOptions: NextAuthOptions = {
         };
       }
       return session;
-    },
-    async signIn({ user, account, profile }) {
-      console.log("SignIn Callback:", {
-        provider: account?.provider,
-        hasUser: !!user,
-        hasProfile: !!profile,
-        profileDetails: profile,
-      });
-
-      return true;
     },
   },
   logger: {

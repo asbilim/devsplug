@@ -1,73 +1,41 @@
-import { getTranslations } from "next-intl/server";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+"use client";
+
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/src/i18n/routing";
+import { useSearchParams } from "next/navigation";
 
-export async function generateMetadata({
-  params: { locale },
-}: {
-  params: { locale: string };
-}) {
-  const t = await getTranslations({ locale, namespace: "Auth" });
-  return {
-    title: t("errors.title"),
-  };
-}
+const ERROR_MESSAGES = {
+  AccessDenied: "errors.oauth_signin",
+  Configuration: "errors.oauth_configuration",
+  Default: "errors.default",
+} as const;
 
-export default async function AuthErrorPage({
-  searchParams,
-}: {
-  searchParams: { error?: string };
-}) {
-  const t = await getTranslations("Auth");
-  const error = searchParams.error;
+export default function ErrorPage() {
+  const t = useTranslations("Auth");
+  const searchParams = useSearchParams();
+  const error = searchParams.get("error") as keyof typeof ERROR_MESSAGES;
 
-  const errorMessage = (() => {
-    switch (error) {
-      case "OAuthSignin":
-        return t("errors.oauth_signin");
-      case "OAuthCallback":
-        return t("errors.oauth_callback");
-      case "OAuthCreateAccount":
-        return t("errors.oauth_create_account");
-      case "EmailCreateAccount":
-        return t("errors.email_create_account");
-      case "Callback":
-        return t("errors.callback");
-      case "OAuthAccountNotLinked":
-        return t("errors.oauth_account_not_linked");
-      case "EmailSignin":
-        return t("errors.email_signin");
-      case "CredentialsSignin":
-        return t("errors.credentials_signin");
-      case "SessionRequired":
-        return t("errors.session_required");
-      default:
-        return t("errors.default");
-    }
-  })();
+  const errorMessage = error
+    ? t(ERROR_MESSAGES[error] || ERROR_MESSAGES.Default)
+    : t(ERROR_MESSAGES.Default);
 
   return (
-    <div className="container flex min-h-[calc(100vh-4rem)] items-center justify-center py-8">
-      <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-destructive">
-            {t("errors.title")}
-          </CardTitle>
-          <CardDescription>{errorMessage}</CardDescription>
-        </CardHeader>
-        <CardContent className="flex justify-center">
+    <div className="container flex min-h-[calc(100vh-4rem)] items-center justify-center">
+      <div className="text-center">
+        <h1 className="text-2xl font-bold text-destructive">
+          {t("errors.title")}
+        </h1>
+        <p className="mt-2 text-muted-foreground">{errorMessage}</p>
+        <div className="mt-6 flex justify-center gap-4">
           <Button asChild>
             <Link href="/auth/login">{t("errors.try_again")}</Link>
           </Button>
-        </CardContent>
-      </Card>
+          <Button asChild variant="outline">
+            <Link href="/">Back to Home</Link>
+          </Button>
+        </div>
+      </div>
     </div>
   );
 }
