@@ -16,5 +16,72 @@
       "purple": "Lila",
       "rose": "Rosa"
     }
+  },
+  "auth": {
+    "login": {
+      "title": "Willkommen zurück",
+      "description": "Melden Sie sich bei Ihrem Konto an",
+      "username": "Benutzername",
+      "password": "Passwort",
+      "submit": "Anmelden",
+      "or": "oder fortfahren mit",
+      "github": "Mit GitHub fortfahren",
+      "google": "Mit Google fortfahren",
+      "gitlab": "Mit GitLab fortfahren",
+      "register": "Konto erstellen",
+      "forgotPassword": "Passwort vergessen?"
+    },
+    "register": {
+      "title": "Konto erstellen",
+      "description": "Geben Sie Ihre Daten ein, um Ihr Konto zu erstellen",
+      "username": "Benutzername",
+      "email": "E-Mail",
+      "password": "Passwort",
+      "confirmPassword": "Passwort bestätigen",
+      "submit": "Konto erstellen",
+      "haveAccount": "Haben Sie bereits ein Konto?",
+      "login": "Anmelden"
+    },
+    "forgotPassword": {
+      "title": "Passwort vergessen",
+      "description": "Geben Sie Ihre E-Mail-Adresse ein und wir senden Ihnen einen Link zum Zurücksetzen Ihres Passworts",
+      "email": "E-Mail",
+      "submit": "Link senden",
+      "rememberPassword": "Erinnern Sie sich an Ihr Passwort?",
+      "login": "Anmelden"
+    },
+    "verifyEmail": {
+      "title": "E-Mail bestätigen",
+      "description": "Wir haben Ihnen eine E-Mail mit einem Bestätigungslink gesendet. Bitte überprüfen Sie Ihren Posteingang.",
+      "invalidToken": "Ungültiger Bestätigungstoken",
+      "invalidTokenDescription": "Der Bestätigungslink ist ungültig oder abgelaufen. Bitte fordern Sie einen neuen an.",
+      "processing": "Ihre E-Mail-Adresse wird überprüft..."
+    },
+    "errors": {
+      "default": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
+      "credentials_signin": "Ungültiger Benutzername oder Passwort",
+      "oauth_signin": "Anmeldung mit OAuth-Anbieter nicht möglich",
+      "oauth_callback": "OAuth-Konto konnte nicht überprüft werden",
+      "oauth_create_account": "Konto konnte nicht mit OAuth-Anbieter erstellt werden",
+      "oauth_account_not_linked": "Bitte melden Sie sich mit demselben Konto an, das Sie ursprünglich verwendet haben",
+      "email_signin": "Bestätigungs-E-Mail konnte nicht gesendet werden",
+      "verification": "E-Mail-Adresse konnte nicht bestätigt werden",
+      "session_required": "Bitte melden Sie sich an, um auf diese Seite zuzugreifen"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Willkommen, {name}",
+    "welcomeDescription": "Hier ist ein Überblick über Ihr Profil und Ihre Aktivitäten",
+    "email": "E-Mail-Adresse",
+    "score": "Punktzahl",
+    "title": "Titel",
+    "defaultTitle": "Anfänger",
+    "stats": {
+      "title": "Statistiken",
+      "description": "Überblick über Ihre Aktivitäten",
+      "followers": "Follower",
+      "following": "Folgt"
+    }
   }
 }

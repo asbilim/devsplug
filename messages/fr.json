@@ -16,5 +16,72 @@
       "purple": "Violet",
       "rose": "Rose"
     }
+  },
+  "Auth": {
+    "login": {
+      "title": "Bon retour",
+      "description": "Connectez-vous à votre compte",
+      "username": "Nom d'utilisateur",
+      "password": "Mot de passe",
+      "submit": "Se connecter",
+      "or": "ou continuer avec",
+      "github": "Continuer avec GitHub",
+      "google": "Continuer avec Google",
+      "gitlab": "Continuer avec GitLab",
+      "register": "Créer un compte",
+      "forgotPassword": "Mot de passe oublié ?"
+    },
+    "register": {
+      "title": "Créer un compte",
+      "description": "Entrez vos informations pour créer votre compte",
+      "username": "Nom d'utilisateur",
+      "email": "Email",
+      "password": "Mot de passe",
+      "confirmPassword": "Confirmer le mot de passe",
+      "submit": "Créer un compte",
+      "haveAccount": "Vous avez déjà un compte ?",
+      "login": "Se connecter"
+    },
+    "forgotPassword": {
+      "title": "Mot de passe oublié",
+      "description": "Entrez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe",
+      "email": "Email",
+      "submit": "Envoyer le lien",
+      "rememberPassword": "Vous vous souvenez de votre mot de passe ?",
+      "login": "Se connecter"
+    },
+    "verifyEmail": {
+      "title": "Vérifiez votre email",
+      "description": "Nous vous avons envoyé un email avec un lien de vérification. Veuillez vérifier votre boîte de réception.",
+      "invalidToken": "Jeton de vérification invalide",
+      "invalidTokenDescription": "Le lien de vérification est invalide ou a expiré. Veuillez en demander un nouveau.",
+      "processing": "Vérification de votre adresse email..."
+    },
+    "errors": {
+      "default": "Une erreur s'est produite. Veuillez réessayer.",
+      "credentials_signin": "Nom d'utilisateur ou mot de passe invalide",
+      "oauth_signin": "Impossible de se connecter avec le fournisseur OAuth",
+      "oauth_callback": "Impossible de vérifier le compte OAuth",
+      "oauth_create_account": "Impossible de créer un compte avec le fournisseur OAuth",
+      "oauth_account_not_linked": "Pour confirmer votre identité, connectez-vous avec le même compte que celui utilisé initialement",
+      "email_signin": "Impossible d'envoyer l'email de vérification",
+      "verification": "Impossible de vérifier l'adresse email",
+      "session_required": "Veuillez vous connecter pour accéder à cette page"
+    }
+  },
+  "Dashboard": {
+    "title": "Tableau de bord",
+    "welcome": "Bienvenue, {name}",
+    "welcomeDescription": "Voici un aperçu de votre profil et de votre activité",
+    "email": "Adresse email",
+    "score": "Score",
+    "title": "Titre",
+    "defaultTitle": "Novice",
+    "stats": {
+      "title": "Statistiques",
+      "description": "Aperçu de votre activité",
+      "followers": "Abonnés",
+      "following": "Abonnements"
+    }
   }
 }

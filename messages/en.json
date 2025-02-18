@@ -16,5 +16,72 @@
       "purple": "Purple",
       "rose": "Rose"
     }
+  },
+  "Auth": {
+    "login": {
+      "title": "Welcome back",
+      "description": "Sign in to your account",
+      "username": "Username",
+      "password": "Password",
+      "submit": "Sign in",
+      "or": "or continue with",
+      "github": "Continue with GitHub",
+      "google": "Continue with Google",
+      "gitlab": "Continue with GitLab",
+      "register": "Create an account",
+      "forgotPassword": "Forgot password?"
+    },
+    "register": {
+      "title": "Create an account",
+      "description": "Enter your details to create your account",
+      "username": "Username",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "submit": "Create account",
+      "haveAccount": "Already have an account?",
+      "login": "Sign in"
+    },
+    "forgotPassword": {
+      "title": "Forgot password",
+      "description": "Enter your email address and we'll send you a link to reset your password",
+      "email": "Email",
+      "submit": "Send reset link",
+      "rememberPassword": "Remember your password?",
+      "login": "Sign in"
+    },
+    "verifyEmail": {
+      "title": "Verify your email",
+      "description": "We've sent you an email with a verification link. Please check your inbox.",
+      "invalidToken": "Invalid verification token",
+      "invalidTokenDescription": "The verification link is invalid or has expired. Please request a new one.",
+      "processing": "Verifying your email address..."
+    },
+    "errors": {
+      "default": "Something went wrong. Please try again.",
+      "credentials_signin": "Invalid username or password",
+      "oauth_signin": "Could not sign in with OAuth provider",
+      "oauth_callback": "Could not verify OAuth account",
+      "oauth_create_account": "Could not create account with OAuth provider",
+      "oauth_account_not_linked": "To confirm your identity, sign in with the same account you used originally",
+      "email_signin": "Could not send verification email",
+      "verification": "Could not verify email address",
+      "session_required": "Please sign in to access this page"
+    }
+  },
+  "Dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome, {name}",
+    "welcomeDescription": "Here's an overview of your profile and activity",
+    "email": "Email address",
+    "score": "Score",
+    "title": "Title",
+    "defaultTitle": "Novice",
+    "stats": {
+      "title": "Statistics",
+      "description": "Your activity overview",
+      "followers": "Followers",
+      "following": "Following"
+    }
   }
 }
