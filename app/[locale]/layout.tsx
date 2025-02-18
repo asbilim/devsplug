@@ -1,10 +1,9 @@
-import { getMessages } from "next-intl/server";
 import { Inter } from "next/font/google";
 import { Header } from "@/components/header";
 import { Providers } from "@/components/providers";
-import { auth } from "@/app/auth";
 import "./globals.css";
 import { routing } from "@/src/i18n/routing";
+import { notFound } from "next/navigation";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,26 +14,30 @@ type LayoutProps = {
   };
 };
 
-export default async function RootLayout({
-  children,
-  params: { locale },
-}: LayoutProps) {
-  if (!routing.locales.includes(locale as any)) {
+export default async function RootLayout({ children, params }: LayoutProps) {
+  const locale = params.locale;
+
+  // Type guard for locale
+  if (!routing.locales.includes(locale)) {
     notFound();
   }
-  const messages = await getMessages();
-  const session = await auth();
 
-  return (
-    <html lang={locale} suppressHydrationWarning>
-      <body className={inter.className}>
-        <Providers session={session} messages={messages} locale={locale}>
-          <div className="min-h-screen bg-background">
-            <Header />
-            <main className="container mx-auto px-4 py-8">{children}</main>
-          </div>
-        </Providers>
-      </body>
-    </html>
-  );
+  try {
+    const messages = (await import(`../../messages/${locale}.json`)).default;
+
+    return (
+      <html lang={locale} suppressHydrationWarning>
+        <body className={inter.className}>
+          <Providers messages={messages} locale={locale}>
+            <div className="min-h-screen bg-background">
+              <Header />
+              <main className="container mx-auto px-4 py-8">{children}</main>
+            </div>
+          </Providers>
+        </body>
+      </html>
+    );
+  } catch (error) {
+    notFound();
+  }
 }

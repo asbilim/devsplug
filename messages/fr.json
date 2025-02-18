@@ -24,6 +24,7 @@
       "username": "Nom d'utilisateur",
       "password": "Mot de passe",
       "submit": "Se connecter",
+      "submitting": "Connexion...",
       "or": "ou continuer avec",
       "github": "Continuer avec GitHub",
       "google": "Continuer avec Google",
@@ -39,6 +40,7 @@
       "password": "Mot de passe",
       "confirmPassword": "Confirmer le mot de passe",
       "submit": "Créer un compte",
+      "submitting": "Création du compte...",
       "haveAccount": "Vous avez déjà un compte ?",
       "login": "Se connecter"
     },
@@ -47,6 +49,7 @@
       "description": "Entrez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe",
       "email": "Email",
       "submit": "Envoyer le lien",
+      "submitting": "Envoi du lien...",
       "rememberPassword": "Vous vous souvenez de votre mot de passe ?",
       "login": "Se connecter"
     },
@@ -58,6 +61,7 @@
       "processing": "Vérification de votre adresse email..."
     },
     "errors": {
+      "title": "Erreur d'authentification",
       "default": "Une erreur s'est produite. Veuillez réessayer.",
       "credentials_signin": "Nom d'utilisateur ou mot de passe invalide",
       "oauth_signin": "Impossible de se connecter avec le fournisseur OAuth",
@@ -66,7 +70,8 @@
       "oauth_account_not_linked": "Pour confirmer votre identité, connectez-vous avec le même compte que celui utilisé initialement",
       "email_signin": "Impossible d'envoyer l'email de vérification",
       "verification": "Impossible de vérifier l'adresse email",
-      "session_required": "Veuillez vous connecter pour accéder à cette page"
+      "session_required": "Veuillez vous connecter pour accéder à cette page",
+      "try_again": "Réessayer"
     }
   },
   "Dashboard": {

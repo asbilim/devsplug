@@ -17,13 +17,14 @@
       "rose": "Rosa"
     }
   },
-  "auth": {
+  "Auth": {
     "login": {
       "title": "Willkommen zurück",
       "description": "Melden Sie sich bei Ihrem Konto an",
       "username": "Benutzername",
       "password": "Passwort",
       "submit": "Anmelden",
+      "submitting": "Anmeldung...",
       "or": "oder fortfahren mit",
       "github": "Mit GitHub fortfahren",
       "google": "Mit Google fortfahren",
@@ -39,6 +40,7 @@
       "password": "Passwort",
       "confirmPassword": "Passwort bestätigen",
       "submit": "Konto erstellen",
+      "submitting": "Konto wird erstellt...",
       "haveAccount": "Haben Sie bereits ein Konto?",
       "login": "Anmelden"
     },
@@ -47,6 +49,7 @@
       "description": "Geben Sie Ihre E-Mail-Adresse ein und wir senden Ihnen einen Link zum Zurücksetzen Ihres Passworts",
       "email": "E-Mail",
       "submit": "Link senden",
+      "submitting": "Link wird gesendet...",
       "rememberPassword": "Erinnern Sie sich an Ihr Passwort?",
       "login": "Anmelden"
     },
@@ -58,6 +61,7 @@
       "processing": "Ihre E-Mail-Adresse wird überprüft..."
     },
     "errors": {
+      "title": "Authentifizierungsfehler",
       "default": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
       "credentials_signin": "Ungültiger Benutzername oder Passwort",
       "oauth_signin": "Anmeldung mit OAuth-Anbieter nicht möglich",
@@ -66,10 +70,11 @@
       "oauth_account_not_linked": "Bitte melden Sie sich mit demselben Konto an, das Sie ursprünglich verwendet haben",
       "email_signin": "Bestätigungs-E-Mail konnte nicht gesendet werden",
       "verification": "E-Mail-Adresse konnte nicht bestätigt werden",
-      "session_required": "Bitte melden Sie sich an, um auf diese Seite zuzugreifen"
+      "session_required": "Bitte melden Sie sich an, um auf diese Seite zuzugreifen",
+      "try_again": "Erneut versuchen"
     }
   },
-  "dashboard": {
+  "Dashboard": {
     "title": "Dashboard",
     "welcome": "Willkommen, {name}",
     "welcomeDescription": "Hier ist ein Überblick über Ihr Profil und Ihre Aktivitäten",

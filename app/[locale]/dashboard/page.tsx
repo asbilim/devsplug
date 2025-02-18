@@ -1,4 +1,6 @@
-import { getTranslations } from "next-intl/server";
+"use client";
+
+import { useTranslations } from "next-intl";
 import {
   Card,
   CardContent,
@@ -6,28 +8,28 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { auth } from "@/app/auth";
-import { redirect } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
-export async function generateMetadata({
-  params: { locale },
-}: {
-  params: { locale: string };
-}) {
-  const t = await getTranslations({ locale, namespace: "dashboard" });
-  return {
-    title: t("title"),
-  };
-}
+export default function DashboardPage() {
+  const t = useTranslations("Dashboard");
+  const router = useRouter();
+  const { data: session, status } = useSession();
 
-export default async function DashboardPage() {
-  const session = await auth();
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/auth/login");
+    }
+  }, [status, router]);
 
-  if (!session?.user) {
-    redirect("/auth/login");
+  if (status === "loading") {
+    return <div>Loading...</div>;
   }
 
-  const t = await getTranslations("dashboard");
+  if (!session?.user) {
+    return null;
+  }
 
   return (
     <div className="space-y-6">

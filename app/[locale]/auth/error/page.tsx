@@ -1,9 +1,4 @@
-"use client";
-
-import { useSearchParams } from "next/navigation";
-import { useTranslations } from "next-intl";
-import { Link } from "@/src/i18n/routing";
-import { Button } from "@/components/ui/button";
+import { getTranslations } from "next-intl/server";
 import {
   Card,
   CardContent,
@@ -11,23 +6,30 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { AlertCircle } from "lucide-react";
-import { Suspense } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
+import { Link } from "@/src/i18n/routing";
 
-function ErrorCard() {
-  const t = useTranslations("Auth");
-  const searchParams = useSearchParams();
-  const error = searchParams.get("error");
+export async function generateMetadata({
+  params: { locale },
+}: {
+  params: { locale: string };
+}) {
+  const t = await getTranslations({ locale, namespace: "Auth" });
+  return {
+    title: t("errors.title"),
+  };
+}
 
-  const getErrorMessage = (error: string | null) => {
+export default async function AuthErrorPage({
+  searchParams,
+}: {
+  searchParams: { error?: string };
+}) {
+  const t = await getTranslations("Auth");
+  const error = searchParams.error;
+
+  const errorMessage = (() => {
     switch (error) {
-      case "Configuration":
-        return t("errors.configuration");
-      case "AccessDenied":
-        return t("errors.access_denied");
-      case "Verification":
-        return t("errors.verification");
       case "OAuthSignin":
         return t("errors.oauth_signin");
       case "OAuthCallback":
@@ -49,43 +51,23 @@ function ErrorCard() {
       default:
         return t("errors.default");
     }
-  };
+  })();
 
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader className="space-y-1">
-        <CardTitle className="flex items-center gap-2 text-2xl font-bold tracking-tight text-destructive">
-          <AlertCircle className="h-6 w-6" />
-          {t("errors.title")}
-        </CardTitle>
-        <CardDescription>{getErrorMessage(error)}</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <Button asChild className="w-full">
-          <Link href="/auth/login">{t("errors.try_again")}</Link>
-        </Button>
-      </CardContent>
-    </Card>
-  );
-}
-
-export default function ErrorPage() {
-  return (
-    <div className="container flex h-[calc(100vh-4rem)] items-center justify-center">
-      <Suspense
-        fallback={
-          <div className="w-full max-w-md space-y-4">
-            <div className="space-y-2">
-              <Skeleton className="h-8 w-3/4" />
-              <Skeleton className="h-4 w-1/2" />
-            </div>
-            <div className="space-y-2">
-              <Skeleton className="h-10 w-full" />
-            </div>
-          </div>
-        }>
-        <ErrorCard />
-      </Suspense>
+    <div className="container flex min-h-[calc(100vh-4rem)] items-center justify-center py-8">
+      <Card className="w-full max-w-md">
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-2xl font-bold text-destructive">
+            {t("errors.title")}
+          </CardTitle>
+          <CardDescription>{errorMessage}</CardDescription>
+        </CardHeader>
+        <CardContent className="flex justify-center">
+          <Button asChild>
+            <Link href="/auth/login">{t("errors.try_again")}</Link>
+          </Button>
+        </CardContent>
+      </Card>
     </div>
   );
 }

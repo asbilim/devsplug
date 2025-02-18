@@ -7,19 +7,13 @@ import { Toaster } from "./ui/sonner";
 
 interface ProvidersProps {
   children: React.ReactNode;
-  session: any;
   messages: any;
   locale: string;
 }
 
-export function Providers({
-  children,
-  session,
-  messages,
-  locale,
-}: ProvidersProps) {
+export function Providers({ children, messages, locale }: ProvidersProps) {
   return (
-    <SessionProvider session={session}>
+    <SessionProvider>
       <NextIntlClientProvider messages={messages} locale={locale}>
         <ThemeProvider>
           {children}
