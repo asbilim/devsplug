@@ -2,7 +2,29 @@
   "Home": {
     "title": "Website in Development",
     "description": "Welcome to Devsplug - Your Developer Community Hub",
-    "status": "We are currently working on something awesome!"
+    "status": "We are currently working on something awesome!",
+    "welcome": "Master Programming Through Practice",
+    "start": "Start Challenge",
+    "filters": {
+      "title": "Filters",
+      "difficulty": "Difficulty",
+      "category": "Category",
+      "search": "Search challenges...",
+      "all": "All",
+      "easy": "Easy",
+      "medium": "Medium",
+      "hard": "Hard"
+    },
+    "contribute": {
+      "title": "Want to Contribute?",
+      "description": "Help us build a better learning platform for everyone",
+      "button": "Join Our Community"
+    },
+    "pagination": {
+      "prev": "Previous",
+      "next": "Next",
+      "page": "Page {page} of {total}"
+    }
   },
   "Navigation": {
     "language": "Language",
@@ -105,5 +127,10 @@
     "title": "Page Not Found",
     "description": "The page you're looking for doesn't exist or has been moved. Please check the URL or go back to the homepage.",
     "backHome": "Back to Home"
+  },
+  "Footer": {
+    "copyright": "Built by",
+    "rights": "All rights reserved",
+    "source": "Source code"
   }
 }

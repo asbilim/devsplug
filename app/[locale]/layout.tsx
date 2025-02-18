@@ -2,7 +2,7 @@ import { Inter } from "next/font/google";
 import { Header } from "@/components/header";
 import { Providers } from "@/components/providers";
 import "./globals.css";
-import { routing } from "@/src/i18n/routing";
+import { Footer } from "@/components/footer";
 import { notFound } from "next/navigation";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -29,6 +29,7 @@ export default async function RootLayout({ children, params }: LayoutProps) {
             <div className="min-h-screen bg-background">
               <Header />
               <main className="container mx-auto px-4 py-8">{children}</main>
+              <Footer />
             </div>
           </Providers>
         </body>

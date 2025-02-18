@@ -93,5 +93,10 @@
       "followers": "Abonnés",
       "following": "Abonnements"
     }
+  },
+  "Footer": {
+    "copyright": "Créé par",
+    "rights": "Tous droits réservés",
+    "source": "Code source"
   }
 }

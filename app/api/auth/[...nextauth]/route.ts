@@ -130,7 +130,7 @@ export const authOptions: NextAuthOptions = {
           console.log("Token fetch successful");
 
           // Fetch user data
-          const userUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/api/user/me/`;
+          const userUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/api/user/users/me/`;
           console.log("Attempting user data fetch from:", userUrl);
 
           const userResponse = await fetch(userUrl, {
@@ -155,8 +155,8 @@ export const authOptions: NextAuthOptions = {
           return {
             ...user,
             backendTokens: {
-              accessToken: tokens.access_token,
-              refreshToken: tokens.refresh_token,
+              accessToken: tokens.access,
+              refreshToken: tokens.refresh,
             },
           } as ExtendedUser;
         } catch (error) {
@@ -238,7 +238,7 @@ export const authOptions: NextAuthOptions = {
 
           // Fetch additional user data
           const userResponse = await fetch(
-            `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/api/user/me/`,
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/api/user/users/me/`,
             {
               headers: {
                 Authorization: `Bearer ${tokens.access_token}`,
@@ -301,11 +301,13 @@ export const authOptions: NextAuthOptions = {
 
             const tokens = await response.json();
 
+            console.log(tokens);
+
             if (!response.ok) throw tokens;
 
             token.backendTokens = {
-              accessToken: tokens.access,
-              refreshToken: tokens.refresh,
+              accessToken: tokens.access_token,
+              refreshToken: tokens.refresh_token,
             };
           } catch (error) {
             console.error("Token refresh error:", error);

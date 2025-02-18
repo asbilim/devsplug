@@ -93,5 +93,10 @@
       "followers": "Follower",
       "following": "Folgt"
     }
+  },
+  "Footer": {
+    "copyright": "Erstellt von",
+    "rights": "Alle Rechte vorbehalten",
+    "source": "Quellcode"
   }
 }
