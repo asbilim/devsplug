@@ -55,10 +55,15 @@
     },
     "verifyEmail": {
       "title": "Vérifiez votre email",
-      "description": "Nous vous avons envoyé un email avec un lien de vérification. Veuillez vérifier votre boîte de réception.",
-      "invalidToken": "Jeton de vérification invalide",
-      "invalidTokenDescription": "Le lien de vérification est invalide ou a expiré. Veuillez en demander un nouveau.",
-      "processing": "Vérification de votre adresse email..."
+      "description": "Nous vous avons envoyé un email avec un lien de vérification. Veuillez vérifier votre boîte de réception et cliquer sur le lien pour vérifier votre compte.",
+      "backToLogin": "Retour à la connexion",
+      "backToHome": "Retour à l'accueil",
+      "verifying": "Vérification de votre email",
+      "verifyingDescription": "Veuillez patienter pendant que nous vérifions votre adresse email...",
+      "invalidToken": "Lien de vérification invalide",
+      "invalidTokenDescription": "Le lien de vérification est invalide ou a expiré. Veuillez essayer de vous inscrire à nouveau.",
+      "success": "Email vérifié avec succès ! Vous pouvez maintenant vous connecter.",
+      "error": "Échec de la vérification de l'email. Veuillez réessayer."
     },
     "errors": {
       "title": "Erreur d'authentification",

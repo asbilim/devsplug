@@ -20,7 +20,7 @@ import { useFormState, useFormStatus } from "react-dom";
 import { signIn } from "next-auth/react";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/src/i18n/routing";
 
 type FormState = {
   error: string | null;
@@ -67,8 +67,10 @@ export default function RegisterPage() {
     gitlab: false,
   });
 
-  const handleOAuthSignIn = async (provider: "github" | "google" | "gitlab") => {
-    setIsLoading(prev => ({ ...prev, [provider]: true }));
+  const handleOAuthSignIn = async (
+    provider: "github" | "google" | "gitlab"
+  ) => {
+    setIsLoading((prev) => ({ ...prev, [provider]: true }));
     try {
       await signIn(provider, {
         callbackUrl: "/dashboard",
@@ -76,14 +78,14 @@ export default function RegisterPage() {
     } catch {
       toast.error(t("errors.oauth_signin"));
     } finally {
-      setIsLoading(prev => ({ ...prev, [provider]: false }));
+      setIsLoading((prev) => ({ ...prev, [provider]: false }));
     }
   };
 
   useEffect(() => {
     if (state.success) {
       toast.success(t("register.success"));
-      router.push("/auth/login");
+      router.push("/auth/verify-email");
     }
   }, [state.success]);
 

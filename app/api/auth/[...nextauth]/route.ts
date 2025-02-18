@@ -130,7 +130,7 @@ export const authOptions: NextAuthOptions = {
           console.log("Token fetch successful");
 
           // Fetch user data
-          const userUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user/me/`;
+          const userUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/api/user/me/`;
           console.log("Attempting user data fetch from:", userUrl);
 
           const userResponse = await fetch(userUrl, {

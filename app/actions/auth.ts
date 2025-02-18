@@ -26,9 +26,9 @@ export async function register(
   prevState: FormState,
   formData: FormData
 ): Promise<FormState> {
-  try {
-    const t = await getTranslations("Auth.errors");
+  const t = await getTranslations("Auth.errors");
 
+  try {
     const rawData = {
       username: formData.get("username"),
       email: formData.get("email"),
@@ -40,13 +40,13 @@ export async function register(
 
     if (!validatedData.success) {
       return {
-        error: validatedData.error.errors[0].message,
+        error: t("server_error"),
         success: false,
       };
     }
 
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user/create`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/api/user/create`,
       {
         method: "POST",
         headers: {
@@ -58,8 +58,9 @@ export async function register(
 
     if (!response.ok) {
       const error = await response.json();
+      console.log(error);
       return {
-        error: error.message || "Registration failed",
+        error: t(error.code) || t("server_error"),
         success: false,
       };
     }
@@ -67,19 +68,20 @@ export async function register(
     return { error: null, success: true };
   } catch (error) {
     return {
-      error: "Something went wrong. Please try again.",
+      error: t("server_error"),
       success: false,
     };
   }
 }
 
 export async function verifyEmail(formData: FormData) {
+  const t = await getTranslations("Auth.errors");
   const code = formData.get("code") as string;
   const email = formData.get("email") as string;
 
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user/activate`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/api/user/activate`,
       {
         method: "POST",
         headers: {
@@ -95,21 +97,22 @@ export async function verifyEmail(formData: FormData) {
     const data = await response.json();
 
     if (!response.ok) {
-      return { error: data.error || "Email verification failed" };
+      return { error: t("verification") };
     }
 
     redirect("/auth/login");
   } catch (error) {
-    return { error: "Internal server error" };
+    return { error: t("server_error") };
   }
 }
 
 export async function forgotPassword(formData: FormData) {
+  const t = await getTranslations("Auth.errors");
   const email = formData.get("email") as string;
 
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user/password/apply`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/api/user/password/apply`,
       {
         method: "POST",
         headers: {
@@ -124,24 +127,24 @@ export async function forgotPassword(formData: FormData) {
     const data = await response.json();
 
     if (!response.ok) {
-      return { error: data.error || "Password reset request failed" };
+      return { error: t("server_error") };
     }
 
     return { success: true };
   } catch (error) {
-    return { error: "Internal server error" };
+    return { error: t("server_error") };
   }
 }
 
 export async function resetPassword(formData: FormData) {
+  const t = await getTranslations("Auth.errors");
   const code = formData.get("code") as string;
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
 
   try {
-    // First verify the code
     const verifyResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user/password/verify`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/api/user/password/verify`,
       {
         method: "POST",
         headers: {
@@ -155,13 +158,11 @@ export async function resetPassword(formData: FormData) {
     );
 
     if (!verifyResponse.ok) {
-      const verifyData = await verifyResponse.json();
-      return { error: verifyData.error || "Code verification failed" };
+      return { error: t("verification") };
     }
 
-    // Then change the password
     const changeResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user/password/change`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/api/user/password/change`,
       {
         method: "POST",
         headers: {
@@ -175,19 +176,18 @@ export async function resetPassword(formData: FormData) {
       }
     );
 
-    const changeData = await changeResponse.json();
-
     if (!changeResponse.ok) {
-      return { error: changeData.error || "Password change failed" };
+      return { error: t("server_error") };
     }
 
     redirect("/auth/login");
   } catch (error) {
-    return { error: "Internal server error" };
+    return { error: t("server_error") };
   }
 }
 
 export async function login(formData: FormData) {
+  const t = await getTranslations("Auth.errors");
   const username = formData.get("username") as string;
   const password = formData.get("password") as string;
 
@@ -199,11 +199,11 @@ export async function login(formData: FormData) {
     });
 
     if (result?.error) {
-      return { error: "Invalid username or password" };
+      return { error: t("invalid_credentials") };
     }
 
     redirect("/dashboard");
   } catch (error) {
-    return { error: "Internal server error" };
+    return { error: t("server_error") };
   }
 }

@@ -54,11 +54,16 @@
       "login": "Anmelden"
     },
     "verifyEmail": {
-      "title": "E-Mail bestätigen",
-      "description": "Wir haben Ihnen eine E-Mail mit einem Bestätigungslink gesendet. Bitte überprüfen Sie Ihren Posteingang.",
-      "invalidToken": "Ungültiger Bestätigungstoken",
-      "invalidTokenDescription": "Der Bestätigungslink ist ungültig oder abgelaufen. Bitte fordern Sie einen neuen an.",
-      "processing": "Ihre E-Mail-Adresse wird überprüft..."
+      "title": "Überprüfen Sie Ihre E-Mail",
+      "description": "Wir haben Ihnen eine E-Mail mit einem Bestätigungslink gesendet. Bitte überprüfen Sie Ihren Posteingang und klicken Sie auf den Link, um Ihr Konto zu verifizieren.",
+      "backToLogin": "Zurück zum Login",
+      "backToHome": "Zurück zur Startseite",
+      "verifying": "E-Mail wird verifiziert",
+      "verifyingDescription": "Bitte warten Sie, während wir Ihre E-Mail-Adresse verifizieren...",
+      "invalidToken": "Ungültiger Bestätigungslink",
+      "invalidTokenDescription": "Der Bestätigungslink ist ungültig oder abgelaufen. Bitte versuchen Sie erneut sich zu registrieren.",
+      "success": "E-Mail erfolgreich verifiziert! Sie können sich jetzt einloggen.",
+      "error": "E-Mail-Verifizierung fehlgeschlagen. Bitte versuchen Sie es erneut."
     },
     "errors": {
       "title": "Authentifizierungsfehler",

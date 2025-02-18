@@ -1,6 +1,5 @@
 "use client";
 
-import { getTranslations } from "next-intl/server";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,13 +15,16 @@ import { Separator } from "@/components/ui/separator";
 import { Link } from "@/src/i18n/routing";
 import { Github, GitlabIcon, Mail, Loader2 } from "lucide-react";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/src/i18n/routing";
+import { useSearchParams } from "next/navigation";
 import { useTranslations } from "use-intl";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export default function LoginPage() {
   const t = useTranslations("Auth");
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState<{
     credentials: boolean;
     github: boolean;
@@ -34,10 +36,12 @@ export default function LoginPage() {
     google: false,
     gitlab: false,
   });
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading((prev) => ({ ...prev, credentials: true }));
+    setError(null);
     const formData = new FormData(e.currentTarget);
 
     try {
@@ -45,16 +49,16 @@ export default function LoginPage() {
         username: formData.get("username"),
         password: formData.get("password"),
         redirect: false,
-        callbackUrl: "/dashboard",
+        callbackUrl: searchParams.get("callbackUrl") || "/dashboard",
       });
 
-      if (!result?.error) {
-        router.push(result?.url ?? "/dashboard");
+      if (result?.error) {
+        setError(t(`errors.${result.error}`) || t("errors.default"));
       } else {
-        console.error("Authentication error:", result.error);
+        router.push(result?.url ?? "/dashboard");
       }
     } catch (error) {
-      console.error("Sign in error:", error);
+      setError(t("errors.default"));
     } finally {
       setIsLoading((prev) => ({ ...prev, credentials: false }));
     }
@@ -65,9 +69,11 @@ export default function LoginPage() {
   ) => {
     setIsLoading((prev) => ({ ...prev, [provider]: true }));
     try {
-      await signIn(provider, { callbackUrl: "/dashboard" });
+      await signIn(provider, {
+        callbackUrl: searchParams.get("callbackUrl") || "/dashboard",
+      });
     } catch (error) {
-      console.error(`${provider} sign in error:`, error);
+      toast.error(t("errors.oauth_signin"));
     } finally {
       setIsLoading((prev) => ({ ...prev, [provider]: false }));
     }
@@ -86,12 +92,13 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="username">{t("login.username")}</Label>
-              <Input id="username" name="username" type="text" required />
+              <Input id="username" name="username" required />
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">{t("login.password")}</Label>
               <Input id="password" name="password" type="password" required />
             </div>
+            {error && <div className="text-sm text-destructive">{error}</div>}
             <Button
               type="submit"
               className="w-full"
@@ -99,7 +106,7 @@ export default function LoginPage() {
               {isLoading.credentials ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  {t("login.loading")}
+                  {t("login.submitting")}
                 </>
               ) : (
                 t("login.submit")
@@ -159,6 +166,7 @@ export default function LoginPage() {
         </CardContent>
         <CardFooter className="flex flex-wrap items-center justify-between gap-2">
           <div className="text-sm text-muted-foreground">
+            {t("login.noAccount")}{" "}
             <Link
               href="/auth/register"
               className="underline underline-offset-4 hover:text-primary">

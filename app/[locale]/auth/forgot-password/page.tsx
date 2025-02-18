@@ -11,8 +11,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Link } from "@/src/i18n/routing";
-import { auth } from "@/app/auth";
-import { redirect } from "next/navigation";
+
+import { useTranslations } from "next-intl";
 
 export async function generateMetadata({
   params: { locale },
@@ -25,13 +25,8 @@ export async function generateMetadata({
   };
 }
 
-export default async function ForgotPasswordPage() {
-  const session = await auth();
-  if (session?.user) {
-    redirect("/dashboard");
-  }
-
-  const t = await getTranslations("Auth");
+export default function ForgotPasswordPage() {
+  const t = useTranslations("Auth");
 
   return (
     <div className="container flex min-h-[calc(100vh-4rem)] items-center justify-center py-8">
