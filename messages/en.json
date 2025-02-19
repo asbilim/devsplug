@@ -190,9 +190,11 @@
       "hours": "hours",
       "days": "days"
     },
-    "difficulty_easy": "Easy",
-    "difficulty_medium": "Medium",
-    "difficulty_hard": "Hard",
+    "difficulty": {
+      "easy": "Easy",
+      "medium": "Medium",
+      "hard": "Hard"
+    },
     "points": "XP",
     "estimatedTime": "minutes",
     "attachments": "Challenge Files",

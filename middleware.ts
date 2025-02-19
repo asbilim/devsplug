@@ -8,6 +8,13 @@ export default withAuth(
     const protectedPath = "/dashboard";
     const pathname = request.nextUrl.pathname;
 
+    // Redirect root path to /en
+    if (pathname === "/") {
+      const url = request.nextUrl.clone();
+      url.pathname = "/en";
+      return NextResponse.redirect(url);
+    }
+
     // If user is not authenticated and tries to access /dashboard, redirect to login
     const token =
       request.cookies.get("next-auth.session-token") ||
