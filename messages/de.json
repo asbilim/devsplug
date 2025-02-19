@@ -40,7 +40,31 @@
       "page": "Seite {page} von {total}"
     },
     "noResults": "Keine Challenges gefunden",
-    "loading": "Challenges werden geladen..."
+    "loading": "Challenges werden geladen...",
+    "Challenge": {
+      "difficulty": {
+        "easy": "Einfach",
+        "medium": "Mittel",
+        "hard": "Schwer"
+      },
+      "points": "XP",
+      "estimatedTime": "Minuten",
+      "attachments": "Challenge-Dateien",
+      "description": "Challenge-Beschreibung",
+      "yourSolution": "Deine Lösung",
+      "submitSolution": "Lösung einreichen",
+      "signInToSubmit": "Bitte melden Sie sich an, um Ihre Lösung einzureichen",
+      "notFound": {
+        "title": "Herausforderung nicht gefunden",
+        "description": "Die angeforderte Herausforderung konnte nicht gefunden werden."
+      },
+      "selectLanguage": "Programmiersprache",
+      "selectLanguagePlaceholder": "Sprache auswählen",
+      "codePlaceholder": "Code hier eingeben oder einfügen...",
+      "preview": "Vorschau",
+      "submitSolution": "Lösung einreichen",
+      "languageRequired": "Bitte wählen Sie eine Programmiersprache aus"
+    }
   },
   "Navigation": {
     "language": "Sprache",
@@ -59,7 +83,12 @@
       "dracula": "Dracula",
       "cyberpunk": "Cyberpunk",
       "hacker": "Hacker",
-      "retro": "Retro"
+      "retro": "Retro",
+      "nord": "Nord",
+      "solarized": "Solarized",
+      "material": "Material",
+      "monokai": "Monokai",
+      "github-dark": "GitHub Dunkel"
     }
   },
   "Auth": {

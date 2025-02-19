@@ -9,6 +9,9 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
 } from "./ui/dropdown-menu";
 import { locales } from "@/src/i18n";
 import { DevsplugLogo } from "./devsplug-logo";
@@ -17,6 +20,12 @@ import {
   Moon,
   Sun,
   Terminal,
+  Laptop,
+  Palette,
+  Code2,
+  Gamepad2,
+  Laptop2,
+  Zap,
   Wand2,
   LogOut,
   User,
@@ -32,18 +41,23 @@ const languageNames: Record<string, string> = {
   de: "Deutsch",
 };
 
-const themeIcons: Record<string, JSX.Element> = {
-  light: <Sun className="h-4 w-4" />,
-  dark: <Moon className="h-4 w-4" />,
-  system: <Monitor className="h-4 w-4" />,
-  matrix: <Terminal className="h-4 w-4" />,
-  synthwave: <Wand2 className="h-4 w-4" />,
-  terminal: <Terminal className="h-4 w-4" />,
-  dracula: <Moon className="h-4 w-4" />,
-  cyberpunk: <Wand2 className="h-4 w-4" />,
-  hacker: <Terminal className="h-4 w-4" />,
-  retro: <Sun className="h-4 w-4" />,
-};
+const themeIcons = {
+  light: Sun,
+  dark: Moon,
+  system: Monitor,
+  matrix: Terminal,
+  synthwave: Gamepad2,
+  terminal: Laptop2,
+  dracula: Zap,
+  cyberpunk: Code2,
+  hacker: Terminal,
+  retro: Laptop,
+  nord: Palette,
+  solarized: Sun,
+  material: Palette,
+  monokai: Code2,
+  "github-dark": Code2,
+} as const;
 
 const countryCodeMap: Record<string, string> = {
   en: "GB",
@@ -60,6 +74,12 @@ export function Header() {
 
   console.log("Current locale from useLocale:", currentLocale);
   console.log("Country code mapped:", countryCodeMap[currentLocale]);
+
+  const ThemeIcon = themeIcons[theme as keyof typeof themeIcons] || Sun;
+
+  const getThemeDisplayName = (themeName: string) => {
+    return t(`themes.${themeName}`);
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -122,55 +142,27 @@ export function Header() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="gap-2 px-3 md:px-4 min-w-[80px]">
-                <span className="hidden md:inline-block">{t("theme")}</span>
-                {themeIcons[theme as keyof typeof themeIcons] || (
-                  <Sun className="h-4 w-4" />
-                )}
+                className="gap-2 px-3 md:px-4 min-w-[120px]">
+                <span className="hidden md:inline-block font-mono">
+                  {getThemeDisplayName(theme || "matrix")}
+                </span>
+                <ThemeIcon className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => setTheme("light")}>
-                <Sun className="h-4 w-4 mr-2" />
-                {t("themes.light")}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("dark")}>
-                <Moon className="h-4 w-4 mr-2" />
-                {t("themes.dark")}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("system")}>
-                <Monitor className="h-4 w-4 mr-2" />
-                {t("themes.system")}
-              </DropdownMenuItem>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuLabel>{t("theme")}</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => setTheme("matrix")}>
-                <Terminal className="h-4 w-4 mr-2" />
-                Matrix
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("synthwave")}>
-                <Wand2 className="h-4 w-4 mr-2" />
-                Synthwave
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("terminal")}>
-                <Terminal className="h-4 w-4 mr-2" />
-                Terminal
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("dracula")}>
-                <Moon className="h-4 w-4 mr-2" />
-                Dracula
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("cyberpunk")}>
-                <Wand2 className="h-4 w-4 mr-2" />
-                Cyberpunk
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("hacker")}>
-                <Terminal className="h-4 w-4 mr-2" />
-                Hacker
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("retro")}>
-                <Sun className="h-4 w-4 mr-2" />
-                Retro
-              </DropdownMenuItem>
+              <DropdownMenuRadioGroup value={theme} onValueChange={setTheme}>
+                {Object.entries(themeIcons).map(([key, Icon]) => (
+                  <DropdownMenuRadioItem
+                    key={key}
+                    value={key}
+                    className="flex items-center gap-2">
+                    <Icon className="h-4 w-4" />
+                    {t(`themes.${key}`)}
+                  </DropdownMenuRadioItem>
+                ))}
+              </DropdownMenuRadioGroup>
             </DropdownMenuContent>
           </DropdownMenu>
 

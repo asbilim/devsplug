@@ -82,7 +82,12 @@
       "dracula": "Dracula",
       "cyberpunk": "Cyberpunk",
       "hacker": "Hacker",
-      "retro": "Retro"
+      "retro": "Retro",
+      "nord": "Nord",
+      "solarized": "Solarized",
+      "material": "Material",
+      "monokai": "Monokai",
+      "github-dark": "GitHub Dark"
     }
   },
   "Auth": {
@@ -178,5 +183,28 @@
     "copyright": "Built by",
     "rights": "All rights reserved",
     "source": "Source code"
+  },
+  "Challenge": {
+    "difficulty": {
+      "easy": "Easy",
+      "medium": "Medium",
+      "hard": "Hard"
+    },
+    "points": "XP",
+    "estimatedTime": "minutes",
+    "attachments": "Challenge Files",
+    "description": "Challenge Description",
+    "yourSolution": "Your Solution",
+    "submitSolution": "Submit Solution",
+    "signInToSubmit": "Please sign in to submit your solution",
+    "notFound": {
+      "title": "Challenge Not Found",
+      "description": "The requested challenge could not be found."
+    },
+    "selectLanguage": "Programming Language",
+    "selectLanguagePlaceholder": "Select a language",
+    "codePlaceholder": "Type or paste your code here...",
+    "preview": "Preview",
+    "languageRequired": "Please select a programming language"
   }
 }

@@ -59,7 +59,12 @@
       "dracula": "Dracula",
       "cyberpunk": "Cyberpunk",
       "hacker": "Hacker",
-      "retro": "Rétro"
+      "retro": "Rétro",
+      "nord": "Nord",
+      "solarized": "Solarized",
+      "material": "Material",
+      "monokai": "Monokai",
+      "github-dark": "GitHub Sombre"
     }
   },
   "Auth": {
@@ -166,5 +171,28 @@
         "description": "Créez des applications pour iOS et Android"
       }
     }
+  },
+  "Challenge": {
+    "difficulty": {
+      "easy": "Facile",
+      "medium": "Moyen",
+      "hard": "Difficile"
+    },
+    "points": "XP",
+    "estimatedTime": "minutes",
+    "attachments": "Fichiers du Défi",
+    "description": "Description du Défi",
+    "yourSolution": "Votre Solution",
+    "submitSolution": "Soumettre la Solution",
+    "signInToSubmit": "Veuillez vous connecter pour soumettre votre solution",
+    "notFound": {
+      "title": "Défi Introuvable",
+      "description": "Le défi demandé n'a pas pu être trouvé."
+    },
+    "selectLanguage": "Langage de Programmation",
+    "selectLanguagePlaceholder": "Sélectionner un langage",
+    "codePlaceholder": "Tapez ou collez votre code ici...",
+    "preview": "Aperçu",
+    "languageRequired": "Veuillez sélectionner un langage de programmation"
   }
 }
