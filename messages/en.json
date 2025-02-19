@@ -1,8 +1,69 @@
 {
   "Home": {
-    "title": "Website in Development",
+    "title": "Master Programming Through Practice",
     "description": "Welcome to Devsplug - Your Developer Community Hub",
-    "status": "We are currently working on something awesome!"
+    "status": "We are currently working on something awesome!",
+    "welcome": "Master Programming Through Practice",
+    "start": "Start Challenge",
+    "stats": {
+      "title": "Community Stats",
+      "challenges": "Active Challenges",
+      "users": "Active Users",
+      "solutions": "Solutions Submitted",
+      "languages": "Programming Languages"
+    },
+    "filters": {
+      "title": "Filters",
+      "difficulty": "Difficulty",
+      "category": "Category",
+      "tags": "Tags",
+      "search": "Search challenges...",
+      "all": "All",
+      "easy": "Easy",
+      "medium": "Medium",
+      "hard": "Hard",
+      "clear": "Clear filters",
+      "categories": {
+        "programming-basics": "Programming Basics",
+        "modular-programming": "Modular Programming",
+        "object-oriented-programming": "Object-Oriented Programming"
+      }
+    },
+    "contribute": {
+      "title": "Want to Contribute?",
+      "description": "Help us build a better learning platform for everyone",
+      "button": "Join Our Community"
+    },
+    "pagination": {
+      "prev": "Previous",
+      "next": "Next",
+      "page": "Page {page} of {total}"
+    },
+    "noResults": "No challenges found",
+    "loading": "Loading challenges...",
+    "featured": {
+      "title": "Featured Categories",
+      "description": "Explore our most popular learning paths",
+      "explore": "Explore category",
+      "categories": {
+        "algorithms": {
+          "title": "Algorithms & Data Structures",
+          "description": "Master the fundamentals of computer science"
+        },
+        "web": {
+          "title": "Web Development",
+          "description": "Build modern web applications"
+        },
+        "ai": {
+          "title": "AI & Machine Learning",
+          "description": "Dive into artificial intelligence"
+        },
+        "mobile": {
+          "title": "Mobile Development",
+          "description": "Create apps for iOS and Android"
+        }
+      }
+    }
   },
   "Navigation": {
     "language": "Language",
@@ -14,7 +75,136 @@
       "blue": "Blue",
       "green": "Green",
       "purple": "Purple",
-      "rose": "Rose"
+      "rose": "Rose",
+      "matrix": "Matrix",
+      "synthwave": "Synthwave",
+      "terminal": "Terminal",
+      "dracula": "Dracula",
+      "cyberpunk": "Cyberpunk",
+      "hacker": "Hacker",
+      "retro": "Retro",
+      "nord": "Nord",
+      "solarized": "Solarized",
+      "material": "Material",
+      "monokai": "Monokai",
+      "github-dark": "GitHub Dark"
     }
+  },
+  "Auth": {
+    "login": {
+      "title": "Welcome back",
+      "description": "Sign in to your account",
+      "username": "Username",
+      "password": "Password",
+      "submit": "Sign in",
+      "submitting": "Signing in...",
+      "noAccount": "Don't have an account?",
+      "register": "Sign up",
+      "forgotPassword": "Forgot password?",
+      "or": "or continue with",
+      "github": "Continue with GitHub",
+      "google": "Continue with Google",
+      "gitlab": "Continue with GitLab"
+    },
+    "register": {
+      "title": "Create an account",
+      "description": "Enter your details to create your account",
+      "submit": "Sign Up",
+      "submitting": "Signing up...",
+      "username": "Username",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "haveAccount": "Already have an account?",
+      "login": "Sign in"
+    },
+    "forgotPassword": {
+      "title": "Forgot password",
+      "description": "Enter your email address and we'll send you a link to reset your password",
+      "email": "Email",
+      "submit": "Send reset link",
+      "submitting": "Sending link...",
+      "rememberPassword": "Remember your password?",
+      "login": "Sign in"
+    },
+    "verifyEmail": {
+      "title": "Check your email",
+      "description": "We've sent you an email with a verification link. Please check your inbox and click the link to verify your account.",
+      "backToLogin": "Back to Login",
+      "backToHome": "Back to Home",
+      "verifying": "Verifying your email",
+      "verifyingDescription": "Please wait while we verify your email address...",
+      "invalidToken": "Invalid verification link",
+      "invalidTokenDescription": "The verification link is invalid or has expired. Please try to register again.",
+      "success": "Email verified successfully! You can now log in.",
+      "error": "Failed to verify email. Please try again."
+    },
+    "errors": {
+      "title": "Authentication Error",
+      "default": "Something went wrong. Please try again.",
+      "CredentialsSignin": "Invalid username or password",
+      "oauth_signin": "Could not sign in with OAuth provider",
+      "oauth_callback": "Could not verify OAuth account",
+      "oauth_create_account": "Could not create account with OAuth provider",
+      "oauth_account_not_linked": "To confirm your identity, sign in with the same account you used originally",
+      "email_signin": "Could not send verification email",
+      "verification": "Could not verify email address",
+      "session_required": "Please sign in to access this page",
+      "try_again": "Try again",
+      "invalid_credentials": "Invalid username or password",
+      "email_exists": "Email already exists",
+      "passwords_not_match": "Passwords do not match",
+      "weak_password": "Password is too weak",
+      "invalid_email": "Invalid email address",
+      "server_error": "Something went wrong. Please try again."
+    }
+  },
+  "Dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome, {name}",
+    "welcomeDescription": "Here's an overview of your profile and activity",
+    "email": "Email address",
+    "score": "Score",
+    "title": "Title",
+    "defaultTitle": "Novice",
+    "stats": {
+      "title": "Statistics",
+      "description": "Your activity overview",
+      "followers": "Followers",
+      "following": "Following"
+    }
+  },
+  "NotFound": {
+    "title": "Page Not Found",
+    "description": "The page you're looking for doesn't exist or has been moved. Please check the URL or go back to the homepage.",
+    "backHome": "Back to Home"
+  },
+  "Footer": {
+    "copyright": "Built by",
+    "rights": "All rights reserved",
+    "source": "Source code"
+  },
+  "Challenge": {
+    "difficulty": {
+      "easy": "Easy",
+      "medium": "Medium",
+      "hard": "Hard"
+    },
+    "points": "XP",
+    "estimatedTime": "minutes",
+    "attachments": "Challenge Files",
+    "description": "Challenge Description",
+    "yourSolution": "Your Solution",
+    "submitSolution": "Submit Solution",
+    "signInToSubmit": "Please sign in to submit your solution",
+    "notFound": {
+      "title": "Challenge Not Found",
+      "description": "The requested challenge could not be found."
+    },
+    "selectLanguage": "Programming Language",
+    "selectLanguagePlaceholder": "Select a language",
+    "codePlaceholder": "Type or paste your code here...",
+    "preview": "Preview",
+    "languageRequired": "Please select a programming language"
   }
 }

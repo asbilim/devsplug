@@ -1,8 +1,46 @@
 {
   "Home": {
-    "title": "Site Web en Développement",
+    "title": "Maîtrisez la Programmation par la Pratique",
     "description": "Bienvenue sur Devsplug - Votre Hub Communautaire de Développeurs",
-    "status": "Nous travaillons actuellement sur quelque chose d'extraordinaire !"
+    "status": "Nous travaillons actuellement sur quelque chose d'extraordinaire !",
+    "welcome": "Maîtrisez la Programmation par la Pratique",
+    "start": "Commencer le défi",
+    "stats": {
+      "title": "Statistiques de la Communauté",
+      "challenges": "Défis Actifs",
+      "users": "Utilisateurs Actifs",
+      "solutions": "Solutions Soumises",
+      "languages": "Langages de Programmation"
+    },
+    "filters": {
+      "title": "Filtres",
+      "difficulty": "Difficulté",
+      "category": "Catégorie",
+      "tags": "Tags",
+      "search": "Rechercher des défis...",
+      "all": "Tous",
+      "easy": "Facile",
+      "medium": "Moyen",
+      "hard": "Difficile",
+      "clear": "Effacer les filtres",
+      "categories": {
+        "programming-basics": "Bases de la Programmation",
+        "modular-programming": "Programmation Modulaire",
+        "object-oriented-programming": "Programmation Orientée Objet"
+      }
+    },
+    "contribute": {
+      "title": "Vous souhaitez contribuer ?",
+      "description": "Aidez-nous à construire une meilleure plateforme d'apprentissage pour tous",
+      "button": "Rejoindre Notre Communauté"
+    },
+    "pagination": {
+      "prev": "Précédent",
+      "next": "Suivant",
+      "page": "Page {page} sur {total}"
+    },
+    "noResults": "Aucun défi trouvé",
+    "loading": "Chargement des défis..."
   },
   "Navigation": {
     "language": "Langue",
@@ -14,7 +52,147 @@
       "blue": "Bleu",
       "green": "Vert",
       "purple": "Violet",
-      "rose": "Rose"
+      "rose": "Rose",
+      "matrix": "Matrix",
+      "synthwave": "Synthwave",
+      "terminal": "Terminal",
+      "dracula": "Dracula",
+      "cyberpunk": "Cyberpunk",
+      "hacker": "Hacker",
+      "retro": "Rétro",
+      "nord": "Nord",
+      "solarized": "Solarized",
+      "material": "Material",
+      "monokai": "Monokai",
+      "github-dark": "GitHub Sombre"
     }
+  },
+  "Auth": {
+    "login": {
+      "title": "Bon retour",
+      "description": "Connectez-vous à votre compte",
+      "username": "Nom d'utilisateur",
+      "password": "Mot de passe",
+      "submit": "Se connecter",
+      "submitting": "Connexion...",
+      "or": "ou continuer avec",
+      "github": "Continuer avec GitHub",
+      "google": "Continuer avec Google",
+      "gitlab": "Continuer avec GitLab",
+      "register": "Créer un compte",
+      "forgotPassword": "Mot de passe oublié ?"
+    },
+    "register": {
+      "title": "Créer un compte",
+      "description": "Entrez vos informations pour créer votre compte",
+      "username": "Nom d'utilisateur",
+      "email": "Email",
+      "password": "Mot de passe",
+      "confirmPassword": "Confirmer le mot de passe",
+      "submit": "Créer un compte",
+      "submitting": "Création du compte...",
+      "haveAccount": "Vous avez déjà un compte ?",
+      "login": "Se connecter"
+    },
+    "forgotPassword": {
+      "title": "Mot de passe oublié",
+      "description": "Entrez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe",
+      "email": "Email",
+      "submit": "Envoyer le lien",
+      "submitting": "Envoi du lien...",
+      "rememberPassword": "Vous vous souvenez de votre mot de passe ?",
+      "login": "Se connecter"
+    },
+    "verifyEmail": {
+      "title": "Vérifiez votre email",
+      "description": "Nous vous avons envoyé un email avec un lien de vérification. Veuillez vérifier votre boîte de réception et cliquer sur le lien pour vérifier votre compte.",
+      "backToLogin": "Retour à la connexion",
+      "backToHome": "Retour à l'accueil",
+      "verifying": "Vérification de votre email",
+      "verifyingDescription": "Veuillez patienter pendant que nous vérifions votre adresse email...",
+      "invalidToken": "Lien de vérification invalide",
+      "invalidTokenDescription": "Le lien de vérification est invalide ou a expiré. Veuillez essayer de vous inscrire à nouveau.",
+      "success": "Email vérifié avec succès ! Vous pouvez maintenant vous connecter.",
+      "error": "Échec de la vérification de l'email. Veuillez réessayer."
+    },
+    "errors": {
+      "title": "Erreur d'authentification",
+      "default": "Une erreur s'est produite. Veuillez réessayer.",
+      "credentials_signin": "Nom d'utilisateur ou mot de passe invalide",
+      "oauth_signin": "Impossible de se connecter avec le fournisseur OAuth",
+      "oauth_callback": "Impossible de vérifier le compte OAuth",
+      "oauth_create_account": "Impossible de créer un compte avec le fournisseur OAuth",
+      "oauth_account_not_linked": "Pour confirmer votre identité, connectez-vous avec le même compte que celui utilisé initialement",
+      "email_signin": "Impossible d'envoyer l'email de vérification",
+      "verification": "Impossible de vérifier l'adresse email",
+      "session_required": "Veuillez vous connecter pour accéder à cette page",
+      "try_again": "Réessayer"
+    }
+  },
+  "Dashboard": {
+    "title": "Tableau de bord",
+    "welcome": "Bienvenue, {name}",
+    "welcomeDescription": "Voici un aperçu de votre profil et de votre activité",
+    "email": "Adresse email",
+    "score": "Score",
+    "title": "Titre",
+    "defaultTitle": "Novice",
+    "stats": {
+      "title": "Statistiques",
+      "description": "Aperçu de votre activité",
+      "followers": "Abonnés",
+      "following": "Abonnements"
+    }
+  },
+  "Footer": {
+    "copyright": "Créé par",
+    "rights": "Tous droits réservés",
+    "source": "Code source"
+  },
+  "featured": {
+    "title": "Catégories en Vedette",
+    "description": "Explorez nos parcours d'apprentissage les plus populaires",
+    "explore": "Explorer la catégorie",
+    "categories": {
+      "algorithms": {
+        "title": "Algorithmes & Structures de Données",
+        "description": "Maîtrisez les fondamentaux de l'informatique"
+      },
+      "web": {
+        "title": "Développement Web",
+        "description": "Construisez des applications web modernes"
+      },
+      "ai": {
+        "title": "IA & Machine Learning",
+        "description": "Plongez dans l'intelligence artificielle"
+      },
+      "mobile": {
+        "title": "Développement Mobile",
+        "description": "Créez des applications pour iOS et Android"
+      }
+    }
+  },
+  "Challenge": {
+    "difficulty": {
+      "easy": "Facile",
+      "medium": "Moyen",
+      "hard": "Difficile"
+    },
+    "points": "XP",
+    "estimatedTime": "minutes",
+    "attachments": "Fichiers du Défi",
+    "description": "Description du Défi",
+    "yourSolution": "Votre Solution",
+    "submitSolution": "Soumettre la Solution",
+    "signInToSubmit": "Veuillez vous connecter pour soumettre votre solution",
+    "notFound": {
+      "title": "Défi Introuvable",
+      "description": "Le défi demandé n'a pas pu être trouvé."
+    },
+    "selectLanguage": "Langage de Programmation",
+    "selectLanguagePlaceholder": "Sélectionner un langage",
+    "codePlaceholder": "Tapez ou collez votre code ici...",
+    "preview": "Aperçu",
+    "languageRequired": "Veuillez sélectionner un langage de programmation"
   }
 }
