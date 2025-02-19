@@ -1,8 +1,46 @@
 {
   "Home": {
-    "title": "Website in Entwicklung",
+    "title": "Meistern Sie Programmierung durch Praxis",
     "description": "Willkommen bei Devsplug - Ihre Entwickler-Community-Hub",
-    "status": "Wir arbeiten gerade an etwas Großartigem!"
+    "status": "Wir arbeiten gerade an etwas Großartigem!",
+    "welcome": "Meistern Sie Programmierung durch Praxis",
+    "start": "Challenge starten",
+    "stats": {
+      "title": "Community-Statistiken",
+      "challenges": "Aktive Challenges",
+      "users": "Aktive Benutzer",
+      "solutions": "Eingereichte Lösungen",
+      "languages": "Programmiersprachen"
+    },
+    "filters": {
+      "title": "Filter",
+      "difficulty": "Schwierigkeit",
+      "category": "Kategorie",
+      "tags": "Tags",
+      "search": "Challenges durchsuchen...",
+      "all": "Alle",
+      "easy": "Einfach",
+      "medium": "Mittel",
+      "hard": "Schwer",
+      "clear": "Filter zurücksetzen",
+      "categories": {
+        "programming-basics": "Grundlagen der Programmierung",
+        "modular-programming": "Modulare Programmierung",
+        "object-oriented-programming": "Objektorientierte Programmierung"
+      }
+    },
+    "contribute": {
+      "title": "Möchten Sie beitragen?",
+      "description": "Helfen Sie uns, eine bessere Lernplattform für alle zu entwickeln",
+      "button": "Treten Sie unserer Community bei"
+    },
+    "pagination": {
+      "prev": "Zurück",
+      "next": "Weiter",
+      "page": "Seite {page} von {total}"
+    },
+    "noResults": "Keine Challenges gefunden",
+    "loading": "Challenges werden geladen..."
   },
   "Navigation": {
     "language": "Sprache",
@@ -14,7 +52,14 @@
       "blue": "Blau",
       "green": "Grün",
       "purple": "Lila",
-      "rose": "Rosa"
+      "rose": "Rosa",
+      "matrix": "Matrix",
+      "synthwave": "Synthwave",
+      "terminal": "Terminal",
+      "dracula": "Dracula",
+      "cyberpunk": "Cyberpunk",
+      "hacker": "Hacker",
+      "retro": "Retro"
     }
   },
   "Auth": {
@@ -98,5 +143,28 @@
     "copyright": "Erstellt von",
     "rights": "Alle Rechte vorbehalten",
     "source": "Quellcode"
+  },
+  "featured": {
+    "title": "Ausgewählte Kategorien",
+    "description": "Entdecken Sie unsere beliebtesten Lernpfade",
+    "explore": "Kategorie erkunden",
+    "categories": {
+      "algorithms": {
+        "title": "Algorithmen & Datenstrukturen",
+        "description": "Beherrschen Sie die Grundlagen der Informatik"
+      },
+      "web": {
+        "title": "Web-Entwicklung",
+        "description": "Erstellen Sie moderne Webanwendungen"
+      },
+      "ai": {
+        "title": "KI & Maschinelles Lernen",
+        "description": "Tauchen Sie ein in die künstliche Intelligenz"
+      },
+      "mobile": {
+        "title": "Mobile Entwicklung",
+        "description": "Erstellen Sie Apps für iOS und Android"
+      }
+    }
   }
 }

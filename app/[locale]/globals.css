@@ -141,6 +141,72 @@
     --input: 231 15% 26%;
     --ring: 326 100% 74%;
   }
+
+  .cyberpunk {
+    --background: 235 100% 5%;
+    --foreground: 180 100% 85%;
+    --card: 235 100% 8%;
+    --card-foreground: 180 100% 85%;
+    --popover: 235 100% 5%;
+    --popover-foreground: 180 100% 85%;
+    --primary: 315 100% 60%;
+    --primary-foreground: 235 100% 5%;
+    --secondary: 180 100% 25%;
+    --secondary-foreground: 180 100% 85%;
+    --muted: 235 100% 10%;
+    --muted-foreground: 180 50% 75%;
+    --accent: 315 70% 30%;
+    --accent-foreground: 180 100% 85%;
+    --destructive: 0 100% 45%;
+    --destructive-foreground: 235 100% 5%;
+    --border: 315 50% 20%;
+    --input: 315 50% 20%;
+    --ring: 315 100% 60%;
+  }
+
+  .hacker {
+    --background: 120 100% 2%;
+    --foreground: 120 100% 85%;
+    --card: 120 100% 4%;
+    --card-foreground: 120 100% 85%;
+    --popover: 120 100% 2%;
+    --popover-foreground: 120 100% 85%;
+    --primary: 120 100% 45%;
+    --primary-foreground: 120 100% 2%;
+    --secondary: 120 100% 8%;
+    --secondary-foreground: 120 100% 85%;
+    --muted: 120 100% 6%;
+    --muted-foreground: 120 50% 75%;
+    --accent: 120 70% 15%;
+    --accent-foreground: 120 100% 85%;
+    --destructive: 0 100% 45%;
+    --destructive-foreground: 120 100% 2%;
+    --border: 120 50% 15%;
+    --input: 120 50% 15%;
+    --ring: 120 100% 45%;
+  }
+
+  .retro {
+    --background: 45 30% 95%;
+    --foreground: 30 40% 15%;
+    --card: 45 30% 98%;
+    --card-foreground: 30 40% 15%;
+    --popover: 45 30% 95%;
+    --popover-foreground: 30 40% 15%;
+    --primary: 30 90% 45%;
+    --primary-foreground: 45 30% 95%;
+    --secondary: 45 20% 85%;
+    --secondary-foreground: 30 40% 15%;
+    --muted: 45 20% 90%;
+    --muted-foreground: 30 20% 35%;
+    --accent: 30 70% 30%;
+    --accent-foreground: 45 30% 95%;
+    --destructive: 0 85% 45%;
+    --destructive-foreground: 45 30% 95%;
+    --border: 30 50% 80%;
+    --input: 30 50% 80%;
+    --ring: 30 90% 45%;
+  }
 }
 
 @layer base {

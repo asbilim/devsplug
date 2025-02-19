@@ -1,19 +1,33 @@
 {
   "Home": {
-    "title": "Website in Development",
+    "title": "Master Programming Through Practice",
     "description": "Welcome to Devsplug - Your Developer Community Hub",
     "status": "We are currently working on something awesome!",
     "welcome": "Master Programming Through Practice",
     "start": "Start Challenge",
+    "stats": {
+      "title": "Community Stats",
+      "challenges": "Active Challenges",
+      "users": "Active Users",
+      "solutions": "Solutions Submitted",
+      "languages": "Programming Languages"
+    },
     "filters": {
       "title": "Filters",
       "difficulty": "Difficulty",
       "category": "Category",
+      "tags": "Tags",
       "search": "Search challenges...",
       "all": "All",
       "easy": "Easy",
       "medium": "Medium",
-      "hard": "Hard"
+      "hard": "Hard",
+      "clear": "Clear filters",
+      "categories": {
+        "programming-basics": "Programming Basics",
+        "modular-programming": "Modular Programming",
+        "object-oriented-programming": "Object-Oriented Programming"
+      }
     },
     "contribute": {
       "title": "Want to Contribute?",
@@ -24,6 +38,31 @@
       "prev": "Previous",
       "next": "Next",
       "page": "Page {page} of {total}"
+    },
+    "noResults": "No challenges found",
+    "loading": "Loading challenges...",
+    "featured": {
+      "title": "Featured Categories",
+      "description": "Explore our most popular learning paths",
+      "explore": "Explore category",
+      "categories": {
+        "algorithms": {
+          "title": "Algorithms & Data Structures",
+          "description": "Master the fundamentals of computer science"
+        },
+        "web": {
+          "title": "Web Development",
+          "description": "Build modern web applications"
+        },
+        "ai": {
+          "title": "AI & Machine Learning",
+          "description": "Dive into artificial intelligence"
+        },
+        "mobile": {
+          "title": "Mobile Development",
+          "description": "Create apps for iOS and Android"
+        }
+      }
     }
   },
   "Navigation": {
@@ -36,7 +75,14 @@
       "blue": "Blue",
       "green": "Green",
       "purple": "Purple",
-      "rose": "Rose"
+      "rose": "Rose",
+      "matrix": "Matrix",
+      "synthwave": "Synthwave",
+      "terminal": "Terminal",
+      "dracula": "Dracula",
+      "cyberpunk": "Cyberpunk",
+      "hacker": "Hacker",
+      "retro": "Retro"
     }
   },
   "Auth": {

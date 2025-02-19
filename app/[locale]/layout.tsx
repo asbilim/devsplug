@@ -13,7 +13,6 @@ type LayoutProps = {
 };
 
 export default async function RootLayout({ children, params }: LayoutProps) {
-  // Validate locale
   const validLocales = ["en", "de", "fr"] as const;
   const locale = validLocales.includes(params.locale as any)
     ? params.locale

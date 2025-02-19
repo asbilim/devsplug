@@ -7,7 +7,17 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
       attribute="class"
       defaultTheme="system"
       enableSystem
-      themes={["light", "dark", "matrix", "synthwave", "terminal", "dracula"]}
+      themes={[
+        "light",
+        "dark",
+        "matrix",
+        "synthwave",
+        "terminal",
+        "dracula",
+        "cyberpunk",
+        "hacker",
+        "retro",
+      ]}
       {...props}>
       {children}
     </NextThemesProvider>

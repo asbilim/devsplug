@@ -40,6 +40,9 @@ const themeIcons: Record<string, JSX.Element> = {
   synthwave: <Wand2 className="h-4 w-4" />,
   terminal: <Terminal className="h-4 w-4" />,
   dracula: <Moon className="h-4 w-4" />,
+  cyberpunk: <Wand2 className="h-4 w-4" />,
+  hacker: <Terminal className="h-4 w-4" />,
+  retro: <Sun className="h-4 w-4" />,
 };
 
 const countryCodeMap: Record<string, string> = {
@@ -155,6 +158,18 @@ export function Header() {
               <DropdownMenuItem onClick={() => setTheme("dracula")}>
                 <Moon className="h-4 w-4 mr-2" />
                 Dracula
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTheme("cyberpunk")}>
+                <Wand2 className="h-4 w-4 mr-2" />
+                Cyberpunk
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTheme("hacker")}>
+                <Terminal className="h-4 w-4 mr-2" />
+                Hacker
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTheme("retro")}>
+                <Sun className="h-4 w-4 mr-2" />
+                Retro
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
