@@ -171,9 +171,9 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   pages: {
-    signIn: "/auth/login",
-    newUser: "/auth/register",
-    error: "/auth/error",
+    signIn: "/en/auth/login",
+    newUser: "/en/auth/register",
+    error: "/en/auth/error",
   },
   callbacks: {
     async signIn({ user, account, profile }) {

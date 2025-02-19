@@ -195,5 +195,66 @@
         "description": "Erstellen Sie Apps für iOS und Android"
       }
     }
+  },
+  "NotFound": {
+    "title": "Seite Nicht Gefunden",
+    "description": "Die gesuchte Seite existiert nicht oder wurde verschoben. Bitte überprüfen Sie die URL oder kehren Sie zur Startseite zurück.",
+    "backHome": "Zurück zur Startseite"
+  },
+  "Challenge": {
+    "timeUnit": {
+      "minutes": "Minuten",
+      "hours": "Stunden",
+      "days": "Tage"
+    },
+    "difficulty": {
+      "easy": "Einfach",
+      "medium": "Mittel",
+      "hard": "Schwer"
+    },
+    "points": "XP",
+    "estimatedTime": "Minuten",
+    "attachments": "Challenge-Dateien",
+    "description": "Challenge-Beschreibung",
+    "solution": "Lösung",
+    "writeSolution": "Lösung Schreiben",
+    "clickToWriteSolution": "Klicken Sie auf den Button oben, um Ihre Lösung zu schreiben",
+    "subscribeToSubmit": "Abonnieren Sie diese Challenge, um Ihre Lösung einzureichen",
+    "yourSolution": "Ihre Lösung",
+    "submitSolution": "Lösung Einreichen",
+    "signInToSubmit": "Bitte melden Sie sich an, um Ihre Lösung einzureichen",
+    "notFound": {
+      "title": "Challenge Nicht Gefunden",
+      "description": "Die angeforderte Challenge konnte nicht gefunden werden."
+    },
+    "selectLanguage": "Programmiersprache",
+    "selectLanguagePlaceholder": "Sprache auswählen",
+    "codePlaceholder": "Code hier eingeben oder einfügen...",
+    "preview": "Vorschau",
+    "languageRequired": "Bitte wählen Sie eine Programmiersprache aus",
+    "subscribe": "Challenge Abonnieren",
+    "unsubscribe": "Abonnement Beenden",
+    "subscribeSuccess": "Challenge erfolgreich abonniert",
+    "unsubscribeSuccess": "Abonnement erfolgreich beendet",
+    "subscribeError": "Fehler beim Abonnieren der Challenge",
+    "submitSuccess": "Lösung erfolgreich eingereicht",
+    "submitError": "Fehler beim Einreichen der Lösung",
+    "codeRequired": "Bitte geben Sie Ihren Lösungscode ein",
+    "code": "Code",
+    "documentation": "Dokumentation",
+    "documentationPlaceholder": "Schreiben Sie hier Ihre Lösungsdokumentation (Markdown unterstützt)...",
+    "privateSolution": "Lösung privat machen",
+    "codeCopied": "Code in die Zwischenablage kopiert",
+    "attemptsRemaining": "Versuche: {{current}}/{{max}}",
+    "back": "Zurück zur Challenge",
+    "runCode": "Code Ausführen",
+    "subscribed": "Abonniert",
+    "requirements": "Anforderungen",
+    "examples": "Beispiele",
+    "stats": "Challenge-Statistiken",
+    "attempts": "Versuche",
+    "viewChallenge": "Challenge Ansehen",
+    "runCode": "Code Ausführen (Demnächst Verfügbar)",
+    "authenticationError": "Authentifizierungsfehler"
   }
 }

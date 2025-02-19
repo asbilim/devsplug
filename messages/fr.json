@@ -173,6 +173,11 @@
     }
   },
   "Challenge": {
+    "timeUnit": {
+      "minutes": "minutes",
+      "hours": "heures",
+      "days": "jours"
+    },
     "difficulty": {
       "easy": "Facile",
       "medium": "Moyen",
@@ -182,6 +187,10 @@
     "estimatedTime": "minutes",
     "attachments": "Fichiers du Défi",
     "description": "Description du Défi",
+    "solution": "Solution",
+    "writeSolution": "Écrire la Solution",
+    "clickToWriteSolution": "Cliquez sur le bouton ci-dessus pour écrire votre solution",
+    "subscribeToSubmit": "Abonnez-vous à ce défi pour soumettre votre solution",
     "yourSolution": "Votre Solution",
     "submitSolution": "Soumettre la Solution",
     "signInToSubmit": "Veuillez vous connecter pour soumettre votre solution",
@@ -193,6 +202,35 @@
     "selectLanguagePlaceholder": "Sélectionner un langage",
     "codePlaceholder": "Tapez ou collez votre code ici...",
     "preview": "Aperçu",
-    "languageRequired": "Veuillez sélectionner un langage de programmation"
+    "languageRequired": "Veuillez sélectionner un langage de programmation",
+    "subscribe": "S'abonner au Défi",
+    "unsubscribe": "Se désabonner",
+    "subscribeSuccess": "Abonnement au défi réussi",
+    "unsubscribeSuccess": "Désabonnement du défi réussi",
+    "subscribeError": "Échec de l'abonnement au défi",
+    "submitSuccess": "Solution soumise avec succès",
+    "submitError": "Échec de la soumission de la solution",
+    "codeRequired": "Veuillez entrer votre code de solution",
+    "code": "Code",
+    "documentation": "Documentation",
+    "documentationPlaceholder": "Écrivez la documentation de votre solution ici (Markdown supporté)...",
+    "privateSolution": "Rendre la solution privée",
+    "codeCopied": "Code copié dans le presse-papiers",
+    "attemptsRemaining": "Tentatives : {{current}}/{{max}}",
+    "back": "Retour au Défi",
+    "runCode": "Exécuter le Code",
+    "subscribed": "Abonné",
+    "requirements": "Prérequis",
+    "examples": "Exemples",
+    "stats": "Statistiques du Défi",
+    "attempts": "Tentatives",
+    "viewChallenge": "Voir le Défi",
+    "runCode": "Exécuter le Code (Bientôt Disponible)",
+    "authenticationError": "Erreur d'authentification"
+  },
+  "NotFound": {
+    "title": "Page Non Trouvée",
+    "description": "La page que vous recherchez n'existe pas ou a été déplacée. Veuillez vérifier l'URL ou retourner à la page d'accueil.",
+    "backHome": "Retour à l'Accueil"
   }
 }

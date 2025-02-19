@@ -25,9 +25,11 @@ export default async function RootLayout({ children, params }: LayoutProps) {
       <html lang={locale} suppressHydrationWarning>
         <body className={inter.className}>
           <Providers messages={messages} locale={locale}>
-            <div className="min-h-screen bg-background">
+            <div className="flex min-h-screen flex-col">
               <Header />
-              <main className="container mx-auto px-4 py-8">{children}</main>
+              <main className="flex-1 container mx-auto px-4 py-8 pb-36">
+                {children}
+              </main>
               <Footer />
             </div>
           </Providers>
