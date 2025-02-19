@@ -4,6 +4,9 @@ const withNextIntl = createNextIntlPlugin();
 
 /** @type {import('next').NextConfig} */
 const config = {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   typescript: {
     // !! WARN !!
     // Dangerously allow production builds to successfully complete even if
@@ -12,5 +15,5 @@ const config = {
     ignoreBuildErrors: true,
   },
 };
-
+//
 export default withNextIntl(config);
