@@ -19,6 +19,18 @@ export interface Challenge {
   tags: string[];
   completion_rate: number;
   user_status: string | null;
+  is_subscribed?: boolean;
+  subscription_status?: {
+    is_subscribed: boolean;
+    attempts_count: number;
+    max_attempts: number | null;
+  };
+  content: string;
+  attachments?: Array<{
+    id: number;
+    title: string;
+    file: string;
+  }>;
 }
 
 interface GetChallengesOptions {
@@ -98,3 +110,137 @@ export const getChallenges = async ({
     };
   }
 };
+
+export async function subscribeToChallenge(slug: string, accessToken: string) {
+  console.log("🎯 Challenge Subscribe: Starting subscription", { slug });
+
+  try {
+    console.log("📡 Challenge Subscribe: Making request with token", {
+      hasToken: !!accessToken,
+      tokenPreview: accessToken ? `${accessToken.slice(0, 10)}...` : null,
+    });
+
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/challenges/listings/${slug}/subscribe/`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    console.log("📡 Challenge Subscribe: Response received", {
+      status: response.status,
+      ok: response.ok,
+      url: response.url,
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("❌ Challenge Subscribe: Request failed", {
+        status: response.status,
+        statusText: response.statusText,
+        error: errorText,
+      });
+      throw new Error("Failed to subscribe to challenge");
+    }
+
+    const data = await response.json();
+    console.log("✅ Challenge Subscribe: Success", { data });
+    return data;
+  } catch (error) {
+    console.error("💥 Challenge Subscribe: Error occurred", {
+      name: error.name,
+      message: error.message,
+      stack: error.stack,
+    });
+    throw error;
+  }
+}
+
+export async function unsubscribeFromChallenge(
+  slug: string,
+  accessToken: string
+) {
+  console.log("🎯 Challenge Unsubscribe: Starting unsubscription", { slug });
+
+  try {
+    console.log("📡 Challenge Unsubscribe: Making request with token", {
+      hasToken: !!accessToken,
+      tokenPreview: accessToken ? `${accessToken.slice(0, 10)}...` : null,
+    });
+
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/challenges/listings/${slug}/unsubscribe/`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    console.log("📡 Challenge Unsubscribe: Response received", {
+      status: response.status,
+      ok: response.ok,
+      url: response.url,
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("❌ Challenge Unsubscribe: Request failed", {
+        status: response.status,
+        statusText: response.statusText,
+        error: errorText,
+      });
+      throw new Error("Failed to unsubscribe from challenge");
+    }
+
+    const data = await response.json();
+    console.log("✅ Challenge Unsubscribe: Success", { data });
+    return data;
+  } catch (error) {
+    console.error("💥 Challenge Unsubscribe: Error occurred", {
+      name: error.name,
+      message: error.message,
+      stack: error.stack,
+    });
+    throw error;
+  }
+}
+
+export async function submitSolution(
+  slug: string,
+  data: {
+    code: string;
+    documentation?: string;
+    language: string;
+    is_private?: boolean;
+  }
+) {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/challenges/listings/${slug}/solutions/`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(data),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to submit solution");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error submitting solution:", error);
+    throw error;
+  }
+}

@@ -10,7 +10,7 @@ export function Footer() {
 
   const socialLinks = [
     {
-      href: "https://twitter.com/asbilim",
+      href: "https://x.com/iampaullilian",
       icon: <Twitter className="h-5 w-5" />,
       label: "Twitter",
     },
