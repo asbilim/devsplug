@@ -35,7 +35,11 @@ export default async function SolutionPage({
   return (
     <ClientLayout locale={params.locale}>
       <Suspense fallback={<div>Loading...</div>}>
-        <SolutionEditor params={params} challenge={challenge} />
+        <SolutionEditor
+          params={params}
+          challenge={challenge}
+          slug={params.slug}
+        />
       </Suspense>
     </ClientLayout>
   );

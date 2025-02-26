@@ -1,10 +1,10 @@
 {
   "Home": {
     "title": "Maîtrisez la Programmation par la Pratique",
-    "description": "Bienvenue sur Devsplug - Votre Hub Communautaire de Développeurs",
-    "status": "Nous travaillons actuellement sur quelque chose d'extraordinaire !",
+    "description": "Bienvenue sur Devsplug - Votre Hub Communautaire pour les Développeurs",
+    "status": "Nous travaillons actuellement sur quelque chose d'incroyable !",
     "welcome": "Maîtrisez la Programmation par la Pratique",
-    "start": "Commencer le défi",
+    "start": "Commencer le Défi",
     "stats": {
       "title": "Statistiques de la Communauté",
       "challenges": "Défis Actifs",
@@ -30,7 +30,7 @@
       }
     },
     "contribute": {
-      "title": "Vous souhaitez contribuer ?",
+      "title": "Vous souhaitez Contribuer ?",
       "description": "Aidez-nous à construire une meilleure plateforme d'apprentissage pour tous",
       "button": "Rejoindre Notre Communauté"
     },
@@ -40,7 +40,30 @@
       "page": "Page {page} sur {total}"
     },
     "noResults": "Aucun défi trouvé",
-    "loading": "Chargement des défis..."
+    "loading": "Chargement des défis...",
+    "featured": {
+      "title": "Catégories en Vedette",
+      "description": "Explorez nos parcours d'apprentissage les plus populaires",
+      "explore": "Explorer la catégorie",
+      "categories": {
+        "algorithms": {
+          "title": "Algorithmes et Structures de Données",
+          "description": "Maîtrisez les fondamentaux de l'informatique"
+        },
+        "web": {
+          "title": "Développement Web",
+          "description": "Construisez des applications web modernes"
+        },
+        "ai": {
+          "title": "IA et Machine Learning",
+          "description": "Plongez dans l'intelligence artificielle"
+        },
+        "mobile": {
+          "title": "Développement Mobile",
+          "description": "Créez des applications pour iOS et Android"
+        }
+      }
+    }
   },
   "Navigation": {
     "language": "Langue",
@@ -61,36 +84,37 @@
       "hacker": "Hacker",
       "retro": "Rétro",
       "nord": "Nord",
-      "solarized": "Solarized",
-      "material": "Material",
+      "solarized": "Solarisé",
+      "material": "Matériel",
       "monokai": "Monokai",
       "github-dark": "GitHub Sombre"
     }
   },
   "Auth": {
     "login": {
-      "title": "Bon retour",
+      "title": "Content de vous revoir",
       "description": "Connectez-vous à votre compte",
       "username": "Nom d'utilisateur",
       "password": "Mot de passe",
       "submit": "Se connecter",
-      "submitting": "Connexion...",
+      "submitting": "Connexion en cours...",
+      "noAccount": "Vous n'avez pas de compte ?",
+      "register": "S'inscrire",
+      "forgotPassword": "Mot de passe oublié ?",
       "or": "ou continuer avec",
       "github": "Continuer avec GitHub",
       "google": "Continuer avec Google",
-      "gitlab": "Continuer avec GitLab",
-      "register": "Créer un compte",
-      "forgotPassword": "Mot de passe oublié ?"
+      "gitlab": "Continuer avec GitLab"
     },
     "register": {
       "title": "Créer un compte",
       "description": "Entrez vos informations pour créer votre compte",
+      "submit": "S'inscrire",
+      "submitting": "Inscription en cours...",
       "username": "Nom d'utilisateur",
       "email": "Email",
       "password": "Mot de passe",
-      "confirmPassword": "Confirmer le mot de passe",
-      "submit": "Créer un compte",
-      "submitting": "Création du compte...",
+      "confirmPassword": "Confirmer le Mot de Passe",
       "haveAccount": "Vous avez déjà un compte ?",
       "login": "Se connecter"
     },
@@ -98,16 +122,16 @@
       "title": "Mot de passe oublié",
       "description": "Entrez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe",
       "email": "Email",
-      "submit": "Envoyer le lien",
-      "submitting": "Envoi du lien...",
+      "submit": "Envoyer le lien de réinitialisation",
+      "submitting": "Envoi du lien en cours...",
       "rememberPassword": "Vous vous souvenez de votre mot de passe ?",
       "login": "Se connecter"
     },
     "verifyEmail": {
       "title": "Vérifiez votre email",
       "description": "Nous vous avons envoyé un email avec un lien de vérification. Veuillez vérifier votre boîte de réception et cliquer sur le lien pour vérifier votre compte.",
-      "backToLogin": "Retour à la connexion",
-      "backToHome": "Retour à l'accueil",
+      "backToLogin": "Retour à la Connexion",
+      "backToHome": "Retour à l'Accueil",
       "verifying": "Vérification de votre email",
       "verifyingDescription": "Veuillez patienter pendant que nous vérifions votre adresse email...",
       "invalidToken": "Lien de vérification invalide",
@@ -116,9 +140,9 @@
       "error": "Échec de la vérification de l'email. Veuillez réessayer."
     },
     "errors": {
-      "title": "Erreur d'authentification",
-      "default": "Une erreur s'est produite. Veuillez réessayer.",
-      "credentials_signin": "Nom d'utilisateur ou mot de passe invalide",
+      "title": "Erreur d'Authentification",
+      "default": "Quelque chose s'est mal passé. Veuillez réessayer.",
+      "CredentialsSignin": "Nom d'utilisateur ou mot de passe invalide",
       "oauth_signin": "Impossible de se connecter avec le fournisseur OAuth",
       "oauth_callback": "Impossible de vérifier le compte OAuth",
       "oauth_create_account": "Impossible de créer un compte avec le fournisseur OAuth",
@@ -126,17 +150,23 @@
       "email_signin": "Impossible d'envoyer l'email de vérification",
       "verification": "Impossible de vérifier l'adresse email",
       "session_required": "Veuillez vous connecter pour accéder à cette page",
-      "try_again": "Réessayer"
+      "try_again": "Réessayer",
+      "invalid_credentials": "Nom d'utilisateur ou mot de passe invalide",
+      "email_exists": "L'email existe déjà",
+      "passwords_not_match": "Les mots de passe ne correspondent pas",
+      "weak_password": "Le mot de passe est trop faible",
+      "invalid_email": "Adresse email invalide",
+      "server_error": "Quelque chose s'est mal passé. Veuillez réessayer."
     }
   },
   "Dashboard": {
-    "title": "Tableau de bord",
+    "title": "Tableau de Bord",
     "welcome": "Bienvenue, {name}",
     "welcomeDescription": "Voici un aperçu de votre profil et de votre activité",
     "email": "Adresse email",
     "score": "Score",
-    "title": "Titre",
-    "defaultTitle": "Novice",
+    "titleAlt": "Titre",
+    "defaultTitle": "Débutant",
     "stats": {
       "title": "Statistiques",
       "description": "Aperçu de votre activité",
@@ -144,33 +174,15 @@
       "following": "Abonnements"
     }
   },
+  "NotFound": {
+    "title": "Page Non Trouvée",
+    "description": "La page que vous recherchez n'existe pas ou a été déplacée. Veuillez vérifier l'URL ou revenir à la page d'accueil.",
+    "backHome": "Retour à l'Accueil"
+  },
   "Footer": {
-    "copyright": "Créé par",
+    "copyright": "Construit par",
     "rights": "Tous droits réservés",
     "source": "Code source"
-  },
-  "featured": {
-    "title": "Catégories en Vedette",
-    "description": "Explorez nos parcours d'apprentissage les plus populaires",
-    "explore": "Explorer la catégorie",
-    "categories": {
-      "algorithms": {
-        "title": "Algorithmes & Structures de Données",
-        "description": "Maîtrisez les fondamentaux de l'informatique"
-      },
-      "web": {
-        "title": "Développement Web",
-        "description": "Construisez des applications web modernes"
-      },
-      "ai": {
-        "title": "IA & Machine Learning",
-        "description": "Plongez dans l'intelligence artificielle"
-      },
-      "mobile": {
-        "title": "Développement Mobile",
-        "description": "Créez des applications pour iOS et Android"
-      }
-    }
   },
   "Challenge": {
     "timeUnit": {
@@ -178,11 +190,14 @@
       "hours": "heures",
       "days": "jours"
     },
-    "difficulty": {
-      "easy": "Facile",
-      "medium": "Moyen",
-      "hard": "Difficile"
-    },
+    "privateSubmission": "Rendre la solution privée",
+    "privateSubmissionHelp": "La solution ne sera pas visible pour les autres utilisateurs",
+    "cancel": "Annuler",
+    "submit": "Soumettre",
+    "difficulty_easy": "Facile",
+    "difficulty_medium": "Moyen",
+    "difficulty_hard": "Difficile",
+    "difficulty": "Difficulté",
     "points": "XP",
     "estimatedTime": "minutes",
     "attachments": "Fichiers du Défi",
@@ -195,11 +210,11 @@
     "submitSolution": "Soumettre la Solution",
     "signInToSubmit": "Veuillez vous connecter pour soumettre votre solution",
     "notFound": {
-      "title": "Défi Introuvable",
+      "title": "Défi Non Trouvé",
       "description": "Le défi demandé n'a pas pu être trouvé."
     },
     "selectLanguage": "Langage de Programmation",
-    "selectLanguagePlaceholder": "Sélectionner un langage",
+    "selectLanguagePlaceholder": "Sélectionnez un langage",
     "codePlaceholder": "Tapez ou collez votre code ici...",
     "preview": "Aperçu",
     "languageRequired": "Veuillez sélectionner un langage de programmation",
@@ -213,24 +228,115 @@
     "codeRequired": "Veuillez entrer votre code de solution",
     "code": "Code",
     "documentation": "Documentation",
-    "documentationPlaceholder": "Écrivez la documentation de votre solution ici (Markdown supporté)...",
+    "documentationPlaceholder": "Écrivez ici la documentation de votre solution (Markdown supporté)...",
     "privateSolution": "Rendre la solution privée",
     "codeCopied": "Code copié dans le presse-papiers",
-    "attemptsRemaining": "Tentatives : {{current}}/{{max}}",
-    "back": "Retour au Défi",
-    "runCode": "Exécuter le Code",
+    "attemptsRemaining": "{{current}}/{{max}} tentatives restantes",
+    "back": "Retour",
+    "runCode": "Exécuter le Code (Bientôt Disponible)",
     "subscribed": "Abonné",
-    "requirements": "Prérequis",
+    "requirements": "Exigences",
     "examples": "Exemples",
     "stats": "Statistiques du Défi",
     "attempts": "Tentatives",
     "viewChallenge": "Voir le Défi",
-    "runCode": "Exécuter le Code (Bientôt Disponible)",
-    "authenticationError": "Erreur d'authentification"
+    "authenticationError": "Erreur d'authentification",
+    "selectTheme": "Sélectionner un Thème",
+    "selectThemePlaceholder": "Sélectionnez un thème",
+    "searchLanguages": "Rechercher des langages...",
+    "languageGroup": {
+      "popular": "Populaire",
+      "all": "Tous",
+      "web": "web",
+      "systems": "systèmes",
+      "scripting": "scripting",
+      "data": "données",
+      "mobile": "mobile",
+      "ai": "ia",
+      "game": "jeu",
+      "other": "autre",
+      "functional": "fonctionnel",
+      "data-science": "science des données",
+      "devops": "devops",
+      "security": "sécurité",
+      "testing": "test",
+      "json": "json",
+      "markup": "balisage"
+    },
+    "language": {
+      "python": "Python",
+      "javascript": "JavaScript",
+      "typescript": "TypeScript",
+      "java": "Java",
+      "cpp": "C++",
+      "c": "C",
+      "csharp": "C#",
+      "go": "Go",
+      "rust": "Rust",
+      "ruby": "Ruby",
+      "php": "PHP",
+      "swift": "Swift",
+      "kotlin": "Kotlin",
+      "scala": "Scala",
+      "r": "R",
+      "dart": "Dart",
+      "haskell": "Haskell",
+      "lua": "Lua",
+      "perl": "Perl",
+      "sql": "SQL",
+      "shell": "Script Shell",
+      "html": "HTML",
+      "css": "CSS",
+      "jsx": "JSX",
+      "tsx": "TSX",
+      "vue": "Vue",
+      "svelte": "Svelte",
+      "angular": "Angular",
+      "assembly": "Assembleur",
+      "fortran": "Fortran",
+      "verilog": "Verilog",
+      "vhdl": "VHDL",
+      "bash": "Bash",
+      "powershell": "PowerShell",
+      "objectivec": "Objective-C",
+      "flutter": "Flutter",
+      "julia": "Julia",
+      "matlab": "MATLAB",
+      "clojure": "Clojure",
+      "elixir": "Elixir",
+      "erlang": "Erlang",
+      "fsharp": "F#",
+      "ocaml": "OCaml",
+      "xml": "XML",
+      "yaml": "YAML",
+      "toml": "TOML",
+      "markdown": "Markdown",
+      "latex": "LaTeX",
+      "cobol": "COBOL",
+      "groovy": "Groovy",
+      "crystal": "Crystal",
+      "nim": "Nim",
+      "prolog": "Prolog",
+      "racket": "Racket",
+      "solidity": "Solidity",
+      "zig": "Zig",
+      "json": "JSON"
+    },
+    "theme": {
+      "default": "Défaut",
+      "monokailight": "Monokai Clair",
+      "dracula": "Dracula",
+      "cobalt": "Cobalt",
+      "eclipse": "Éclipse",
+      "material": "Matériel",
+      "solarizeddark": "Solarisé Sombre",
+      "solarizedlight": "Solarisé Clair"
+    }
   },
-  "NotFound": {
-    "title": "Page Non Trouvée",
-    "description": "La page que vous recherchez n'existe pas ou a été déplacée. Veuillez vérifier l'URL ou retourner à la page d'accueil.",
-    "backHome": "Retour à l'Accueil"
+  "editor": {
+    "selectLanguage": "Sélectionner le Langage",
+    "run": "Exécuter",
+    "fullscreen": "Plein Écran",
+    "exitFullscreen": "Quitter le Plein Écran"
   }
 }

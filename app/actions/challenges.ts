@@ -235,12 +235,17 @@ export async function submitSolution(
     );
 
     if (!response.ok) {
-      throw new Error("Failed to submit solution");
+      const errorData = await response.json().catch(() => null);
+      throw new Error(
+        errorData?.message || `Failed to submit solution: ${response.status}`
+      );
     }
 
     return await response.json();
   } catch (error) {
     console.error("Error submitting solution:", error);
-    throw error;
+    throw error instanceof Error
+      ? error
+      : new Error("Failed to submit solution");
   }
 }
