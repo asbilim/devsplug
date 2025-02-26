@@ -185,6 +185,12 @@
     "source": "Source code"
   },
   "Challenge": {
+    "exitFullscreen": "Exit Fullscreen",
+    "selectChallenge": "Select Challenge",
+    "darkTheme": "Dark Theme",
+    "lightTheme": "Light Theme",
+    "highContrastDark": "High Contrast Dark",
+    "highContrastLight": "High Contrast Light",
     "timeUnit": {
       "minutes": "minutes",
       "hours": "hours",

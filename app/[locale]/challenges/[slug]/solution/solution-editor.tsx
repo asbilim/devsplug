@@ -851,6 +851,8 @@ export function SolutionEditor({
                       fontLigatures: enableLigatures,
                       tabSize: tabSize,
                       wordWrap: wordWrap ? "on" : "off",
+                      defaultLanguage: selectedLanguage,
+                      syntaxHighlighting: true,
                     }}
                   />
                 </div>

@@ -21,6 +21,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  SelectGroup,
+  SelectLabel,
 } from "@/components/ui/select";
 import { submitSolution } from "@/app/actions/challenges";
 import { useMediaQuery } from "@/hooks/use-media-query";
@@ -271,7 +273,7 @@ export function FullScreenEditor({ challenge, params }: FullScreenEditorProps) {
       isPrivate,
     };
     localStorage.setItem("editorState", JSON.stringify(stateToSave));
-    router.push(`/challenges/${params.slug}`);
+    router.back();
   };
 
   // Accessibility keyboard handler for panel resizing
@@ -444,6 +446,28 @@ export function FullScreenEditor({ challenge, params }: FullScreenEditorProps) {
       {/* Editor Controls */}
       <div className="border-b p-2 bg-background flex flex-col sm:flex-row items-start sm:items-center justify-between shrink-0 gap-2">
         <div className="flex items-center gap-2 flex-wrap">
+          {/* Language Selection Dropdown */}
+          <Select
+            value={selectedLanguage}
+            onValueChange={setSelectedLanguage}
+            aria-label={t("selectLanguage")}>
+            <SelectTrigger className="w-[140px] sm:w-[180px]">
+              <SelectValue placeholder={t("selectLanguage")} />
+            </SelectTrigger>
+            <SelectContent>
+              {SUPPORTED_LANGUAGES.map((group) => (
+                <SelectGroup key={group.group}>
+                  <SelectLabel>{t(`languageGroup.${group.group}`)}</SelectLabel>
+                  {group.languages.map((lang) => (
+                    <SelectItem key={lang.value} value={lang.value}>
+                      {t(lang.labelKey)}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              ))}
+            </SelectContent>
+          </Select>
+
           {/* Challenge Selection Dropdown */}
           <Select
             value={selectedChallenge}
@@ -476,23 +500,6 @@ export function FullScreenEditor({ challenge, params }: FullScreenEditorProps) {
               {MONACO_THEMES.map((theme) => (
                 <SelectItem key={theme.value} value={theme.value}>
                   {t(theme.labelKey)}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          {/* Language Selection Dropdown */}
-          <Select
-            value={selectedLanguage}
-            onValueChange={setSelectedLanguage}
-            aria-label={t("selectLanguage")}>
-            <SelectTrigger className="w-[140px] sm:w-[180px]">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {SUPPORTED_LANGUAGES.map((lang) => (
-                <SelectItem key={lang.value} value={lang.value}>
-                  {t(lang.labelKey)}
                 </SelectItem>
               ))}
             </SelectContent>
