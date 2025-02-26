@@ -3,7 +3,6 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/src/i18n/routing";
 import { Github, Twitter } from "lucide-react";
-import { motion } from "framer-motion";
 
 export function Footer() {
   const t = useTranslations("Footer");
@@ -22,17 +21,10 @@ export function Footer() {
   ];
 
   return (
-    <motion.footer
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="fixed bottom-0 left-0 right-0 border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <footer className="fixed bottom-0 left-0 right-0 z-50 border-t bg-background/75 backdrop-blur-md supports-[backdrop-filter]:bg-background/40">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="flex items-center">
+          <div className="flex items-center">
             <p className="text-sm text-muted-foreground">
               {t("copyright")} © {new Date().getFullYear()}{" "}
               <Link
@@ -44,30 +36,24 @@ export function Footer() {
               </Link>
               . {t("rights")}
             </p>
-          </motion.div>
+          </div>
 
           <div className="flex items-center space-x-4">
-            {socialLinks.map((social, index) => (
-              <motion.div
-                key={social.label}
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.3 + index * 0.1 }}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}>
+            {socialLinks.map((social) => (
+              <div key={social.label}>
                 <Link
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-2xl bg-muted p-2 transition-colors hover:bg-muted/80 hover:text-primary"
+                  className="rounded-2xl bg-muted p-2"
                   aria-label={social.label}>
                   {social.icon}
                 </Link>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
       </div>
-    </motion.footer>
+    </footer>
   );
 }

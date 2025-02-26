@@ -73,8 +73,6 @@ export function ChallengeDetails({ challenge }: ChallengeDetailsProps) {
       // Get access token from session
       const accessToken = session.backendTokens.accessToken as string;
 
-      console.log("this is the access token: ", session);
-
       if (challenge.subscription_status?.is_subscribed) {
         await unsubscribeFromChallenge(challenge.slug, accessToken);
         toast.success(t("unsubscribeSuccess"));
@@ -172,14 +170,14 @@ export function ChallengeDetails({ challenge }: ChallengeDetailsProps) {
   };
 
   return (
-    <div className="space-y-12 max-w-5xl mx-auto">
-      {/* Challenge Header */}
-      <div className="space-y-6 bg-card p-8 rounded-lg border shadow-sm">
-        <div className="flex items-center justify-between">
-          <h1 className="text-4xl font-bold font-geist gradient-text">
+    <div className="space-y-6 md:space-y-12 max-w-5xl mx-auto px-4 md:px-0">
+      {/* Challenge Header - Improved for mobile */}
+      <div className="space-y-6 bg-card p-4 md:p-8 rounded-lg border shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <h1 className="text-2xl md:text-4xl font-bold font-geist gradient-text">
             {challenge.title}
           </h1>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-2 md:gap-4">
             <Badge
               variant={
                 challenge.difficulty === "easy"
@@ -188,21 +186,24 @@ export function ChallengeDetails({ challenge }: ChallengeDetailsProps) {
                   ? "secondary"
                   : "destructive"
               }
-              className="text-base px-4 py-1">
+              className="text-sm md:text-base px-2 md:px-4 py-0.5 md:py-1">
               {t(`difficulty.${challenge.difficulty}`)}
             </Badge>
             {challenge.subscription_status?.is_subscribed ? (
               <div className="flex items-center gap-2">
-                <Badge variant="secondary" className="text-base px-4 py-1">
+                <Badge
+                  variant="secondary"
+                  className="text-sm md:text-base px-2 md:px-4 py-0.5 md:py-1">
                   {t("subscribed")}
                 </Badge>
                 <Button
                   variant="destructive"
                   size="sm"
+                  className="text-xs md:text-sm"
                   disabled={isSubscribing || !session}
                   onClick={handleSubscribe}>
                   {isSubscribing ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <Loader2 className="h-3 w-3 md:h-4 md:w-4 animate-spin" />
                   ) : (
                     t("unsubscribe")
                   )}
@@ -212,10 +213,11 @@ export function ChallengeDetails({ challenge }: ChallengeDetailsProps) {
               <Button
                 variant="default"
                 size="sm"
+                className="text-xs md:text-sm w-full sm:w-auto"
                 disabled={isSubscribing || !session}
                 onClick={handleSubscribe}>
                 {isSubscribing ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <Loader2 className="h-3 w-3 md:h-4 md:w-4 animate-spin" />
                 ) : (
                   t("subscribe")
                 )}
@@ -224,22 +226,22 @@ export function ChallengeDetails({ challenge }: ChallengeDetailsProps) {
           </div>
         </div>
 
-        <div className="flex items-center gap-6 text-muted-foreground">
-          <div className="flex items-center gap-2">
-            <Trophy className="h-5 w-5" />
+        <div className="flex flex-wrap items-center gap-3 md:gap-6 text-sm md:text-base text-muted-foreground">
+          <div className="flex items-center gap-1 md:gap-2">
+            <Trophy className="h-4 w-4 md:h-5 md:w-5" />
             <span>
               {challenge.points} {t("points")}
             </span>
           </div>
-          <div className="flex items-center gap-2">
-            <Clock className="h-5 w-5" />
+          <div className="flex items-center gap-1 md:gap-2">
+            <Clock className="h-4 w-4 md:h-5 md:w-5" />
             <span>
               {challenge.estimated_time} {t("estimatedTime")}
             </span>
           </div>
           {challenge.subscription_status?.max_attempts && (
-            <div className="flex items-center gap-2">
-              <Badge variant="outline">
+            <div className="flex items-center gap-1 md:gap-2 mt-1 sm:mt-0">
+              <Badge variant="outline" className="text-xs md:text-sm">
                 {t("attemptsRemaining", {
                   current: challenge.subscription_status.attempts_count,
                   max: challenge.subscription_status.max_attempts,
@@ -253,22 +255,22 @@ export function ChallengeDetails({ challenge }: ChallengeDetailsProps) {
       {/* Attachments Section */}
       {challenge.attachments && challenge.attachments.length > 0 && (
         <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Download className="h-5 w-5" />
+          <CardHeader className="p-4 md:p-6">
+            <CardTitle className="flex items-center gap-2 text-xl md:text-2xl">
+              <Download className="h-4 w-4 md:h-5 md:w-5" />
               {t("attachments")}
             </CardTitle>
           </CardHeader>
-          <CardContent className="grid gap-2">
+          <CardContent className="grid gap-2 p-4 md:p-6">
             {challenge.attachments.map((attachment) => (
               <Button
                 key={attachment.id}
                 asChild
                 variant="outline"
-                className="justify-start gap-2">
+                className="justify-start gap-2 text-sm md:text-base overflow-hidden text-ellipsis">
                 <Link href={attachment.file} target="_blank" download>
-                  <Code2 className="h-4 w-4" />
-                  {attachment.title}
+                  <Code2 className="h-3 w-3 md:h-4 md:w-4 flex-shrink-0" />
+                  <span className="truncate">{attachment.title}</span>
                 </Link>
               </Button>
             ))}
@@ -278,11 +280,13 @@ export function ChallengeDetails({ challenge }: ChallengeDetailsProps) {
 
       {/* Challenge Content */}
       <Card className="overflow-hidden">
-        <CardHeader className="bg-muted/50">
-          <CardTitle className="font-geist">{t("description")}</CardTitle>
+        <CardHeader className="bg-muted/50 p-4 md:p-6">
+          <CardTitle className="font-geist text-xl md:text-2xl">
+            {t("description")}
+          </CardTitle>
         </CardHeader>
-        <CardContent className="p-8">
-          <article className="prose prose-lg dark:prose-invert max-w-none space-y-6 font-geist">
+        <CardContent className="p-4 md:p-8">
+          <article className="prose prose-sm md:prose-lg dark:prose-invert max-w-none space-y-4 md:space-y-6 font-geist">
             <Markdown
               remarkPlugins={[remarkGfm]}
               rehypePlugins={[rehypeHighlight]}
@@ -296,10 +300,12 @@ export function ChallengeDetails({ challenge }: ChallengeDetailsProps) {
       {/* Solution Area */}
       {session ? (
         <Card>
-          <CardHeader className="bg-muted/50">
-            <div className="flex items-center justify-between">
-              <CardTitle>{t("solution")}</CardTitle>
-              <Button asChild>
+          <CardHeader className="bg-muted/50 p-4 md:p-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <CardTitle className="text-xl md:text-2xl">
+                {t("solution")}
+              </CardTitle>
+              <Button asChild className="w-full sm:w-auto">
                 <Link
                   href={`/${params.locale}/challenges/${challenge.slug}/solution`}>
                   {t("writeSolution")}
@@ -307,13 +313,13 @@ export function ChallengeDetails({ challenge }: ChallengeDetailsProps) {
               </Button>
             </div>
           </CardHeader>
-          <CardContent className="p-6">
+          <CardContent className="p-4 md:p-6">
             {challenge.subscription_status?.is_subscribed ? (
-              <div className="text-center text-muted-foreground">
+              <div className="text-center text-muted-foreground text-sm md:text-base">
                 {t("clickToWriteSolution")}
               </div>
             ) : (
-              <div className="text-center text-muted-foreground">
+              <div className="text-center text-muted-foreground text-sm md:text-base">
                 {t("subscribeToSubmit")}
               </div>
             )}
@@ -321,8 +327,8 @@ export function ChallengeDetails({ challenge }: ChallengeDetailsProps) {
         </Card>
       ) : (
         <Card>
-          <CardContent className="p-6">
-            <div className="text-center text-muted-foreground">
+          <CardContent className="p-4 md:p-6">
+            <div className="text-center text-muted-foreground text-sm md:text-base">
               {t("signInToSubmit")}
             </div>
           </CardContent>
