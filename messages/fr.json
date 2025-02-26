@@ -16,7 +16,7 @@
       "title": "Filtres",
       "difficulty": "Difficulté",
       "category": "Catégorie",
-      "tags": "Tags",
+      "tags": "Étiquettes",
       "search": "Rechercher des défis...",
       "all": "Tous",
       "easy": "Facile",
@@ -30,7 +30,7 @@
       }
     },
     "contribute": {
-      "title": "Vous souhaitez Contribuer ?",
+      "title": "Envie de Contribuer ?",
       "description": "Aidez-nous à construire une meilleure plateforme d'apprentissage pour tous",
       "button": "Rejoindre Notre Communauté"
     },
@@ -92,7 +92,7 @@
   },
   "Auth": {
     "login": {
-      "title": "Content de vous revoir",
+      "title": "Bienvenue",
       "description": "Connectez-vous à votre compte",
       "username": "Nom d'utilisateur",
       "password": "Mot de passe",
@@ -114,7 +114,7 @@
       "username": "Nom d'utilisateur",
       "email": "Email",
       "password": "Mot de passe",
-      "confirmPassword": "Confirmer le Mot de Passe",
+      "confirmPassword": "Confirmer le mot de passe",
       "haveAccount": "Vous avez déjà un compte ?",
       "login": "Se connecter"
     },
@@ -123,15 +123,15 @@
       "description": "Entrez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe",
       "email": "Email",
       "submit": "Envoyer le lien de réinitialisation",
-      "submitting": "Envoi du lien en cours...",
+      "submitting": "Envoi du lien...",
       "rememberPassword": "Vous vous souvenez de votre mot de passe ?",
       "login": "Se connecter"
     },
     "verifyEmail": {
       "title": "Vérifiez votre email",
       "description": "Nous vous avons envoyé un email avec un lien de vérification. Veuillez vérifier votre boîte de réception et cliquer sur le lien pour vérifier votre compte.",
-      "backToLogin": "Retour à la Connexion",
-      "backToHome": "Retour à l'Accueil",
+      "backToLogin": "Retour à la connexion",
+      "backToHome": "Retour à l'accueil",
       "verifying": "Vérification de votre email",
       "verifyingDescription": "Veuillez patienter pendant que nous vérifions votre adresse email...",
       "invalidToken": "Lien de vérification invalide",
@@ -146,7 +146,7 @@
       "oauth_signin": "Impossible de se connecter avec le fournisseur OAuth",
       "oauth_callback": "Impossible de vérifier le compte OAuth",
       "oauth_create_account": "Impossible de créer un compte avec le fournisseur OAuth",
-      "oauth_account_not_linked": "Pour confirmer votre identité, connectez-vous avec le même compte que celui utilisé initialement",
+      "oauth_account_not_linked": "Pour confirmer votre identité, connectez-vous avec le même compte que celui utilisé à l'origine",
       "email_signin": "Impossible d'envoyer l'email de vérification",
       "verification": "Impossible de vérifier l'adresse email",
       "session_required": "Veuillez vous connecter pour accéder à cette page",
@@ -176,8 +176,8 @@
   },
   "NotFound": {
     "title": "Page Non Trouvée",
-    "description": "La page que vous recherchez n'existe pas ou a été déplacée. Veuillez vérifier l'URL ou revenir à la page d'accueil.",
-    "backHome": "Retour à l'Accueil"
+    "description": "La page que vous recherchez n'existe pas ou a été déplacée. Veuillez vérifier l'URL ou retourner à la page d'accueil.",
+    "backHome": "Retour à l'accueil"
   },
   "Footer": {
     "copyright": "Construit par",
@@ -185,6 +185,12 @@
     "source": "Code source"
   },
   "Challenge": {
+    "exitFullscreen": "Quitter le Plein Écran",
+    "selectChallenge": "Sélectionner le Défi",
+    "darkTheme": "Thème Sombre",
+    "lightTheme": "Thème Clair",
+    "highContrastDark": "Contraste Élevé Sombre",
+    "highContrastLight": "Contraste Élevé Clair",
     "timeUnit": {
       "minutes": "minutes",
       "hours": "heures",
@@ -214,7 +220,7 @@
       "description": "Le défi demandé n'a pas pu être trouvé."
     },
     "selectLanguage": "Langage de Programmation",
-    "selectLanguagePlaceholder": "Sélectionnez un langage",
+    "selectLanguagePlaceholder": "Sélectionner un langage",
     "codePlaceholder": "Tapez ou collez votre code ici...",
     "preview": "Aperçu",
     "languageRequired": "Veuillez sélectionner un langage de programmation",
@@ -242,7 +248,7 @@
     "viewChallenge": "Voir le Défi",
     "authenticationError": "Erreur d'authentification",
     "selectTheme": "Sélectionner un Thème",
-    "selectThemePlaceholder": "Sélectionnez un thème",
+    "selectThemePlaceholder": "Sélectionner un thème",
     "searchLanguages": "Rechercher des langages...",
     "languageGroup": {
       "popular": "Populaire",

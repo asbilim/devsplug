@@ -1,13 +1,13 @@
 {
   "Home": {
-    "title": "Programmieren durch Praxis meistern",
-    "description": "Willkommen bei Devsplug - Ihr Community-Hub für Entwickler",
-    "status": "Wir arbeiten derzeit an etwas Unglaublichem!",
-    "welcome": "Programmieren durch Praxis meistern",
-    "start": "Challenge starten",
+    "title": "Programmieren durch Übung meistern",
+    "description": "Willkommen bei Devsplug - Ihr Entwickler-Community-Hub",
+    "status": "Wir arbeiten derzeit an etwas Großartigem!",
+    "welcome": "Programmieren durch Übung meistern",
+    "start": "Herausforderung starten",
     "stats": {
       "title": "Community-Statistiken",
-      "challenges": "Aktive Challenges",
+      "challenges": "Aktive Herausforderungen",
       "users": "Aktive Benutzer",
       "solutions": "Eingereichte Lösungen",
       "languages": "Programmiersprachen"
@@ -17,21 +17,21 @@
       "difficulty": "Schwierigkeit",
       "category": "Kategorie",
       "tags": "Tags",
-      "search": "Challenges suchen...",
+      "search": "Herausforderungen suchen...",
       "all": "Alle",
       "easy": "Einfach",
       "medium": "Mittel",
       "hard": "Schwer",
       "clear": "Filter löschen",
       "categories": {
-        "programming-basics": "Grundlagen der Programmierung",
+        "programming-basics": "Programmiergrundlagen",
         "modular-programming": "Modulare Programmierung",
         "object-oriented-programming": "Objektorientierte Programmierung"
       }
     },
     "contribute": {
-      "title": "Möchten Sie beitragen?",
-      "description": "Helfen Sie uns, eine bessere Lernplattform für alle zu schaffen",
+      "title": "Möchten Sie mitwirken?",
+      "description": "Helfen Sie uns, eine bessere Lernplattform für alle zu erstellen",
       "button": "Unserer Community beitreten"
     },
     "pagination": {
@@ -39,15 +39,15 @@
       "next": "Nächste",
       "page": "Seite {page} von {total}"
     },
-    "noResults": "Keine Challenges gefunden",
-    "loading": "Challenges werden geladen...",
+    "noResults": "Keine Herausforderungen gefunden",
+    "loading": "Herausforderungen werden geladen...",
     "featured": {
       "title": "Hervorgehobene Kategorien",
       "description": "Entdecken Sie unsere beliebtesten Lernpfade",
       "explore": "Kategorie erkunden",
       "categories": {
         "algorithms": {
-          "title": "Algorithmen und Datenstrukturen",
+          "title": "Algorithmen & Datenstrukturen",
           "description": "Beherrschen Sie die Grundlagen der Informatik"
         },
         "web": {
@@ -55,8 +55,8 @@
           "description": "Moderne Webanwendungen erstellen"
         },
         "ai": {
-          "title": "KI und maschinelles Lernen",
-          "description": "Tauchen Sie ein in künstliche Intelligenz"
+          "title": "KI & Maschinelles Lernen",
+          "description": "Tauchen Sie ein in die künstliche Intelligenz"
         },
         "mobile": {
           "title": "Mobile Entwicklung",
@@ -84,7 +84,7 @@
       "hacker": "Hacker",
       "retro": "Retro",
       "nord": "Nord",
-      "solarized": "Solarisiert",
+      "solarized": "Solarized",
       "material": "Material",
       "monokai": "Monokai",
       "github-dark": "GitHub Dunkel"
@@ -92,13 +92,13 @@
   },
   "Auth": {
     "login": {
-      "title": "Schön, Sie wiederzusehen",
+      "title": "Willkommen zurück",
       "description": "Melden Sie sich bei Ihrem Konto an",
       "username": "Benutzername",
       "password": "Passwort",
       "submit": "Anmelden",
       "submitting": "Anmeldung läuft...",
-      "noAccount": "Sie haben noch kein Konto?",
+      "noAccount": "Sie haben kein Konto?",
       "register": "Registrieren",
       "forgotPassword": "Passwort vergessen?",
       "or": "oder fortfahren mit",
@@ -120,15 +120,15 @@
     },
     "forgotPassword": {
       "title": "Passwort vergessen",
-      "description": "Geben Sie Ihre E-Mail-Adresse ein, und wir senden Ihnen einen Link zum Zurücksetzen Ihres Passworts",
+      "description": "Geben Sie Ihre E-Mail-Adresse ein und wir senden Ihnen einen Link zum Zurücksetzen Ihres Passworts",
       "email": "E-Mail",
       "submit": "Reset-Link senden",
       "submitting": "Link wird gesendet...",
-      "rememberPassword": "Passwort wieder eingefallen?",
+      "rememberPassword": "Passwort wiederhergestellt?",
       "login": "Anmelden"
     },
     "verifyEmail": {
-      "title": "E-Mail überprüfen",
+      "title": "Überprüfen Sie Ihre E-Mail",
       "description": "Wir haben Ihnen eine E-Mail mit einem Verifizierungslink gesendet. Bitte überprüfen Sie Ihren Posteingang und klicken Sie auf den Link, um Ihr Konto zu verifizieren.",
       "backToLogin": "Zurück zur Anmeldung",
       "backToHome": "Zurück zur Startseite",
@@ -141,10 +141,10 @@
     },
     "errors": {
       "title": "Authentifizierungsfehler",
-      "default": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
+      "default": "Etwas ist schief gelaufen. Bitte versuchen Sie es erneut.",
       "CredentialsSignin": "Ungültiger Benutzername oder Passwort",
       "oauth_signin": "Anmeldung mit OAuth-Anbieter fehlgeschlagen",
-      "oauth_callback": "OAuth-Konto konnte nicht überprüft werden",
+      "oauth_callback": "OAuth-Konto konnte nicht verifiziert werden",
       "oauth_create_account": "Kontoerstellung mit OAuth-Anbieter fehlgeschlagen",
       "oauth_account_not_linked": "Um Ihre Identität zu bestätigen, melden Sie sich mit demselben Konto an, das Sie ursprünglich verwendet haben",
       "email_signin": "Verifizierungs-E-Mail konnte nicht gesendet werden",
@@ -156,7 +156,7 @@
       "passwords_not_match": "Passwörter stimmen nicht überein",
       "weak_password": "Passwort ist zu schwach",
       "invalid_email": "Ungültige E-Mail-Adresse",
-      "server_error": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
+      "server_error": "Etwas ist schief gelaufen. Bitte versuchen Sie es erneut."
     }
   },
   "Dashboard": {
@@ -171,7 +171,7 @@
       "title": "Statistiken",
       "description": "Übersicht über Ihre Aktivitäten",
       "followers": "Follower",
-      "following": "Gefolgt"
+      "following": "Folge ich"
     }
   },
   "NotFound": {
@@ -185,6 +185,12 @@
     "source": "Quellcode"
   },
   "Challenge": {
+    "exitFullscreen": "Vollbildmodus verlassen",
+    "selectChallenge": "Herausforderung auswählen",
+    "darkTheme": "Dunkles Design",
+    "lightTheme": "Helles Design",
+    "highContrastDark": "Hoher Kontrast Dunkel",
+    "highContrastLight": "Hoher Kontrast Hell",
     "timeUnit": {
       "minutes": "Minuten",
       "hours": "Stunden",
@@ -200,29 +206,29 @@
     "difficulty": "Schwierigkeit",
     "points": "XP",
     "estimatedTime": "Minuten",
-    "attachments": "Challenge-Dateien",
-    "description": "Challenge-Beschreibung",
+    "attachments": "Herausforderungsdateien",
+    "description": "Herausforderungsbeschreibung",
     "solution": "Lösung",
     "writeSolution": "Lösung schreiben",
-    "clickToWriteSolution": "Klicken Sie auf die obige Schaltfläche, um Ihre Lösung zu schreiben",
-    "subscribeToSubmit": "Abonnieren Sie diese Challenge, um Ihre Lösung einzureichen",
+    "clickToWriteSolution": "Klicken Sie auf die Schaltfläche oben, um Ihre Lösung zu schreiben",
+    "subscribeToSubmit": "Abonnieren Sie diese Herausforderung, um Ihre Lösung einzureichen",
     "yourSolution": "Ihre Lösung",
     "submitSolution": "Lösung einreichen",
     "signInToSubmit": "Bitte melden Sie sich an, um Ihre Lösung einzureichen",
     "notFound": {
-      "title": "Challenge nicht gefunden",
-      "description": "Die angeforderte Challenge konnte nicht gefunden werden."
+      "title": "Herausforderung nicht gefunden",
+      "description": "Die angeforderte Herausforderung konnte nicht gefunden werden."
     },
     "selectLanguage": "Programmiersprache",
     "selectLanguagePlaceholder": "Sprache auswählen",
-    "codePlaceholder": "Geben Sie hier Ihren Code ein...",
+    "codePlaceholder": "Geben Sie hier Ihren Code ein oder fügen Sie ihn ein...",
     "preview": "Vorschau",
     "languageRequired": "Bitte wählen Sie eine Programmiersprache aus",
-    "subscribe": "Challenge abonnieren",
+    "subscribe": "Herausforderung abonnieren",
     "unsubscribe": "Abonnement beenden",
-    "subscribeSuccess": "Challenge erfolgreich abonniert",
-    "unsubscribeSuccess": "Challenge erfolgreich abbestellt",
-    "subscribeError": "Abonnement der Challenge fehlgeschlagen",
+    "subscribeSuccess": "Erfolgreich für Herausforderung angemeldet",
+    "unsubscribeSuccess": "Erfolgreich von Herausforderung abgemeldet",
+    "subscribeError": "Anmeldung für Herausforderung fehlgeschlagen",
     "submitSuccess": "Lösung erfolgreich eingereicht",
     "submitError": "Einreichung der Lösung fehlgeschlagen",
     "codeRequired": "Bitte geben Sie Ihren Lösungscode ein",
@@ -231,15 +237,15 @@
     "documentationPlaceholder": "Schreiben Sie hier die Dokumentation Ihrer Lösung (Markdown wird unterstützt)...",
     "privateSolution": "Lösung privat machen",
     "codeCopied": "Code in die Zwischenablage kopiert",
-    "attemptsRemaining": "{{current}}/{{max}} Versuche übrig",
+    "attemptsRemaining": "{{current}}/{{max}} Versuche verbleibend",
     "back": "Zurück",
     "runCode": "Code ausführen (demnächst verfügbar)",
     "subscribed": "Abonniert",
     "requirements": "Anforderungen",
     "examples": "Beispiele",
-    "stats": "Challenge-Statistiken",
+    "stats": "Herausforderungsstatistiken",
     "attempts": "Versuche",
-    "viewChallenge": "Challenge anzeigen",
+    "viewChallenge": "Herausforderung ansehen",
     "authenticationError": "Authentifizierungsfehler",
     "selectTheme": "Design auswählen",
     "selectThemePlaceholder": "Design auswählen",
@@ -249,7 +255,7 @@
       "all": "Alle",
       "web": "Web",
       "systems": "Systeme",
-      "scripting": "Skripting",
+      "scripting": "Skript",
       "data": "Daten",
       "mobile": "Mobil",
       "ai": "KI",
@@ -261,7 +267,7 @@
       "security": "Sicherheit",
       "testing": "Test",
       "json": "JSON",
-      "markup": "Auszeichnung"
+      "markup": "Auszeichnungssprache"
     },
     "language": {
       "python": "Python",
@@ -329,14 +335,14 @@
       "cobalt": "Kobalt",
       "eclipse": "Eclipse",
       "material": "Material",
-      "solarizeddark": "Solarisiert Dunkel",
-      "solarizedlight": "Solarisiert Hell"
+      "solarizeddark": "Solarized Dunkel",
+      "solarizedlight": "Solarized Hell"
     }
   },
   "editor": {
     "selectLanguage": "Sprache auswählen",
     "run": "Ausführen",
     "fullscreen": "Vollbild",
-    "exitFullscreen": "Vollbild verlassen"
+    "exitFullscreen": "Vollbildmodus verlassen"
   }
 }
