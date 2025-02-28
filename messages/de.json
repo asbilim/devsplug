@@ -62,6 +62,39 @@
           "title": "Mobile Entwicklung",
           "description": "Apps für iOS und Android erstellen"
         }
+      },
+      "solutions": {
+        "title": "Ausgewählte Lösungen",
+        "description": "Entdecken Sie, wie andere diese Herausforderungen gelöst haben"
+      },
+      "languages": {
+        "title": "Beliebte Sprachen",
+        "description": "Meistverwendete Programmiersprachen in Lösungen"
+      }
+    },
+    "viewAll": "Alle anzeigen",
+    "recentActivity": {
+      "title": "Aktuelle Aktivitäten",
+      "description": "Sehen Sie, woran die Community gearbeitet hat",
+      "submitted": "hat eine Lösung eingereicht für"
+    },
+    "support": {
+      "title": "Projekt Unterstützen",
+      "notAvailable": "Diese Funktion ist noch nicht verfügbar. Bleiben Sie dran!",
+      "financial": {
+        "title": "Finanzielle Unterstützung",
+        "description": "Helfen Sie uns, Devsplug zu verbessern, indem Sie finanziell beitragen. Jede Spende hilft uns, eine bessere Plattform zu bauen.",
+        "button": "Uns Unterstützen"
+      },
+      "code": {
+        "title": "Code Beitragen",
+        "description": "Sind Sie Entwickler? Helfen Sie uns, Devsplug zu verbessern, indem Sie zu unserem Code beitragen oder neue Herausforderungen erstellen.",
+        "button": "Auf GitHub Beitragen"
+      },
+      "community": {
+        "title": "Der Community Beitreten",
+        "description": "Werden Sie ein aktives Mitglied unserer Community. Helfen Sie anderen, geben Sie Feedback und nehmen Sie an Diskussionen teil.",
+        "button": "Community Beitreten"
       }
     }
   },

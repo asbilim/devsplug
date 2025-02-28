@@ -62,6 +62,39 @@
           "title": "Développement Mobile",
           "description": "Créez des applications pour iOS et Android"
         }
+      },
+      "solutions": {
+        "title": "Solutions en Vedette",
+        "description": "Découvrez comment les autres ont résolu ces défis"
+      },
+      "languages": {
+        "title": "Langages Populaires",
+        "description": "Langages de programmation les plus utilisés dans les solutions"
+      }
+    },
+    "recentActivity": {
+      "title": "Activité Récente",
+      "description": "Voyez ce sur quoi la communauté a travaillé",
+      "submitted": "a soumis une solution à"
+    },
+    "viewAll": "Voir tout",
+    "support": {
+      "title": "Soutenir le Projet",
+      "notAvailable": "Cette fonctionnalité n'est pas encore disponible. Restez à l'écoute !",
+      "financial": {
+        "title": "Soutien Financier",
+        "description": "Aidez-nous à maintenir et améliorer Devsplug en contribuant financièrement. Chaque don nous aide à construire une meilleure plateforme.",
+        "button": "Nous Soutenir"
+      },
+      "code": {
+        "title": "Contribuer au Code",
+        "description": "Vous êtes développeur ? Aidez-nous à améliorer Devsplug en contribuant à notre code ou en créant de nouveaux défis.",
+        "button": "Contribuer sur GitHub"
+      },
+      "community": {
+        "title": "Rejoindre la Communauté",
+        "description": "Devenez un membre actif de notre communauté. Aidez les autres, fournissez des commentaires et participez aux discussions.",
+        "button": "Rejoindre la Communauté"
       }
     }
   },
