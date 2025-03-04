@@ -238,11 +238,55 @@
     "email": "E-Mail-Adresse",
     "score": "Punktzahl",
     "titleAlt": "Titel",
+    "bio": "Biografie",
+    "noBio": "Noch keine Biografie angegeben",
+    "bioPlaceholder": "Schreiben Sie eine kurze Biografie über sich...",
+    "uploadPhoto": "Foto hochladen",
+    "profileUpdated": "Profil erfolgreich aktualisiert",
+    "profileUpdateError": "Fehler beim Aktualisieren des Profils",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "editProfile": "Profil bearbeiten",
+    "defaultTitle": "Anfänger",
     "stats": {
       "title": "Statistiken",
       "description": "Übersicht über Ihre Aktivitäten",
       "followers": "Follower",
-      "following": "Folge ich"
+      "following": "Folge ich",
+      "completionRate": "Abschlussrate",
+      "totalSolutions": "Gesamte Lösungen"
+    },
+    "tabs": {
+      "challenges": "Herausforderungen",
+      "activity": "Aktivität",
+      "settings": "Einstellungen"
+    },
+    "challenges": {
+      "title": "Meine Herausforderungen",
+      "description": "Herausforderungen, die Sie abonniert haben",
+      "name": "Name der Herausforderung",
+      "difficulty": "Schwierigkeit",
+      "status": "Status",
+      "category": "Kategorie",
+      "actions": "Aktionen",
+      "solve": "Lösen",
+      "viewSolution": "Lösung anzeigen",
+      "notAttempted": "Nicht versucht",
+      "noChallenges": "Sie haben noch keine Herausforderungen abonniert",
+      "browse": "Herausforderungen durchsuchen",
+      "minutes": "Min"
+    },
+    "activity": {
+      "title": "Neueste Aktivitäten",
+      "description": "Ihre neuesten Aktionen und Erfolge",
+      "challengeCompleted": "Sie haben die Herausforderung \"{title}\" abgeschlossen",
+      "newFollower": "{username} folgt Ihnen jetzt",
+      "badgeEarned": "Sie haben das Abzeichen \"{badge}\" verdient",
+      "default": "Sie haben eine Aktion ausgeführt"
+    },
+    "settings": {
+      "title": "Kontoeinstellungen",
+      "comingSoon": "Einstellungsbereich kommt bald"
     }
   },
   "NotFound": {

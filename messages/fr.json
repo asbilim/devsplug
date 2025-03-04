@@ -238,11 +238,55 @@
     "email": "Adresse email",
     "score": "Score",
     "titleAlt": "Titre",
+    "bio": "Biographie",
+    "noBio": "Aucune biographie fournie",
+    "bioPlaceholder": "Écrivez une courte biographie à propos de vous...",
+    "uploadPhoto": "Télécharger une photo",
+    "profileUpdated": "Profil mis à jour avec succès",
+    "profileUpdateError": "Échec de la mise à jour du profil",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "editProfile": "Modifier le profil",
+    "defaultTitle": "Débutant",
     "stats": {
       "title": "Statistiques",
       "description": "Aperçu de votre activité",
       "followers": "Abonnés",
-      "following": "Abonnements"
+      "following": "Abonnements",
+      "completionRate": "Taux de Réussite",
+      "totalSolutions": "Solutions Totales"
+    },
+    "tabs": {
+      "challenges": "Défis",
+      "activity": "Activité",
+      "settings": "Paramètres"
+    },
+    "challenges": {
+      "title": "Mes Défis",
+      "description": "Défis auxquels vous êtes abonné",
+      "name": "Nom du Défi",
+      "difficulty": "Difficulté",
+      "status": "Statut",
+      "category": "Catégorie",
+      "actions": "Actions",
+      "solve": "Résoudre",
+      "viewSolution": "Voir la Solution",
+      "notAttempted": "Non Essayé",
+      "noChallenges": "Vous n'êtes abonné à aucun défi pour le moment",
+      "browse": "Parcourir les Défis",
+      "minutes": "min"
+    },
+    "activity": {
+      "title": "Activité Récente",
+      "description": "Vos actions et réalisations récentes",
+      "challengeCompleted": "Vous avez terminé le défi \"{title}\"",
+      "newFollower": "{username} a commencé à vous suivre",
+      "badgeEarned": "Vous avez obtenu le badge \"{badge}\"",
+      "default": "Vous avez effectué une action"
+    },
+    "settings": {
+      "title": "Paramètres du Compte",
+      "comingSoon": "Le panneau des paramètres sera bientôt disponible"
     }
   },
   "NotFound": {

@@ -237,11 +237,55 @@
     "email": "Email address",
     "score": "Score",
     "titleAlt": "Title",
+    "bio": "Bio",
+    "noBio": "No bio provided yet",
+    "bioPlaceholder": "Write a short bio about yourself...",
+    "uploadPhoto": "Upload photo",
+    "profileUpdated": "Profile updated successfully",
+    "profileUpdateError": "Failed to update profile",
+    "save": "Save",
+    "cancel": "Cancel",
+    "editProfile": "Edit profile",
+    "defaultTitle": "Novice",
     "stats": {
       "title": "Statistics",
       "description": "Your activity overview",
       "followers": "Followers",
-      "following": "Following"
+      "following": "Following",
+      "completionRate": "Completion Rate",
+      "totalSolutions": "Total Solutions"
+    },
+    "tabs": {
+      "challenges": "Challenges",
+      "activity": "Activity",
+      "settings": "Settings"
+    },
+    "challenges": {
+      "title": "My Challenges",
+      "description": "Challenges you've subscribed to",
+      "name": "Challenge Name",
+      "difficulty": "Difficulty",
+      "status": "Status",
+      "category": "Category",
+      "actions": "Actions",
+      "solve": "Solve",
+      "viewSolution": "View Solution",
+      "notAttempted": "Not Attempted",
+      "noChallenges": "You haven't subscribed to any challenges yet",
+      "browse": "Browse Challenges",
+      "minutes": "min"
+    },
+    "activity": {
+      "title": "Recent Activity",
+      "description": "Your recent actions and achievements",
+      "challengeCompleted": "You completed the challenge \"{title}\"",
+      "newFollower": "{username} started following you",
+      "badgeEarned": "You earned the \"{badge}\" badge",
+      "default": "You performed an action"
+    },
+    "settings": {
+      "title": "Account Settings",
+      "comingSoon": "Settings panel is coming soon"
     }
   },
   "NotFound": {
