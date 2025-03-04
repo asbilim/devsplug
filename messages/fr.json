@@ -96,11 +96,50 @@
         "description": "Devenez un membre actif de notre communauté. Aidez les autres, fournissez des commentaires et participez aux discussions.",
         "button": "Rejoindre la Communauté"
       }
+    },
+    "challengesTitle": "Explorer les Défis",
+    "publicSolutionsTitle": "Solutions de la Communauté",
+    "viewAllSolutions": "Voir toutes les solutions",
+    "viewSolution": "Voir la solution",
+    "solutionsCount": "{count, plural, =1 {# solution} other {# solutions}}",
+    "noPublicSolutions": "Aucune solution publique disponible pour le moment",
+    "solutionsError": "Échec du chargement des solutions. Veuillez réessayer plus tard.",
+    "defaultTitle": "Débutant",
+    "viewChallenge": "Voir le Défi",
+    "noDescription": "Aucune description disponible",
+    "exploreAllChallenges": "Explorer tous les défis",
+    "joinCommunity": "Rejoindre notre communauté",
+    "viewMoreSolutions": "Voir {count} solutions supplémentaires",
+    "featureComingSoon": "Cette fonctionnalité sera bientôt disponible !",
+    "howItWorks": {
+      "title": "Comment ça marche",
+      "subtitle": "Apprenez, codez et évoluez avec notre plateforme communautaire",
+      "step1": {
+        "title": "Choisissez un défi",
+        "description": "Parcourez notre collection de défis de programmation de différents niveaux de difficulté"
+      },
+      "step2": {
+        "title": "Résolvez le problème",
+        "description": "Écrivez votre solution dans votre langage de programmation préféré"
+      },
+      "step3": {
+        "title": "Soumettez votre solution",
+        "description": "Partagez votre code avec la communauté et gagnez des points"
+      },
+      "step4": {
+        "title": "Apprenez des autres",
+        "description": "Examinez d'autres solutions et améliorez vos compétences en programmation"
+      }
     }
   },
   "Navigation": {
     "language": "Langue",
     "theme": "Thème",
+    "features": "Fonctionnalités",
+    "documentation": "Docs",
+    "solutions": "Solutions",
+    "contribute": "Contribuer",
+    "create": "Créer",
     "themes": {
       "system": "Système",
       "light": "Clair",
@@ -199,7 +238,6 @@
     "email": "Adresse email",
     "score": "Score",
     "titleAlt": "Titre",
-    "defaultTitle": "Débutant",
     "stats": {
       "title": "Statistiques",
       "description": "Aperçu de votre activité",
@@ -278,7 +316,6 @@
     "examples": "Exemples",
     "stats": "Statistiques du Défi",
     "attempts": "Tentatives",
-    "viewChallenge": "Voir le Défi",
     "authenticationError": "Erreur d'authentification",
     "selectTheme": "Sélectionner un Thème",
     "selectThemePlaceholder": "Sélectionner un thème",

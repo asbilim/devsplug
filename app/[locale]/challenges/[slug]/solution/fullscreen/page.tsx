@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { Challenge } from "@/app/actions/challenges";
@@ -74,6 +75,25 @@ function LoadingSkeleton() {
       </div>
     </div>
   );
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const challenge = await getChallenge(params.slug);
+
+  if (!challenge) {
+    return {
+      title: "Challenge Not Found",
+    };
+  }
+
+  return {
+    title: `Devsplug | ${challenge.title} - Code Editor`,
+    description: `Full-screen code editor for ${challenge.title}`,
+  };
 }
 
 export default async function FullScreenPage({

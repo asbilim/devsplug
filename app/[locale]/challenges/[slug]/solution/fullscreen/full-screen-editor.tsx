@@ -12,7 +12,7 @@ import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/github-dark.css";
-import { SUPPORTED_LANGUAGES, THEME_OPTIONS } from "../solution-editor";
+import { SUPPORTED_LANGUAGES } from "../solution-editor";
 import type { Challenge } from "@/app/actions/challenges";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import {
@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/select";
 import { submitSolution } from "@/app/actions/challenges";
 import { useMediaQuery } from "@/hooks/use-media-query";
+import { useTheme } from "next-themes"; // Step 1: Import useTheme
 
 interface FullScreenEditorProps {
   challenge: Challenge;
@@ -45,14 +46,6 @@ interface ChallengeOption {
   title: string;
 }
 
-// Valid Monaco editor themes
-const MONACO_THEMES = [
-  { value: "vs", labelKey: "lightTheme" },
-  { value: "vs-dark", labelKey: "darkTheme" },
-  { value: "hc-black", labelKey: "highContrastDark" },
-  { value: "hc-light", labelKey: "highContrastLight" },
-];
-
 export function FullScreenEditor({ challenge, params }: FullScreenEditorProps) {
   const router = useRouter();
   const t = useTranslations("Challenge");
@@ -61,10 +54,17 @@ export function FullScreenEditor({ challenge, params }: FullScreenEditorProps) {
   const editorContainerRef = useRef<HTMLDivElement>(null);
   const isMobile = useMediaQuery("(max-width: 768px)");
 
-  // State management
+  // Step 2: Use useTheme to get the current application theme
+  const { resolvedTheme } = useTheme();
+
+  // Step 3: Compute Monaco theme based on resolvedTheme
+  const lightThemes = ["retro", "light"]; // Define known light themes
+  const monacoTheme =
+    resolvedTheme && lightThemes.includes(resolvedTheme) ? "vs" : "vs-dark";
+
+  // State management (removed selectedTheme)
   const [code, setCode] = useState("");
   const [selectedLanguage, setSelectedLanguage] = useState("python");
-  const [selectedTheme, setSelectedTheme] = useState("vs-dark");
   const [documentation, setDocumentation] = useState("");
   const [isPrivate, setIsPrivate] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -116,26 +116,18 @@ export function FullScreenEditor({ challenge, params }: FullScreenEditorProps) {
     const updateEditorHeight = () => {
       if (editorContainerRef.current) {
         const containerHeight = editorContainerRef.current.clientHeight;
-        // Subtract any padding or borders if necessary
         setEditorHeight(`${containerHeight}px`);
       }
     };
 
-    // Initial calculation
     updateEditorHeight();
-
-    // Add resize listener
     window.addEventListener("resize", updateEditorHeight);
-
-    // Clean up
     return () => window.removeEventListener("resize", updateEditorHeight);
   }, []);
 
-  // Make sure the component takes over the entire viewport
+  // Handle page elements and load saved state
   useEffect(() => {
-    // Hide header, footer and any other page elements
     const hidePageElements = () => {
-      // Target header and footer elements by their IDs or classes
       const header = document.querySelector("header");
       const footer = document.querySelector("footer");
       const navigation = document.querySelector("nav");
@@ -144,11 +136,9 @@ export function FullScreenEditor({ challenge, params }: FullScreenEditorProps) {
       if (footer) footer.style.display = "none";
       if (navigation) navigation.style.display = "none";
 
-      // Add overflow hidden to body
       document.body.style.overflow = "hidden";
     };
 
-    // Show them again when component unmounts
     const showPageElements = () => {
       const header = document.querySelector("header");
       const footer = document.querySelector("footer");
@@ -158,26 +148,23 @@ export function FullScreenEditor({ challenge, params }: FullScreenEditorProps) {
       if (footer) footer.style.display = "";
       if (navigation) navigation.style.display = "";
 
-      // Restore body overflow
       document.body.style.overflow = "";
     };
 
     hidePageElements();
 
-    // Load saved state from localStorage
+    // Load saved state without selectedTheme
     const savedState = localStorage.getItem("editorState");
     if (savedState) {
       try {
         const state = JSON.parse(savedState);
         setCode(state.code || "");
         setSelectedLanguage(state.selectedLanguage || "python");
-        setSelectedTheme(state.selectedTheme || "vs-dark");
         setDocumentation(state.documentation || "");
         setIsPrivate(state.isPrivate || false);
-        localStorage.removeItem("editorState"); // Clear after loading
+        localStorage.removeItem("editorState");
       } catch (e) {
         console.error("Error parsing saved editor state", e);
-        // Continue with default values if parsing fails
       }
     }
 
@@ -236,7 +223,6 @@ export function FullScreenEditor({ challenge, params }: FullScreenEditorProps) {
   const handleRunCode = async () => {
     try {
       setOutput("Running code...");
-      // Mock API call - replace with your actual endpoint
       const response = await fetch(`${API_BASE_URL}/api/run-code`, {
         method: "POST",
         headers: {
@@ -263,12 +249,11 @@ export function FullScreenEditor({ challenge, params }: FullScreenEditorProps) {
     }
   };
 
-  // Save code state before leaving the editor
+  // Save state before exit (removed selectedTheme)
   const saveStateBeforeExit = () => {
     const stateToSave = {
       code,
       selectedLanguage,
-      selectedTheme,
       documentation,
       isPrivate,
     };
@@ -276,14 +261,11 @@ export function FullScreenEditor({ challenge, params }: FullScreenEditorProps) {
     router.back();
   };
 
-  // Accessibility keyboard handler for panel resizing
   const handleKeyboardPanelResize = (
     direction: "left" | "right" | "up" | "down",
     currentSize: number
   ) => {
-    // Implementation would depend on the specific panel library being used
     console.log(`Resize panel ${direction} from ${currentSize}`);
-    // Trigger recalculation of editor height after panel resize
     setTimeout(() => {
       if (editorContainerRef.current) {
         const containerHeight = editorContainerRef.current.clientHeight;
@@ -292,15 +274,12 @@ export function FullScreenEditor({ challenge, params }: FullScreenEditorProps) {
     }, 100);
   };
 
-  // Handle challenge selection
   const handleChallengeChange = (slug: string) => {
     if (slug !== params.slug) {
       setSelectedChallenge(slug);
-      // Save current state before navigating
       const stateToSave = {
         code,
         selectedLanguage,
-        selectedTheme,
         documentation,
         isPrivate,
       };
@@ -324,7 +303,7 @@ export function FullScreenEditor({ challenge, params }: FullScreenEditorProps) {
           onChange={(value) => setCode(value || "")}
           language={selectedLanguage}
           options={{
-            theme: selectedTheme,
+            theme: monacoTheme, // Step 4: Use monacoTheme instead of selectedTheme
             minimap: { enabled: true },
             fontSize: 14,
             lineNumbers: "on",
@@ -337,7 +316,6 @@ export function FullScreenEditor({ challenge, params }: FullScreenEditorProps) {
           aria-labelledby="editor-description"
           className="w-full h-full"
           onFocus={() => {
-            // Force height recalculation on editor focus
             if (editorContainerRef.current) {
               const containerHeight = editorContainerRef.current.clientHeight;
               setEditorHeight(`${containerHeight}px`);
@@ -430,7 +408,6 @@ export function FullScreenEditor({ challenge, params }: FullScreenEditorProps) {
         }
       }}
       onDragEnd={() => {
-        // Recalculate editor height after panel resize
         setTimeout(() => {
           if (editorContainerRef.current) {
             const containerHeight = editorContainerRef.current.clientHeight;
@@ -488,22 +465,7 @@ export function FullScreenEditor({ challenge, params }: FullScreenEditorProps) {
             </SelectContent>
           </Select>
 
-          {/* Theme Selection Dropdown */}
-          <Select
-            value={selectedTheme}
-            onValueChange={setSelectedTheme}
-            aria-label={t("selectTheme")}>
-            <SelectTrigger className="w-[140px] sm:w-[180px]">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {MONACO_THEMES.map((theme) => (
-                <SelectItem key={theme.value} value={theme.value}>
-                  {t(theme.labelKey)}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          {/* Step 5: Removed Theme Selection Dropdown */}
 
           {!isMobile && (
             <Button
@@ -560,7 +522,6 @@ export function FullScreenEditor({ challenge, params }: FullScreenEditorProps) {
           direction={direction}
           className="h-full"
           onLayout={() => {
-            // Recalculate editor height after layout changes
             setTimeout(() => {
               if (editorContainerRef.current) {
                 const containerHeight = editorContainerRef.current.clientHeight;
@@ -583,7 +544,6 @@ export function FullScreenEditor({ challenge, params }: FullScreenEditorProps) {
               </>
             )
           ) : (
-            // Vertical layout for mobile
             <>
               {renderChallengePanel()}
               {renderPanelResizeHandle()}

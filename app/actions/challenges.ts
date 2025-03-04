@@ -249,3 +249,34 @@ export async function submitSolution(
       : new Error("Failed to submit solution");
   }
 }
+
+export async function checkChallengeSubscription(
+  slug: string,
+  accessToken: string
+) {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/challenges/listings/${slug}/check-subscription/`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to check subscription status");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error checking subscription status:", error);
+    return {
+      is_subscribed: false,
+      authenticated: false,
+      message: "Error checking subscription status",
+    };
+  }
+}

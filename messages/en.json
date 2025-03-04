@@ -95,11 +95,50 @@
         "description": "Become an active member of our community. Help others, provide feedback, and participate in discussions.",
         "button": "Join Community"
       }
+    },
+    "challengesTitle": "Explore Challenges",
+    "publicSolutionsTitle": "Community Solutions",
+    "viewAllSolutions": "View all solutions",
+    "viewSolution": "View solution",
+    "solutionsCount": "{count, plural, =1 {# solution} other {# solutions}}",
+    "noPublicSolutions": "No public solutions available yet",
+    "solutionsError": "Failed to load solutions. Please try again later.",
+    "defaultTitle": "Novice",
+    "viewChallenge": "View Challenge",
+    "noDescription": "No description available",
+    "exploreAllChallenges": "Explore All Challenges",
+    "joinCommunity": "Join Our Community",
+    "viewMoreSolutions": "View {count} more solutions",
+    "featureComingSoon": "This feature is coming soon!",
+    "howItWorks": {
+      "title": "How It Works",
+      "subtitle": "Learn, code, and grow with our community-driven platform",
+      "step1": {
+        "title": "Choose a Challenge",
+        "description": "Browse through our collection of coding challenges across different difficulty levels"
+      },
+      "step2": {
+        "title": "Solve the Problem",
+        "description": "Write your solution in your preferred programming language"
+      },
+      "step3": {
+        "title": "Submit Your Solution",
+        "description": "Share your code with the community and earn points"
+      },
+      "step4": {
+        "title": "Learn from Others",
+        "description": "Review other solutions and improve your coding skills"
+      }
     }
   },
   "Navigation": {
     "language": "Language",
     "theme": "Theme",
+    "features": "Features",
+    "documentation": "Docs",
+    "solutions": "Solutions",
+    "contribute": "Contribute",
+    "create": "Create",
     "themes": {
       "system": "System",
       "light": "Light",
@@ -198,7 +237,6 @@
     "email": "Email address",
     "score": "Score",
     "titleAlt": "Title",
-    "defaultTitle": "Novice",
     "stats": {
       "title": "Statistics",
       "description": "Your activity overview",

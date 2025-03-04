@@ -96,11 +96,50 @@
         "description": "Werden Sie ein aktives Mitglied unserer Community. Helfen Sie anderen, geben Sie Feedback und nehmen Sie an Diskussionen teil.",
         "button": "Community Beitreten"
       }
+    },
+    "challengesTitle": "Herausforderungen erkunden",
+    "publicSolutionsTitle": "Community-Lösungen",
+    "viewAllSolutions": "Alle Lösungen anzeigen",
+    "viewSolution": "Lösung anzeigen",
+    "solutionsCount": "{count, plural, =1 {# Lösung} other {# Lösungen}}",
+    "noPublicSolutions": "Noch keine öffentlichen Lösungen verfügbar",
+    "solutionsError": "Fehler beim Laden der Lösungen. Bitte versuchen Sie es später erneut.",
+    "defaultTitle": "Anfänger",
+    "viewChallenge": "Herausforderung ansehen",
+    "noDescription": "Keine Beschreibung verfügbar",
+    "exploreAllChallenges": "Alle Herausforderungen erkunden",
+    "joinCommunity": "Unserer Community beitreten",
+    "viewMoreSolutions": "{count} weitere Lösungen anzeigen",
+    "featureComingSoon": "Diese Funktion ist bald verfügbar!",
+    "howItWorks": {
+      "title": "Wie es funktioniert",
+      "subtitle": "Lernen, programmieren und wachsen mit unserer Community-Plattform",
+      "step1": {
+        "title": "Herausforderung auswählen",
+        "description": "Durchsuchen Sie unsere Sammlung von Programmierherausforderungen verschiedener Schwierigkeitsgrade"
+      },
+      "step2": {
+        "title": "Problem lösen",
+        "description": "Schreiben Sie Ihre Lösung in Ihrer bevorzugten Programmiersprache"
+      },
+      "step3": {
+        "title": "Lösung einreichen",
+        "description": "Teilen Sie Ihren Code mit der Community und verdienen Sie Punkte"
+      },
+      "step4": {
+        "title": "Von anderen lernen",
+        "description": "Überprüfen Sie andere Lösungen und verbessern Sie Ihre Programmierfähigkeiten"
+      }
     }
   },
   "Navigation": {
     "language": "Sprache",
     "theme": "Design",
+    "features": "Funktionen",
+    "documentation": "Docs",
+    "solutions": "Lösungen",
+    "contribute": "Beitragen",
+    "create": "Erstellen",
     "themes": {
       "system": "System",
       "light": "Hell",
@@ -199,7 +238,6 @@
     "email": "E-Mail-Adresse",
     "score": "Punktzahl",
     "titleAlt": "Titel",
-    "defaultTitle": "Anfänger",
     "stats": {
       "title": "Statistiken",
       "description": "Übersicht über Ihre Aktivitäten",

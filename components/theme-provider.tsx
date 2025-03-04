@@ -5,7 +5,7 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   return (
     <NextThemesProvider
       attribute="data-theme"
-      defaultTheme="matrix"
+      defaultTheme="retro"
       enableSystem
       themes={[
         "light",
