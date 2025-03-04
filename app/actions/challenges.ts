@@ -66,32 +66,27 @@ export const getChallenges = async ({
       per_page: String(ITEMS_PER_PAGE),
     });
 
-    console.log(
-      "Fetching challenges from:",
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/challenges/listings/?${params}`
-    );
+    const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/challenges/listings/?${params}`;
 
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/challenges/listings/?${params}`,
-      {
-        cache: "no-cache",
-        next: { tags: ["challenges"] },
-      }
-    );
+    const res = await fetch(url, {
+      cache: "no-cache",
+      next: { tags: ["challenges"] },
+    });
 
     if (!res.ok) {
       const errorText = await res.text();
-      console.error("API Error:", {
+      console.error("❌ getChallenges: API Error:", {
         status: res.status,
         statusText: res.statusText,
         error: errorText,
         url: res.url,
       });
-      throw new Error("Failed to fetch challenges");
+      throw new Error(
+        `Failed to fetch challenges: ${res.status} ${res.statusText}`
+      );
     }
 
     const data = await res.json();
-    console.log("API Response:", data);
 
     // Calculate total pages based on count and items per page
     const totalPages = Math.ceil(data.count / ITEMS_PER_PAGE);
@@ -102,7 +97,6 @@ export const getChallenges = async ({
       currentPage: page,
     };
   } catch (error) {
-    console.error("Error fetching challenges:", error);
     return {
       data: [],
       totalPages: 1,
@@ -112,14 +106,7 @@ export const getChallenges = async ({
 };
 
 export async function subscribeToChallenge(slug: string, accessToken: string) {
-  console.log("🎯 Challenge Subscribe: Starting subscription", { slug });
-
   try {
-    console.log("📡 Challenge Subscribe: Making request with token", {
-      hasToken: !!accessToken,
-      tokenPreview: accessToken ? `${accessToken.slice(0, 10)}...` : null,
-    });
-
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/challenges/listings/${slug}/subscribe/`,
       {
@@ -130,12 +117,6 @@ export async function subscribeToChallenge(slug: string, accessToken: string) {
         },
       }
     );
-
-    console.log("📡 Challenge Subscribe: Response received", {
-      status: response.status,
-      ok: response.ok,
-      url: response.url,
-    });
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -148,14 +129,9 @@ export async function subscribeToChallenge(slug: string, accessToken: string) {
     }
 
     const data = await response.json();
-    console.log("✅ Challenge Subscribe: Success", { data });
+
     return data;
   } catch (error) {
-    console.error("💥 Challenge Subscribe: Error occurred", {
-      name: error.name,
-      message: error.message,
-      stack: error.stack,
-    });
     throw error;
   }
 }
@@ -164,14 +140,7 @@ export async function unsubscribeFromChallenge(
   slug: string,
   accessToken: string
 ) {
-  console.log("🎯 Challenge Unsubscribe: Starting unsubscription", { slug });
-
   try {
-    console.log("📡 Challenge Unsubscribe: Making request with token", {
-      hasToken: !!accessToken,
-      tokenPreview: accessToken ? `${accessToken.slice(0, 10)}...` : null,
-    });
-
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/challenges/listings/${slug}/unsubscribe/`,
       {
@@ -183,31 +152,25 @@ export async function unsubscribeFromChallenge(
       }
     );
 
-    console.log("📡 Challenge Unsubscribe: Response received", {
-      status: response.status,
-      ok: response.ok,
-      url: response.url,
-    });
+    // Handle 204 No Content response - this is a success case
+    if (response.status === 204) {
+      return { success: true };
+    }
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error("❌ Challenge Unsubscribe: Request failed", {
-        status: response.status,
-        statusText: response.statusText,
-        error: errorText,
-      });
       throw new Error("Failed to unsubscribe from challenge");
     }
 
-    const data = await response.json();
-    console.log("✅ Challenge Unsubscribe: Success", { data });
-    return data;
+    // For non-204 success responses, try to parse JSON
+    try {
+      const data = await response.json();
+      return data;
+    } catch (e) {
+      // If there's no JSON but response was OK, return success
+      return { success: true };
+    }
   } catch (error) {
-    console.error("💥 Challenge Unsubscribe: Error occurred", {
-      name: error.name,
-      message: error.message,
-      stack: error.stack,
-    });
     throw error;
   }
 }
@@ -222,28 +185,42 @@ export async function submitSolution(
   }
 ) {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/challenges/listings/${slug}/solutions/`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(data),
-      }
-    );
+    const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/challenges/listings/${slug}/solutions/`;
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(data),
+    });
 
     if (!response.ok) {
-      const errorData = await response.json().catch(() => null);
+      const errorData = await response.json().catch((parseError) => {
+        console.error(
+          "❌ submitSolution: Failed to parse error response",
+          parseError
+        );
+        return { message: `Status ${response.status}: ${response.statusText}` };
+      });
+
+      console.error("❌ submitSolution: Request failed", {
+        status: response.status,
+        statusText: response.statusText,
+        error: errorData,
+        url: response.url,
+      });
+
       throw new Error(
         errorData?.message || `Failed to submit solution: ${response.status}`
       );
     }
 
-    return await response.json();
+    const responseData = await response.json();
+
+    return responseData;
   } catch (error) {
-    console.error("Error submitting solution:", error);
     throw error instanceof Error
       ? error
       : new Error("Failed to submit solution");
@@ -255,8 +232,76 @@ export async function checkChallengeSubscription(
   accessToken: string
 ) {
   try {
+    const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/challenges/listings/${slug}/check-subscription/`;
+
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorText = await response
+        .text()
+        .catch(() => "Failed to read error response");
+
+      throw new Error(
+        `Failed to check subscription status: ${response.status}`
+      );
+    }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error("💥 checkChallengeSubscription: Error occurred", {
+      name: error.name,
+      message: error.message,
+      stack: error.stack,
+    });
+    return {
+      is_subscribed: false,
+      authenticated: false,
+      message: "Error checking subscription status",
+    };
+  }
+}
+
+export async function checkChallengeRegistration(
+  slug: string,
+  accessToken: string
+): Promise<{ is_registered: boolean; authenticated: boolean }> {
+  try {
+    const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/challenges/listings/${slug}/check_registration/`;
+
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorText = await response
+        .text()
+        .catch(() => "Failed to read error response");
+      throw new Error(
+        `Failed to check registration status: ${response.status}`
+      );
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function registerForChallenge(slug: string, accessToken: string) {
+  try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/challenges/listings/${slug}/check-subscription/`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/challenges/listings/${slug}/register/`,
       {
         method: "POST",
         headers: {
@@ -267,16 +312,45 @@ export async function checkChallengeSubscription(
     );
 
     if (!response.ok) {
-      throw new Error("Failed to check subscription status");
+      const errorText = await response.text();
+
+      throw new Error("Failed to register for challenge");
     }
 
-    return await response.json();
+    const data = await response.json();
+
+    return data;
   } catch (error) {
-    console.error("Error checking subscription status:", error);
-    return {
-      is_subscribed: false,
-      authenticated: false,
-      message: "Error checking subscription status",
-    };
+    throw error;
+  }
+}
+
+export async function unregisterFromChallenge(
+  slug: string,
+  accessToken: string
+) {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/challenges/listings/${slug}/unsubscribe/`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      const errorText = await response.text();
+
+      throw new Error("Failed to unregister from challenge");
+    }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    throw error;
   }
 }

@@ -255,6 +255,8 @@
     "source": "Source code"
   },
   "Challenge": {
+    "register": "register challenge",
+    "checkingStatus": "Checking status...",
     "exitFullscreen": "Exit Fullscreen",
     "selectChallenge": "Select Challenge",
     "darkTheme": "Dark Theme",

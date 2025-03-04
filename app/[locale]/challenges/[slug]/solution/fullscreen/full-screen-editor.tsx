@@ -265,7 +265,6 @@ export function FullScreenEditor({ challenge, params }: FullScreenEditorProps) {
     direction: "left" | "right" | "up" | "down",
     currentSize: number
   ) => {
-    console.log(`Resize panel ${direction} from ${currentSize}`);
     setTimeout(() => {
       if (editorContainerRef.current) {
         const containerHeight = editorContainerRef.current.clientHeight;

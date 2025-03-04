@@ -46,11 +46,6 @@ export async function ChallengesList({
 
   const challenges = await getChallenges(params);
 
-  console.log("Challenges:", challenges);
-  console.log("Challenges.data:", challenges?.data);
-  console.log("Challenges.currentPage:", challenges?.currentPage);
-  console.log("Challenges.totalPages:", challenges?.totalPages);
-
   if (!challenges?.data?.length) {
     return (
       <div className="text-center py-12">

@@ -6,6 +6,9 @@ import {
   unsubscribeFromChallenge,
   submitSolution,
   checkChallengeSubscription,
+  checkChallengeRegistration,
+  registerForChallenge,
+  unregisterFromChallenge,
 } from "@/app/actions/challenges";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -67,6 +70,12 @@ export function ChallengeDetails({ challenge }: ChallengeDetailsProps) {
     authenticated: !!session,
     message: "",
   });
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [isCheckingRegistration, setIsCheckingRegistration] = useState(false);
+  const [registrationStatus, setRegistrationStatus] = useState({
+    is_registered: false,
+    authenticated: !!session,
+  });
   const params = useParams();
 
   // Check subscription status when component mounts or session changes
@@ -90,6 +99,35 @@ export function ChallengeDetails({ challenge }: ChallengeDetailsProps) {
 
     if (sessionStatus !== "loading") {
       checkSubscription();
+    }
+  }, [session, sessionStatus, challenge.slug]);
+
+  // Check registration status when component mounts or session changes
+  useEffect(() => {
+    const checkRegistration = async () => {
+      if (session && session.backendTokens.accessToken) {
+        setIsCheckingRegistration(true);
+        try {
+          const result = await checkChallengeRegistration(
+            challenge.slug,
+            session.backendTokens.accessToken as string
+          );
+          setRegistrationStatus(result);
+        } catch (error) {
+          console.error("Error checking registration:", error);
+          // Reset registration status on error to prevent UI inconsistency
+          setRegistrationStatus({
+            is_registered: false,
+            authenticated: !!session,
+          });
+        } finally {
+          setIsCheckingRegistration(false);
+        }
+      }
+    };
+
+    if (sessionStatus !== "loading") {
+      checkRegistration();
     }
   }, [session, sessionStatus, challenge.slug]);
 
@@ -159,6 +197,39 @@ export function ChallengeDetails({ challenge }: ChallengeDetailsProps) {
       toast.error(t("submitError"));
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleRegister = async () => {
+    if (!session) {
+      toast.error(t("signInToSubmit"));
+      return;
+    }
+
+    try {
+      setIsRegistering(true);
+      // Get access token from session
+      const accessToken = session.backendTokens.accessToken as string;
+
+      if (registrationStatus.is_registered) {
+        await unregisterFromChallenge(challenge.slug, accessToken);
+        toast.success(t("unregisterSuccess"));
+        setRegistrationStatus({
+          ...registrationStatus,
+          is_registered: false,
+        });
+      } else {
+        await registerForChallenge(challenge.slug, accessToken);
+        toast.success(t("registerSuccess"));
+        setRegistrationStatus({
+          ...registrationStatus,
+          is_registered: true,
+        });
+      }
+    } catch (error) {
+      toast.error(t("registerError"));
+    } finally {
+      setIsRegistering(false);
     }
   };
 
@@ -353,32 +424,61 @@ export function ChallengeDetails({ challenge }: ChallengeDetailsProps) {
               <CardTitle className="text-xl md:text-2xl">
                 {t("solution")}
               </CardTitle>
-              <Button
-                asChild
-                className="w-full sm:w-auto"
-                disabled={
-                  isCheckingSubscription || !subscriptionStatus.is_subscribed
-                }>
-                <Link
-                  href={`/${params.locale}/challenges/${challenge.slug}/solution`}>
-                  {t("writeSolution")}
-                </Link>
-              </Button>
+              <div className="flex flex-col sm:flex-row items-center gap-2">
+                {registrationStatus.is_registered ? (
+                  <>
+                    <Button
+                      asChild
+                      className="w-full sm:w-auto"
+                      disabled={isCheckingRegistration}>
+                      <Link
+                        href={`/${params.locale}/challenges/${challenge.slug}/solution`}>
+                        {t("writeSolution")}
+                      </Link>
+                    </Button>
+                  </>
+                ) : (
+                  <Button
+                    variant="default"
+                    className="w-full sm:w-auto"
+                    disabled={
+                      isRegistering || !subscriptionStatus.is_subscribed
+                    }
+                    onClick={handleRegister}>
+                    {isRegistering ? (
+                      <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                    ) : null}
+                    {t("register")}
+                  </Button>
+                )}
+              </div>
             </div>
           </CardHeader>
           <CardContent className="p-4 md:p-6">
-            {isCheckingSubscription ? (
+            {isCheckingRegistration ? (
               <div className="text-center text-muted-foreground text-sm md:text-base flex items-center justify-center gap-2">
                 <Loader2 className="h-4 w-4 animate-spin" />
                 {t("checkingStatus")}
               </div>
+            ) : registrationStatus.is_registered ? (
+              <div className="text-center text-muted-foreground text-sm md:text-base">
+                <div className="flex items-center justify-center gap-2 mb-2"></div>
+                {t("clickToWriteSolution")}
+              </div>
             ) : subscriptionStatus.is_subscribed ? (
               <div className="text-center text-muted-foreground text-sm md:text-base">
-                {t("clickToWriteSolution")}
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Badge
+                    variant="outline"
+                    className="bg-yellow-100 dark:bg-yellow-900">
+                    {t("subscribed")}
+                  </Badge>
+                </div>
+                {t("registerToSubmit")}
               </div>
             ) : (
               <div className="text-center text-muted-foreground text-sm md:text-base">
-                {t("subscribeToSubmit")}
+                {t("subscribeFirstToRegister")}
               </div>
             )}
           </CardContent>

@@ -105,8 +105,6 @@ export const authOptions: NextAuthOptions = {
 
         try {
           const tokenUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/api/token/`;
-          console.log("Attempting token fetch from:", tokenUrl);
-
           const response = await fetch(tokenUrl, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -127,12 +125,8 @@ export const authOptions: NextAuthOptions = {
           }
 
           const tokens = await response.json();
-          console.log("Token fetch successful");
-
           // Fetch user data
           const userUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/api/user/users/me/`;
-          console.log("Attempting user data fetch from:", userUrl);
-
           const userResponse = await fetch(userUrl, {
             headers: {
               Authorization: `Bearer ${tokens.access}`,
@@ -150,8 +144,6 @@ export const authOptions: NextAuthOptions = {
           }
 
           const user = await userResponse.json();
-          console.log("User data fetch successful");
-
           return {
             ...user,
             backendTokens: {
@@ -177,12 +169,6 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async signIn({ user, account, profile }) {
-      console.log("SignIn Callback:", {
-        provider: account?.provider,
-        hasUser: !!user,
-        hasProfile: !!profile,
-      });
-
       if (account?.provider !== "credentials") {
         try {
           const socialData = {
@@ -204,9 +190,6 @@ export const authOptions: NextAuthOptions = {
 
           // Use provider-specific endpoints
           const endpoint = `/users/auth/${account?.provider}/`;
-          console.log("Attempting social login with endpoint:", endpoint);
-          console.log("Social login data:", socialData);
-
           const response = await fetch(
             `${process.env.NEXT_PUBLIC_BACKEND_URL}${endpoint}`,
             {
@@ -227,9 +210,6 @@ export const authOptions: NextAuthOptions = {
           }
 
           const tokens = await response.json();
-          console.log("this is the token:", tokens);
-          console.log("Social login successful, received tokens");
-
           // Add backend tokens to the user object
           user.backendTokens = {
             accessToken: tokens.access_token,
@@ -257,7 +237,6 @@ export const authOptions: NextAuthOptions = {
           }
 
           const userData = await userResponse.json();
-          console.log("User data fetch successful");
           Object.assign(user, userData);
         } catch (error) {
           console.error("Social auth error:", {
@@ -272,12 +251,6 @@ export const authOptions: NextAuthOptions = {
       return true;
     },
     async jwt({ token, user, account }) {
-      console.log("JWT Callback:", {
-        hasToken: !!token,
-        hasUser: !!user,
-        hasAccount: !!account,
-      });
-
       if (user) {
         token.backendTokens = (user as ExtendedUser).backendTokens;
         token.user = user;
@@ -301,8 +274,6 @@ export const authOptions: NextAuthOptions = {
 
             const tokens = await response.json();
 
-            console.log(tokens);
-
             if (!response.ok) throw tokens;
 
             token.backendTokens = {
@@ -319,12 +290,6 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      console.log("Session Callback:", {
-        hasSession: !!session,
-        hasToken: !!token,
-        tokenDetails: token,
-      });
-
       if (token.backendTokens) {
         session.backendTokens = token.backendTokens;
       }
@@ -351,13 +316,7 @@ export const authOptions: NextAuthOptions = {
         timestamp: new Date().toISOString(),
       });
     },
-    debug(code, metadata) {
-      console.log("Auth debug:", {
-        code,
-        metadata,
-        timestamp: new Date().toISOString(),
-      });
-    },
+    debug(code, metadata) {},
   },
   session: {
     strategy: "jwt",

@@ -88,7 +88,6 @@ export function CodeEditor({
     // Add any editor customizations here
     editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, () => {
       // Handle save shortcut
-      console.log("Save shortcut pressed");
     });
   }, []);
 
