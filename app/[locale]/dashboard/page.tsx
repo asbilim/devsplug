@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/src/i18n/routing";
 import { useEffect } from "react";
 import DashboardLayout from "./components/DashboardLayout";
 import { Skeleton } from "@/components/ui/skeleton";

@@ -24,7 +24,12 @@ import {
   SelectGroup,
   SelectLabel,
 } from "@/components/ui/select";
-import { submitSolution } from "@/app/actions/challenges";
+import {
+  saveSolutionToSession,
+  getSolutionFromSession,
+  clearSolutionFromSession,
+  submitSolution as apiSubmitSolution,
+} from "@/app/services/api";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { useTheme } from "next-themes"; // Step 1: Import useTheme
 
@@ -97,7 +102,7 @@ export function FullScreenEditor({ challenge, params }: FullScreenEditorProps) {
         );
       } catch (error) {
         console.error("Error fetching challenges:", error);
-        toast.error(t("challengeLoadError"));
+        toast(t("challengeLoadError"));
       } finally {
         setIsLoadingChallenges(false);
       }
@@ -153,23 +158,33 @@ export function FullScreenEditor({ challenge, params }: FullScreenEditorProps) {
 
     hidePageElements();
 
-    // Load saved state without selectedTheme
-    const savedState = localStorage.getItem("editorState");
-    if (savedState) {
-      try {
-        const state = JSON.parse(savedState);
-        setCode(state.code || "");
-        setSelectedLanguage(state.selectedLanguage || "python");
-        setDocumentation(state.documentation || "");
-        setIsPrivate(state.isPrivate || false);
-        localStorage.removeItem("editorState");
-      } catch (e) {
-        console.error("Error parsing saved editor state", e);
+    // Try to load from sessionStorage first
+    const savedSolution = getSolutionFromSession(params.slug);
+    if (savedSolution) {
+      setCode(savedSolution.code || "");
+      setSelectedLanguage(savedSolution.language || "python");
+      setDocumentation(savedSolution.documentation || "");
+      setIsPrivate(savedSolution.isPrivate || false);
+      toast(t("sessionRecovered"));
+    } else {
+      // Fall back to localStorage for backward compatibility
+      const savedState = localStorage.getItem("editorState");
+      if (savedState) {
+        try {
+          const state = JSON.parse(savedState);
+          setCode(state.code || "");
+          setSelectedLanguage(state.selectedLanguage || "python");
+          setDocumentation(state.documentation || "");
+          setIsPrivate(state.isPrivate || false);
+          localStorage.removeItem("editorState");
+        } catch (e) {
+          console.error("Error parsing saved editor state", e);
+        }
       }
     }
 
     return () => showPageElements();
-  }, []);
+  }, [params.slug, t]);
 
   // Focus on output when it changes
   useEffect(() => {
@@ -179,43 +194,30 @@ export function FullScreenEditor({ challenge, params }: FullScreenEditorProps) {
   }, [output]);
 
   const handleSubmit = async () => {
-    if (!session?.user) {
-      toast.error(t("signInToSubmit"));
-      return;
-    }
-
-    if (!selectedLanguage) {
-      toast.error(t("languageRequired"));
-      return;
-    }
-
-    if (!code.trim()) {
-      toast.error(t("codeRequired"));
-      return;
-    }
-
+    // Simply save to session storage instead of submitting
     try {
       setIsSubmitting(true);
-      const accessToken = session.user.backendTokens?.accessToken;
 
-      if (!accessToken) {
-        toast.error(t("authenticationError"));
-        return;
-      }
-
-      await submitSolution(params.slug, {
+      // Save to session storage
+      saveSolutionToSession({
+        challengeId: challenge.id,
+        challengeSlug: params.slug,
         code,
         documentation,
         language: selectedLanguage,
-        is_private: isPrivate,
+        isPrivate,
+        lastUpdated: new Date().toISOString(),
       });
 
-      toast.success(t("submitSuccess"));
-      router.push(`/challenges/${params.slug}`);
+      toast(t("solutionSaved"), {
+        description: t("solutionSavedDesc"),
+      });
+      setIsSubmitting(false);
     } catch (error) {
-      console.error("Error submitting solution:", error);
-      toast.error(t("submitError"));
-    } finally {
+      console.error("Error saving solution:", error);
+      toast(t("savingError"), {
+        description: t("savingErrorDesc"),
+      });
       setIsSubmitting(false);
     }
   };
@@ -227,9 +229,7 @@ export function FullScreenEditor({ challenge, params }: FullScreenEditorProps) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${
-            session?.user?.backendTokens?.accessToken || ""
-          }`,
+          Authorization: `Bearer ${session?.backendTokens?.accessToken || ""}`,
         },
         body: JSON.stringify({ code, language: selectedLanguage }),
       });
@@ -249,15 +249,22 @@ export function FullScreenEditor({ challenge, params }: FullScreenEditorProps) {
     }
   };
 
-  // Save state before exit (removed selectedTheme)
+  // Save state before exit
   const saveStateBeforeExit = () => {
-    const stateToSave = {
+    // Save to session storage instead of localStorage
+    saveSolutionToSession({
+      challengeId: challenge.id,
+      challengeSlug: params.slug,
       code,
-      selectedLanguage,
       documentation,
+      language: selectedLanguage,
       isPrivate,
-    };
-    localStorage.setItem("editorState", JSON.stringify(stateToSave));
+      lastUpdated: new Date().toISOString(),
+    });
+
+    toast(t("solutionSaved"), {
+      description: t("solutionSavedDesc"),
+    });
     router.back();
   };
 
@@ -276,13 +283,18 @@ export function FullScreenEditor({ challenge, params }: FullScreenEditorProps) {
   const handleChallengeChange = (slug: string) => {
     if (slug !== params.slug) {
       setSelectedChallenge(slug);
-      const stateToSave = {
+
+      // Save current solution to session storage
+      saveSolutionToSession({
+        challengeId: challenge.id,
+        challengeSlug: params.slug,
         code,
-        selectedLanguage,
         documentation,
+        language: selectedLanguage,
         isPrivate,
-      };
-      localStorage.setItem("editorState", JSON.stringify(stateToSave));
+        lastUpdated: new Date().toISOString(),
+      });
+
       router.push(`/challenges/${slug}/solution/fullscreen`);
     }
   };
@@ -301,25 +313,7 @@ export function FullScreenEditor({ challenge, params }: FullScreenEditorProps) {
           value={code}
           onChange={(value) => setCode(value || "")}
           language={selectedLanguage}
-          options={{
-            theme: monacoTheme, // Step 4: Use monacoTheme instead of selectedTheme
-            minimap: { enabled: true },
-            fontSize: 14,
-            lineNumbers: "on",
-            scrollBeyondLastLine: false,
-            automaticLayout: true,
-            wordWrap: "on",
-            syntaxHighlighting: true,
-          }}
           height={editorHeight}
-          aria-labelledby="editor-description"
-          className="w-full h-full"
-          onFocus={() => {
-            if (editorContainerRef.current) {
-              const containerHeight = editorContainerRef.current.clientHeight;
-              setEditorHeight(`${containerHeight}px`);
-            }
-          }}
         />
       </div>
       {output && (
@@ -491,14 +485,14 @@ export function FullScreenEditor({ challenge, params }: FullScreenEditorProps) {
             onClick={handleSubmit}
             disabled={isSubmitting}
             size="sm"
-            aria-label={isSubmitting ? t("submitting") : t("submitSolution")}
+            aria-label={isSubmitting ? t("saving") : t("saveProgress")}
             className="flex-1 sm:flex-none">
             {isSubmitting ? (
               <Loader2 className="h-4 w-4 animate-spin mr-2" />
             ) : (
               <Save className="h-4 w-4 mr-2" />
             )}
-            {t("submitSolution")}
+            {t("saveProgress")}
           </Button>
           <Button
             variant="outline"

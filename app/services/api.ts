@@ -70,14 +70,23 @@ export interface UserProfile {
   };
 }
 
+export interface UserStats {
+  completion_rate: number;
+  total_solutions: number;
+  followers_count?: number;
+  following_count?: number;
+  total_points?: number;
+}
+
 // API functions
 const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-async function getAuthHeaders() {
-  const session = await getSession();
+// Helper function to get auth headers from session
+function getAuthHeaders(session: any): Record<string, string> {
   if (!session?.backendTokens?.accessToken) {
-    throw new Error("No access token found in session");
+    return { "Content-Type": "application/json" };
   }
+
   return {
     Authorization: `Bearer ${session.backendTokens.accessToken}`,
     "Content-Type": "application/json",
@@ -86,12 +95,11 @@ async function getAuthHeaders() {
 
 export async function getUserChallenges(): Promise<ChallengeSubscription[]> {
   try {
-    const headers = await getAuthHeaders();
+    const session = await getSession();
+    const headers = getAuthHeaders(session);
     const response = await fetch(
       `${API_BASE_URL}/challenges/listings/my_subscriptions/`,
-      {
-        headers,
-      }
+      { headers }
     );
 
     if (!response.ok) {
@@ -106,14 +114,15 @@ export async function getUserChallenges(): Promise<ChallengeSubscription[]> {
 }
 
 export async function updateUserProfile(
-  profileData: Partial<UserProfile>
+  data: Partial<UserProfile>
 ): Promise<UserProfile | null> {
   try {
-    const headers = await getAuthHeaders();
+    const session = await getSession();
+    const headers = getAuthHeaders(session);
     const response = await fetch(`${API_BASE_URL}/users/profile/`, {
       method: "PATCH",
       headers,
-      body: JSON.stringify(profileData),
+      body: JSON.stringify(data),
     });
 
     if (!response.ok) {
@@ -122,14 +131,15 @@ export async function updateUserProfile(
 
     return await response.json();
   } catch (error) {
-    console.error("Failed to update user profile:", error);
+    console.error("Failed to update profile:", error);
     return null;
   }
 }
 
-export async function getUserStats(): Promise<any> {
+export async function getUserStats(): Promise<UserStats> {
   try {
-    const headers = await getAuthHeaders();
+    const session = await getSession();
+    const headers = getAuthHeaders(session);
     const response = await fetch(`${API_BASE_URL}/users/stats/`, {
       headers,
     });
@@ -141,6 +151,95 @@ export async function getUserStats(): Promise<any> {
     return await response.json();
   } catch (error) {
     console.error("Failed to fetch user stats:", error);
-    return null;
+    return {
+      completion_rate: 0,
+      total_solutions: 0,
+      followers_count: 0,
+      following_count: 0,
+      total_points: 0,
+    };
+  }
+}
+
+export interface SolutionSubmission {
+  challenge: number;
+  code: string;
+  documentation: string;
+  language: string;
+  is_private: boolean;
+}
+
+export interface SubmissionResponse {
+  id: number;
+  challenge: number;
+  user: number;
+  code: string;
+  documentation: string;
+  language: string;
+  is_private: boolean;
+  created_at: string;
+  updated_at: string;
+  status: string;
+}
+
+export async function submitSolution(
+  submission: SolutionSubmission
+): Promise<SubmissionResponse> {
+  try {
+    const session = await getSession();
+    const headers = getAuthHeaders(session);
+
+    const response = await fetch(`${API_BASE_URL}/challenges/solutions/`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(submission),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error submitting solution:", error);
+    throw error;
+  }
+}
+
+// Session storage functions
+export interface StoredSolution {
+  challengeId: number;
+  challengeSlug: string;
+  code: string;
+  documentation: string;
+  language: string;
+  isPrivate: boolean;
+  lastUpdated: string;
+}
+
+export function saveSolutionToSession(solution: StoredSolution): void {
+  if (typeof window !== "undefined") {
+    const key = `challenge_solution_${solution.challengeSlug}`;
+    window.sessionStorage.setItem(key, JSON.stringify(solution));
+  }
+}
+
+export function getSolutionFromSession(
+  challengeSlug: string
+): StoredSolution | null {
+  if (typeof window !== "undefined") {
+    const key = `challenge_solution_${challengeSlug}`;
+    const storedSolution = window.sessionStorage.getItem(key);
+    if (storedSolution) {
+      return JSON.parse(storedSolution);
+    }
+  }
+  return null;
+}
+
+export function clearSolutionFromSession(challengeSlug: string): void {
+  if (typeof window !== "undefined") {
+    const key = `challenge_solution_${challengeSlug}`;
+    window.sessionStorage.removeItem(key);
   }
 }

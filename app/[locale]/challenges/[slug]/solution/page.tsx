@@ -1,8 +1,14 @@
-import { Suspense } from "react";
-import { notFound } from "next/navigation";
-import { Challenge } from "@/app/actions/challenges";
+import { getServerSession } from "next-auth/next";
 import { SolutionEditor } from "./solution-editor";
-import ClientLayout from "@/app/[locale]/client-layout";
+import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
+
+interface ChallengeParams {
+  params: {
+    slug: string;
+    locale: string;
+  };
+}
 
 async function getChallenge(slug: string) {
   try {
@@ -13,34 +19,37 @@ async function getChallenge(slug: string) {
 
     if (!response.ok) {
       if (response.status === 404) {
-        notFound();
+        return null;
       }
-      throw new Error("Failed to fetch challenge");
+      throw new Error(`Failed to fetch challenge: ${response.statusText}`);
     }
 
-    return response.json();
+    return await response.json();
   } catch (error) {
     console.error("Error fetching challenge:", error);
-    notFound();
+    return null;
   }
 }
 
-export default async function SolutionPage({
+export default async function ChallengeSolutionPage({
   params,
-}: {
-  params: { slug: string; locale: string };
-}) {
-  const challenge = await getChallenge(params.slug);
+}: ChallengeParams) {
+  const { slug, locale } = params;
+  const t = await getTranslations("Challenge");
+
+  // Get the challenge data
+  const challenge = await getChallenge(slug);
+
+  if (!challenge) {
+    return notFound();
+  }
 
   return (
-    <ClientLayout locale={params.locale}>
-      <Suspense fallback={<div>Loading...</div>}>
-        <SolutionEditor
-          params={params}
-          challenge={challenge}
-          slug={params.slug}
-        />
-      </Suspense>
-    </ClientLayout>
+    <div className="container max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+      <h1 className="text-2xl font-bold mb-4">
+        {t("solution")}: {challenge.title}
+      </h1>
+      <SolutionEditor params={params} challenge={challenge} slug={slug} />
+    </div>
   );
 }
