@@ -1,4 +1,3 @@
-import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
@@ -152,11 +151,7 @@ export const authOptions: NextAuthOptions = {
             },
           } as ExtendedUser;
         } catch (error) {
-          console.error("Auth error:", {
-            name: error.name,
-            message: error.message,
-            stack: error.stack,
-          });
+          console.error("Auth error:", error);
           return null;
         }
       },
@@ -169,16 +164,16 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async signIn({ user, account, profile }) {
+      // Only process social logins (non-credentials)
       if (account?.provider !== "credentials") {
         try {
+          // Build social login data based on provider
           const socialData = {
             access_token: account?.access_token,
             id_token: account?.id_token,
             email: user.email,
             name: user.name,
-            ...(account?.provider === "github" && {
-              username: profile?.login,
-            }),
+            ...(account?.provider === "github" && { username: profile?.login }),
             ...(account?.provider === "google" && {
               first_name: profile?.given_name,
               last_name: profile?.family_name,
@@ -200,12 +195,7 @@ export const authOptions: NextAuthOptions = {
           );
 
           if (!response.ok) {
-            const errorText = await response.text();
-            console.error("Social login failed:", {
-              status: response.status,
-              statusText: response.statusText,
-              error: errorText,
-            });
+            console.error("Social login failed:", response.statusText);
             return false;
           }
 
@@ -227,106 +217,55 @@ export const authOptions: NextAuthOptions = {
           );
 
           if (!userResponse.ok) {
-            const errorText = await userResponse.text();
-            console.error("User data fetch failed:", {
-              status: userResponse.status,
-              statusText: userResponse.statusText,
-              error: errorText,
-            });
+            console.error("User data fetch failed:", userResponse.statusText);
             return false;
           }
 
           const userData = await userResponse.json();
           Object.assign(user, userData);
         } catch (error) {
-          console.error("Social auth error:", {
-            name: error.name,
-            message: error.message,
-            stack: error.stack,
-          });
+          console.error("Social auth error:", error);
           return false;
         }
       }
-
       return true;
     },
-    async jwt({ token, user, account }) {
+    async jwt({ token, user }) {
+      // Initial sign in
       if (user) {
-        token.backendTokens = (user as ExtendedUser).backendTokens;
-        token.user = user;
+        return {
+          ...token,
+          user: {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            profile: user.profile,
+            score: user.score,
+            title: user.title,
+            motivation: user.motivation,
+            followers_count: user.followers_count,
+            following_count: user.following_count,
+          },
+          backendTokens: user.backendTokens,
+        };
       }
-
-      // Check if access token needs refresh
-      if (token.backendTokens) {
-        const tokenExpiry = token.backendTokens.exp;
-        if (tokenExpiry && Date.now() >= tokenExpiry * 1000) {
-          try {
-            const response = await fetch(
-              `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/token/refresh/`,
-              {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  refresh: token.backendTokens.refreshToken,
-                }),
-              }
-            );
-
-            const tokens = await response.json();
-
-            if (!response.ok) throw tokens;
-
-            token.backendTokens = {
-              accessToken: tokens.access_token,
-              refreshToken: tokens.refresh_token,
-            };
-          } catch (error) {
-            console.error("Token refresh error:", error);
-            return { ...token, error: "RefreshAccessTokenError" };
-          }
-        }
-      }
-
       return token;
     },
     async session({ session, token }) {
+      if (token.user) {
+        session.user = { ...session.user, ...token.user };
+      }
       if (token.backendTokens) {
         session.backendTokens = token.backendTokens;
-      }
-      if (token.user) {
-        session.user = {
-          ...session.user,
-          ...token.user,
-        };
       }
       return session;
     },
   },
-  logger: {
-    error(code, metadata) {
-      console.error("Auth error occurred:", {
-        code,
-        metadata,
-        timestamp: new Date().toISOString(),
-      });
-    },
-    warn(code) {
-      console.warn("Auth warning:", {
-        code,
-        timestamp: new Date().toISOString(),
-      });
-    },
-    debug(code, metadata) {},
-  },
+  debug: process.env.NODE_ENV === "development",
   session: {
     strategy: "jwt",
   },
+  secret: process.env.NEXTAUTH_SECRET,
 };
-
-// Replace these lines at the bottom of the file:
-// export const auth = () => getServerSession(authOptions);
-// export const { GET, POST } = NextAuth(authOptions);
-
-// With this:
-const handler = NextAuth(authOptions);
-export { handler as GET, handler as POST };

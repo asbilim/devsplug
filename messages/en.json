@@ -62,12 +62,83 @@
           "title": "Mobile Development",
           "description": "Create apps for iOS and Android"
         }
+      },
+      "solutions": {
+        "title": "Featured Solutions",
+        "description": "Explore how others solved these challenges"
+      },
+      "languages": {
+        "title": "Popular Languages",
+        "description": "Most used programming languages in solutions"
+      }
+    },
+    "recentActivity": {
+      "title": "Recent Activity",
+      "description": "See what the community has been working on",
+      "submitted": "submitted a solution to"
+    },
+    "support": {
+      "title": "Support the Project",
+      "notAvailable": "This feature is not yet available. Stay tuned!",
+      "financial": {
+        "title": "Financial Support",
+        "description": "Help us maintain and improve Devsplug by contributing financially. Every donation helps us build a better platform.",
+        "button": "Support Us"
+      },
+      "code": {
+        "title": "Contribute Code",
+        "description": "Are you a developer? Help us improve Devsplug by contributing to our codebase or creating new challenges.",
+        "button": "Contribute on GitHub"
+      },
+      "community": {
+        "title": "Join the Community",
+        "description": "Become an active member of our community. Help others, provide feedback, and participate in discussions.",
+        "button": "Join Community"
+      }
+    },
+    "challengesTitle": "Explore Challenges",
+    "publicSolutionsTitle": "Community Solutions",
+    "viewAllSolutions": "View all solutions",
+    "viewSolution": "View solution",
+    "solutionsCount": "{count, plural, =1 {# solution} other {# solutions}}",
+    "noPublicSolutions": "No public solutions available yet",
+    "solutionsError": "Failed to load solutions. Please try again later.",
+    "defaultTitle": "Novice",
+    "viewChallenge": "View Challenge",
+    "noDescription": "No description available",
+    "exploreAllChallenges": "Explore All Challenges",
+    "joinCommunity": "Join Our Community",
+    "viewMoreSolutions": "View {count} more solutions",
+    "featureComingSoon": "This feature is coming soon!",
+    "howItWorks": {
+      "title": "How It Works",
+      "subtitle": "Learn, code, and grow with our community-driven platform",
+      "step1": {
+        "title": "Choose a Challenge",
+        "description": "Browse through our collection of coding challenges across different difficulty levels"
+      },
+      "step2": {
+        "title": "Solve the Problem",
+        "description": "Write your solution in your preferred programming language"
+      },
+      "step3": {
+        "title": "Submit Your Solution",
+        "description": "Share your code with the community and earn points"
+      },
+      "step4": {
+        "title": "Learn from Others",
+        "description": "Review other solutions and improve your coding skills"
       }
     }
   },
   "Navigation": {
     "language": "Language",
     "theme": "Theme",
+    "features": "Features",
+    "documentation": "Docs",
+    "solutions": "Solutions",
+    "contribute": "Contribute",
+    "create": "Create",
     "themes": {
       "system": "System",
       "light": "Light",
@@ -166,12 +237,55 @@
     "email": "Email address",
     "score": "Score",
     "titleAlt": "Title",
+    "bio": "Bio",
+    "noBio": "No bio provided yet",
+    "bioPlaceholder": "Write a short bio about yourself...",
+    "uploadPhoto": "Upload photo",
+    "profileUpdated": "Profile updated successfully",
+    "profileUpdateError": "Failed to update profile",
+    "save": "Save",
+    "cancel": "Cancel",
+    "editProfile": "Edit profile",
     "defaultTitle": "Novice",
     "stats": {
       "title": "Statistics",
       "description": "Your activity overview",
       "followers": "Followers",
-      "following": "Following"
+      "following": "Following",
+      "completionRate": "Completion Rate",
+      "totalSolutions": "Total Solutions"
+    },
+    "tabs": {
+      "challenges": "Challenges",
+      "activity": "Activity",
+      "settings": "Settings"
+    },
+    "challenges": {
+      "title": "My Challenges",
+      "description": "Challenges you've subscribed to",
+      "name": "Challenge Name",
+      "difficulty": "Difficulty",
+      "status": "Status",
+      "category": "Category",
+      "actions": "Actions",
+      "solve": "Solve",
+      "viewSolution": "View Solution",
+      "notAttempted": "Not Attempted",
+      "noChallenges": "You haven't subscribed to any challenges yet",
+      "browse": "Browse Challenges",
+      "minutes": "min"
+    },
+    "activity": {
+      "title": "Recent Activity",
+      "description": "Your recent actions and achievements",
+      "challengeCompleted": "You completed the challenge \"{title}\"",
+      "newFollower": "{username} started following you",
+      "badgeEarned": "You earned the \"{badge}\" badge",
+      "default": "You performed an action"
+    },
+    "settings": {
+      "title": "Account Settings",
+      "comingSoon": "Settings panel is coming soon"
     }
   },
   "NotFound": {
@@ -185,6 +299,11 @@
     "source": "Source code"
   },
   "Challenge": {
+    "fullscreen": "Full Screen",
+    "submitting": "Submitting...",
+    "sessionRecovered": "Session recovered",
+    "register": "register challenge",
+    "checkingStatus": "Checking status...",
     "exitFullscreen": "Exit Fullscreen",
     "selectChallenge": "Select Challenge",
     "darkTheme": "Dark Theme",
@@ -229,7 +348,7 @@
     "subscribeSuccess": "Successfully subscribed to challenge",
     "unsubscribeSuccess": "Successfully unsubscribed from challenge",
     "subscribeError": "Failed to subscribe to challenge",
-    "submitSuccess": "Solution submitted successfully",
+    "submitSuccess": "Solution submitted",
     "submitError": "Failed to submit solution",
     "codeRequired": "Please enter your solution code",
     "code": "Code",
@@ -337,6 +456,59 @@
       "material": "Material",
       "solarizeddark": "Solarized Dark",
       "solarizedlight": "Solarized Light"
+    },
+    "recoveredSolution": "Solution recovered",
+    "recoveredSolutionDesc": "Your previously saved solution has been loaded",
+    "solutionSaved": "Solution saved",
+    "solutionSavedDesc": "Your solution has been saved to session storage",
+    "savingError": "Error saving solution",
+    "savingErrorDesc": "There was an error saving your solution",
+    "loginRequired": "Login required",
+    "loginRequiredDesc": "You must be logged in to submit a solution",
+    "missingCode": "Code required",
+    "missingCodeDesc": "Please enter some code before submitting",
+    "submissionSuccess": "Solution submitted",
+    "submissionSuccessDesc": "Your solution has been submitted successfully",
+    "submissionError": "Submission error",
+    "submissionErrorDesc": "There was an error submitting your solution",
+    "saving": "Saving...",
+    "saveProgress": "Save Progress",
+    "viewDashboard": "Go to Dashboard",
+    "viewSolution": "View Solution",
+    "solutions": {
+      "title": "Challenge Solutions",
+      "description": "Browse solutions submitted by the community",
+      "empty": "No solutions found for this challenge",
+      "page": "Page {page} of {total}",
+      "previous": "Previous",
+      "next": "Next",
+      "filters": "Filters",
+      "language": "Language",
+      "sort": "Sort by",
+      "newest": "Newest",
+      "oldest": "Oldest",
+      "mostLiked": "Most Liked",
+      "back": "Back to Challenge",
+      "submit": "Submit Your Solution",
+      "comingSoon": "Coming Soon",
+      "comingSoonDesc": "The full solutions listing page is under development"
+    },
+    "solutionDetails": {
+      "title": "Solution Details",
+      "by": "by {username}",
+      "back": "Back to Solutions",
+      "follow": "Follow",
+      "unfollow": "Unfollow",
+      "code": "Code",
+      "documentation": "Documentation",
+      "comments": "Comments",
+      "noComments": "No comments yet",
+      "addComment": "Add a comment",
+      "language": "Solution in {language}",
+      "likes": "{count} likes",
+      "postedOn": "Posted on {date}",
+      "comingSoon": "Coming Soon",
+      "comingSoonDesc": "The full solution details page is under development"
     }
   },
   "editor": {

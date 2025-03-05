@@ -58,7 +58,6 @@ export async function register(
 
     if (!response.ok) {
       const error = await response.json();
-      console.log(error);
       return {
         error: t(error.code) || t("server_error"),
         success: false,

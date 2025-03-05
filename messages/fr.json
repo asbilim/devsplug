@@ -62,12 +62,84 @@
           "title": "Développement Mobile",
           "description": "Créez des applications pour iOS et Android"
         }
+      },
+      "solutions": {
+        "title": "Solutions en Vedette",
+        "description": "Découvrez comment les autres ont résolu ces défis"
+      },
+      "languages": {
+        "title": "Langages Populaires",
+        "description": "Langages de programmation les plus utilisés dans les solutions"
+      }
+    },
+    "recentActivity": {
+      "title": "Activité Récente",
+      "description": "Voyez ce sur quoi la communauté a travaillé",
+      "submitted": "a soumis une solution à"
+    },
+    "viewAll": "Voir tout",
+    "support": {
+      "title": "Soutenir le Projet",
+      "notAvailable": "Cette fonctionnalité n'est pas encore disponible. Restez à l'écoute !",
+      "financial": {
+        "title": "Soutien Financier",
+        "description": "Aidez-nous à maintenir et améliorer Devsplug en contribuant financièrement. Chaque don nous aide à construire une meilleure plateforme.",
+        "button": "Nous Soutenir"
+      },
+      "code": {
+        "title": "Contribuer au Code",
+        "description": "Vous êtes développeur ? Aidez-nous à améliorer Devsplug en contribuant à notre code ou en créant de nouveaux défis.",
+        "button": "Contribuer sur GitHub"
+      },
+      "community": {
+        "title": "Rejoindre la Communauté",
+        "description": "Devenez un membre actif de notre communauté. Aidez les autres, fournissez des commentaires et participez aux discussions.",
+        "button": "Rejoindre la Communauté"
+      }
+    },
+    "challengesTitle": "Explorer les Défis",
+    "publicSolutionsTitle": "Solutions de la Communauté",
+    "viewAllSolutions": "Voir toutes les solutions",
+    "viewSolution": "Voir la solution",
+    "solutionsCount": "{count, plural, =1 {# solution} other {# solutions}}",
+    "noPublicSolutions": "Aucune solution publique disponible pour le moment",
+    "solutionsError": "Échec du chargement des solutions. Veuillez réessayer plus tard.",
+    "defaultTitle": "Débutant",
+    "viewChallenge": "Voir le Défi",
+    "noDescription": "Aucune description disponible",
+    "exploreAllChallenges": "Explorer tous les défis",
+    "joinCommunity": "Rejoindre notre communauté",
+    "viewMoreSolutions": "Voir {count} solutions supplémentaires",
+    "featureComingSoon": "Cette fonctionnalité sera bientôt disponible !",
+    "howItWorks": {
+      "title": "Comment ça marche",
+      "subtitle": "Apprenez, codez et évoluez avec notre plateforme communautaire",
+      "step1": {
+        "title": "Choisissez un défi",
+        "description": "Parcourez notre collection de défis de programmation de différents niveaux de difficulté"
+      },
+      "step2": {
+        "title": "Résolvez le problème",
+        "description": "Écrivez votre solution dans votre langage de programmation préféré"
+      },
+      "step3": {
+        "title": "Soumettez votre solution",
+        "description": "Partagez votre code avec la communauté et gagnez des points"
+      },
+      "step4": {
+        "title": "Apprenez des autres",
+        "description": "Examinez d'autres solutions et améliorez vos compétences en programmation"
       }
     }
   },
   "Navigation": {
     "language": "Langue",
     "theme": "Thème",
+    "features": "Fonctionnalités",
+    "documentation": "Docs",
+    "solutions": "Solutions",
+    "contribute": "Contribuer",
+    "create": "Créer",
     "themes": {
       "system": "Système",
       "light": "Clair",
@@ -166,12 +238,55 @@
     "email": "Adresse email",
     "score": "Score",
     "titleAlt": "Titre",
+    "bio": "Biographie",
+    "noBio": "Aucune biographie fournie",
+    "bioPlaceholder": "Écrivez une courte biographie à propos de vous...",
+    "uploadPhoto": "Télécharger une photo",
+    "profileUpdated": "Profil mis à jour avec succès",
+    "profileUpdateError": "Échec de la mise à jour du profil",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "editProfile": "Modifier le profil",
     "defaultTitle": "Débutant",
     "stats": {
       "title": "Statistiques",
       "description": "Aperçu de votre activité",
       "followers": "Abonnés",
-      "following": "Abonnements"
+      "following": "Abonnements",
+      "completionRate": "Taux de Réussite",
+      "totalSolutions": "Solutions Totales"
+    },
+    "tabs": {
+      "challenges": "Défis",
+      "activity": "Activité",
+      "settings": "Paramètres"
+    },
+    "challenges": {
+      "title": "Mes Défis",
+      "description": "Défis auxquels vous êtes abonné",
+      "name": "Nom du Défi",
+      "difficulty": "Difficulté",
+      "status": "Statut",
+      "category": "Catégorie",
+      "actions": "Actions",
+      "solve": "Résoudre",
+      "viewSolution": "Voir la Solution",
+      "notAttempted": "Non Essayé",
+      "noChallenges": "Vous n'êtes abonné à aucun défi pour le moment",
+      "browse": "Parcourir les Défis",
+      "minutes": "min"
+    },
+    "activity": {
+      "title": "Activité Récente",
+      "description": "Vos actions et réalisations récentes",
+      "challengeCompleted": "Vous avez terminé le défi \"{title}\"",
+      "newFollower": "{username} a commencé à vous suivre",
+      "badgeEarned": "Vous avez obtenu le badge \"{badge}\"",
+      "default": "Vous avez effectué une action"
+    },
+    "settings": {
+      "title": "Paramètres du Compte",
+      "comingSoon": "Le panneau des paramètres sera bientôt disponible"
     }
   },
   "NotFound": {
@@ -245,7 +360,6 @@
     "examples": "Exemples",
     "stats": "Statistiques du Défi",
     "attempts": "Tentatives",
-    "viewChallenge": "Voir le Défi",
     "authenticationError": "Erreur d'authentification",
     "selectTheme": "Sélectionner un Thème",
     "selectThemePlaceholder": "Sélectionner un thème",
@@ -337,6 +451,59 @@
       "material": "Matériel",
       "solarizeddark": "Solarisé Sombre",
       "solarizedlight": "Solarisé Clair"
+    },
+    "recoveredSolution": "Solution récupérée",
+    "recoveredSolutionDesc": "Votre solution précédemment sauvegardée a été chargée",
+    "solutionSaved": "Solution sauvegardée",
+    "solutionSavedDesc": "Votre solution a été sauvegardée dans le stockage de session",
+    "savingError": "Erreur de sauvegarde",
+    "savingErrorDesc": "Une erreur s'est produite lors de la sauvegarde de votre solution",
+    "loginRequired": "Connexion requise",
+    "loginRequiredDesc": "Vous devez être connecté pour soumettre une solution",
+    "missingCode": "Code requis",
+    "missingCodeDesc": "Veuillez entrer du code avant de soumettre",
+    "submissionSuccess": "Solution soumise",
+    "submissionSuccessDesc": "Votre solution a été soumise avec succès",
+    "submissionError": "Erreur de soumission",
+    "submissionErrorDesc": "Une erreur s'est produite lors de la soumission de votre solution",
+    "saving": "Enregistrement...",
+    "saveProgress": "Enregistrer le progrès",
+    "viewDashboard": "Aller au tableau de bord",
+    "viewSolution": "Voir la solution",
+    "solutions": {
+      "title": "Solutions du défi",
+      "description": "Parcourir les solutions soumises par la communauté",
+      "empty": "Aucune solution trouvée pour ce défi",
+      "page": "Page {page} sur {total}",
+      "previous": "Précédent",
+      "next": "Suivant",
+      "filters": "Filtres",
+      "language": "Langage",
+      "sort": "Trier par",
+      "newest": "Plus récent",
+      "oldest": "Plus ancien",
+      "mostLiked": "Plus apprécié",
+      "back": "Retour au défi",
+      "submit": "Soumettre votre solution",
+      "comingSoon": "Bientôt disponible",
+      "comingSoonDesc": "La page complète de liste des solutions est en cours de développement"
+    },
+    "solutionDetails": {
+      "title": "Détails de la solution",
+      "by": "par {username}",
+      "back": "Retour aux solutions",
+      "follow": "Suivre",
+      "unfollow": "Ne plus suivre",
+      "code": "Code",
+      "documentation": "Documentation",
+      "comments": "Commentaires",
+      "noComments": "Pas encore de commentaires",
+      "addComment": "Ajouter un commentaire",
+      "language": "Solution en {language}",
+      "likes": "{count} j'aime",
+      "postedOn": "Posté le {date}",
+      "comingSoon": "Bientôt disponible",
+      "comingSoonDesc": "La page complète de détails des solutions est en cours de développement"
     }
   },
   "editor": {

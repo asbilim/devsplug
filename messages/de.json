@@ -62,12 +62,84 @@
           "title": "Mobile Entwicklung",
           "description": "Apps für iOS und Android erstellen"
         }
+      },
+      "solutions": {
+        "title": "Ausgewählte Lösungen",
+        "description": "Entdecken Sie, wie andere diese Herausforderungen gelöst haben"
+      },
+      "languages": {
+        "title": "Beliebte Sprachen",
+        "description": "Meistverwendete Programmiersprachen in Lösungen"
+      }
+    },
+    "viewAll": "Alle anzeigen",
+    "recentActivity": {
+      "title": "Aktuelle Aktivitäten",
+      "description": "Sehen Sie, woran die Community gearbeitet hat",
+      "submitted": "hat eine Lösung eingereicht für"
+    },
+    "support": {
+      "title": "Projekt Unterstützen",
+      "notAvailable": "Diese Funktion ist noch nicht verfügbar. Bleiben Sie dran!",
+      "financial": {
+        "title": "Finanzielle Unterstützung",
+        "description": "Helfen Sie uns, Devsplug zu verbessern, indem Sie finanziell beitragen. Jede Spende hilft uns, eine bessere Plattform zu bauen.",
+        "button": "Uns Unterstützen"
+      },
+      "code": {
+        "title": "Code Beitragen",
+        "description": "Sind Sie Entwickler? Helfen Sie uns, Devsplug zu verbessern, indem Sie zu unserem Code beitragen oder neue Herausforderungen erstellen.",
+        "button": "Auf GitHub Beitragen"
+      },
+      "community": {
+        "title": "Der Community Beitreten",
+        "description": "Werden Sie ein aktives Mitglied unserer Community. Helfen Sie anderen, geben Sie Feedback und nehmen Sie an Diskussionen teil.",
+        "button": "Community Beitreten"
+      }
+    },
+    "challengesTitle": "Herausforderungen erkunden",
+    "publicSolutionsTitle": "Community-Lösungen",
+    "viewAllSolutions": "Alle Lösungen anzeigen",
+    "viewSolution": "Lösung anzeigen",
+    "solutionsCount": "{count, plural, =1 {# Lösung} other {# Lösungen}}",
+    "noPublicSolutions": "Noch keine öffentlichen Lösungen verfügbar",
+    "solutionsError": "Fehler beim Laden der Lösungen. Bitte versuchen Sie es später erneut.",
+    "defaultTitle": "Anfänger",
+    "viewChallenge": "Herausforderung ansehen",
+    "noDescription": "Keine Beschreibung verfügbar",
+    "exploreAllChallenges": "Alle Herausforderungen erkunden",
+    "joinCommunity": "Unserer Community beitreten",
+    "viewMoreSolutions": "{count} weitere Lösungen anzeigen",
+    "featureComingSoon": "Diese Funktion ist bald verfügbar!",
+    "howItWorks": {
+      "title": "Wie es funktioniert",
+      "subtitle": "Lernen, programmieren und wachsen mit unserer Community-Plattform",
+      "step1": {
+        "title": "Herausforderung auswählen",
+        "description": "Durchsuchen Sie unsere Sammlung von Programmierherausforderungen verschiedener Schwierigkeitsgrade"
+      },
+      "step2": {
+        "title": "Problem lösen",
+        "description": "Schreiben Sie Ihre Lösung in Ihrer bevorzugten Programmiersprache"
+      },
+      "step3": {
+        "title": "Lösung einreichen",
+        "description": "Teilen Sie Ihren Code mit der Community und verdienen Sie Punkte"
+      },
+      "step4": {
+        "title": "Von anderen lernen",
+        "description": "Überprüfen Sie andere Lösungen und verbessern Sie Ihre Programmierfähigkeiten"
       }
     }
   },
   "Navigation": {
     "language": "Sprache",
     "theme": "Design",
+    "features": "Funktionen",
+    "documentation": "Docs",
+    "solutions": "Lösungen",
+    "contribute": "Beitragen",
+    "create": "Erstellen",
     "themes": {
       "system": "System",
       "light": "Hell",
@@ -166,12 +238,55 @@
     "email": "E-Mail-Adresse",
     "score": "Punktzahl",
     "titleAlt": "Titel",
+    "bio": "Biografie",
+    "noBio": "Noch keine Biografie angegeben",
+    "bioPlaceholder": "Schreiben Sie eine kurze Biografie über sich...",
+    "uploadPhoto": "Foto hochladen",
+    "profileUpdated": "Profil erfolgreich aktualisiert",
+    "profileUpdateError": "Fehler beim Aktualisieren des Profils",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "editProfile": "Profil bearbeiten",
     "defaultTitle": "Anfänger",
     "stats": {
       "title": "Statistiken",
       "description": "Übersicht über Ihre Aktivitäten",
       "followers": "Follower",
-      "following": "Folge ich"
+      "following": "Folge ich",
+      "completionRate": "Abschlussrate",
+      "totalSolutions": "Gesamte Lösungen"
+    },
+    "tabs": {
+      "challenges": "Herausforderungen",
+      "activity": "Aktivität",
+      "settings": "Einstellungen"
+    },
+    "challenges": {
+      "title": "Meine Herausforderungen",
+      "description": "Herausforderungen, die Sie abonniert haben",
+      "name": "Name der Herausforderung",
+      "difficulty": "Schwierigkeit",
+      "status": "Status",
+      "category": "Kategorie",
+      "actions": "Aktionen",
+      "solve": "Lösen",
+      "viewSolution": "Lösung anzeigen",
+      "notAttempted": "Nicht versucht",
+      "noChallenges": "Sie haben noch keine Herausforderungen abonniert",
+      "browse": "Herausforderungen durchsuchen",
+      "minutes": "Min"
+    },
+    "activity": {
+      "title": "Neueste Aktivitäten",
+      "description": "Ihre neuesten Aktionen und Erfolge",
+      "challengeCompleted": "Sie haben die Herausforderung \"{title}\" abgeschlossen",
+      "newFollower": "{username} folgt Ihnen jetzt",
+      "badgeEarned": "Sie haben das Abzeichen \"{badge}\" verdient",
+      "default": "Sie haben eine Aktion ausgeführt"
+    },
+    "settings": {
+      "title": "Kontoeinstellungen",
+      "comingSoon": "Einstellungsbereich kommt bald"
     }
   },
   "NotFound": {
@@ -229,7 +344,7 @@
     "subscribeSuccess": "Erfolgreich für Herausforderung angemeldet",
     "unsubscribeSuccess": "Erfolgreich von Herausforderung abgemeldet",
     "subscribeError": "Anmeldung für Herausforderung fehlgeschlagen",
-    "submitSuccess": "Lösung erfolgreich eingereicht",
+    "submitSuccess": "Lösung eingereicht",
     "submitError": "Einreichung der Lösung fehlgeschlagen",
     "codeRequired": "Bitte geben Sie Ihren Lösungscode ein",
     "code": "Code",
@@ -246,6 +361,48 @@
     "stats": "Herausforderungsstatistiken",
     "attempts": "Versuche",
     "viewChallenge": "Herausforderung ansehen",
+    "submissionSuccessDesc": "Ihre Lösung wurde erfolgreich eingereicht",
+    "submissionError": "Fehler bei der Einreichung",
+    "submissionErrorDesc": "Beim Einreichen Ihrer Lösung ist ein Fehler aufgetreten",
+    "saving": "Speichern...",
+    "saveProgress": "Fortschritt speichern",
+    "viewDashboard": "Zum Dashboard",
+    "viewSolution": "Lösung anzeigen",
+    "solutions": {
+      "title": "Herausforderungslösungen",
+      "description": "Durchsuchen Sie von der Community eingereichte Lösungen",
+      "empty": "Für diese Herausforderung wurden keine Lösungen gefunden",
+      "page": "Seite {page} von {total}",
+      "previous": "Vorherige",
+      "next": "Nächste",
+      "filters": "Filter",
+      "language": "Sprache",
+      "sort": "Sortieren nach",
+      "newest": "Neueste",
+      "oldest": "Älteste",
+      "mostLiked": "Beliebteste",
+      "back": "Zurück zur Herausforderung",
+      "submit": "Reichen Sie Ihre Lösung ein",
+      "comingSoon": "Demnächst verfügbar",
+      "comingSoonDesc": "Die vollständige Lösungslistenseite ist in Entwicklung"
+    },
+    "solutionDetails": {
+      "title": "Lösungsdetails",
+      "by": "von {username}",
+      "back": "Zurück zu Lösungen",
+      "follow": "Folgen",
+      "unfollow": "Nicht mehr folgen",
+      "code": "Code",
+      "documentation": "Dokumentation",
+      "comments": "Kommentare",
+      "noComments": "Noch keine Kommentare",
+      "addComment": "Einen Kommentar hinzufügen",
+      "language": "Lösung in {language}",
+      "likes": "{count} Likes",
+      "postedOn": "Gepostet am {date}",
+      "comingSoon": "Demnächst verfügbar",
+      "comingSoonDesc": "Die vollständige Lösungsdetailseite ist in Entwicklung"
+    },
     "authenticationError": "Authentifizierungsfehler",
     "selectTheme": "Design auswählen",
     "selectThemePlaceholder": "Design auswählen",
@@ -337,7 +494,23 @@
       "material": "Material",
       "solarizeddark": "Solarized Dunkel",
       "solarizedlight": "Solarized Hell"
-    }
+    },
+    "recoveredSolution": "Lösung wiederhergestellt",
+    "recoveredSolutionDesc": "Ihre zuvor gespeicherte Lösung wurde geladen",
+    "solutionSaved": "Lösung gespeichert",
+    "solutionSavedDesc": "Ihre Lösung wurde im Session-Speicher gespeichert",
+    "savingError": "Fehler beim Speichern der Lösung",
+    "savingErrorDesc": "Beim Speichern Ihrer Lösung ist ein Fehler aufgetreten",
+    "loginRequired": "Anmeldung erforderlich",
+    "loginRequiredDesc": "Sie müssen angemeldet sein, um eine Lösung einzureichen",
+    "missingCode": "Code erforderlich",
+    "missingCodeDesc": "Bitte geben Sie einen Code ein, bevor Sie die Lösung einreichen",
+    "submissionSuccess": "Lösung eingereicht",
+    "submissionSuccessDesc": "Ihre Lösung wurde erfolgreich eingereicht",
+    "submissionError": "Einreichungsfehler",
+    "submissionErrorDesc": "Beim Einreichen Ihrer Lösung ist ein Fehler aufgetreten",
+    "saving": "Speichern...",
+    "saveProgress": "Fortschritt speichern"
   },
   "editor": {
     "selectLanguage": "Sprache auswählen",

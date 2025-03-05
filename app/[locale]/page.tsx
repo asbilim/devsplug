@@ -13,9 +13,11 @@ import { Clock, Trophy, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/src/i18n/routing";
 import { ChallengeSkeleton } from "@/components/challenge-skeleton";
+import { ChallengeFilters } from "@/components/challenge-filters";
+import { SupportProject } from "./components/support-project";
+import { Separator } from "@/components/ui/separator";
 import { getChallenges } from "@/app/actions/challenges";
 import { Pagination } from "@/components/pagination";
-import { ChallengeFilters } from "@/components/challenge-filters";
 
 export async function generateMetadata({
   params,
@@ -83,11 +85,6 @@ async function ChallengesList({
 
   const challenges = await getChallenges(params);
 
-  console.log("Challenges:", challenges);
-  console.log("Challenges.data:", challenges?.data);
-  console.log("Challenges.currentPage:", challenges?.currentPage);
-  console.log("Challenges.totalPages:", challenges?.totalPages);
-
   if (!challenges?.data?.length) {
     return (
       <div className="text-center py-12">
@@ -100,54 +97,74 @@ async function ChallengesList({
     <>
       <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         {challenges.data.map((challenge) => (
-          <Card
-            key={challenge.id}
-            className="group h-full transition-colors hover:bg-muted/50">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <Badge
-                  variant={
-                    challenge.difficulty === "easy"
-                      ? "default"
-                      : challenge.difficulty === "medium"
-                      ? "secondary"
-                      : "destructive"
-                  }>
-                  {challenge.difficulty}
-                </Badge>
-                <div className="flex items-center gap-2 text-muted-foreground">
-                  <Trophy className="h-4 w-4" />
-                  <span>{challenge.points}</span>
-                </div>
-              </div>
-              <CardTitle className="line-clamp-2 group-hover:text-primary transition-colors">
-                {challenge.title}
-              </CardTitle>
-              <CardDescription className="line-clamp-2">
-                {challenge.description}
-              </CardDescription>
-              <div className="flex flex-wrap gap-2 mt-2">
-                {challenge.tags?.map((tag) => (
-                  <Badge key={tag} variant="secondary" className="text-xs">
-                    {tag}
+          <Link
+            href={`/challenges/${challenge.slug}`}
+            className="block h-full"
+            key={challenge.id}>
+            <Card className="group h-full overflow-hidden relative border transition-all duration-200 hover:border-primary/30 hover:shadow-sm">
+              {/* Subtle difficulty indicator */}
+              <div
+                className={`absolute top-0 left-0 w-full h-0.5 ${
+                  challenge.difficulty === "easy"
+                    ? "bg-slate-300"
+                    : challenge.difficulty === "medium"
+                    ? "bg-slate-500"
+                    : "bg-slate-700"
+                }`}
+              />
+              <CardHeader className="pb-2">
+                <div className="flex items-center justify-between mb-2">
+                  <Badge
+                    variant="outline"
+                    className="font-medium capitalize text-sm text-muted-foreground">
+                    {challenge.difficulty}
                   </Badge>
-                ))}
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Clock className="h-4 w-4" />
-                  <span>{challenge.estimated_time} min</span>
+                  <div className="flex items-center gap-1.5 text-muted-foreground">
+                    <Trophy className="h-3.5 w-3.5" />
+                    <span className="font-medium text-sm">
+                      {challenge.points}
+                    </span>
+                  </div>
                 </div>
-                <Button variant="ghost" size="sm" asChild>
-                  <Link href={`/challenges/${challenge.slug}`}>
-                    {t("start")} <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+                <CardTitle className="line-clamp-2 group-hover:text-primary transition-colors text-xl">
+                  {challenge.title}
+                </CardTitle>
+                <CardDescription className="line-clamp-2 mt-2 text-sm">
+                  {challenge.description}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="pb-4">
+                <div className="flex flex-wrap gap-1.5 mt-2 mb-4">
+                  {challenge.tags?.slice(0, 3).map((tag) => (
+                    <Badge
+                      key={tag}
+                      variant="secondary"
+                      className="text-xs bg-secondary/20">
+                      {tag}
+                    </Badge>
+                  ))}
+                  {challenge.tags?.length > 3 && (
+                    <span className="text-xs text-muted-foreground">
+                      +{challenge.tags.length - 3}
+                    </span>
+                  )}
+                </div>
+                <div className="flex items-center justify-between mt-auto pt-3 border-t border-border/50">
+                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                    <Clock className="h-3.5 w-3.5" />
+                    <span>{challenge.estimated_time} min</span>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-sm font-normal px-3 opacity-70 group-hover:opacity-100">
+                    {t("start")}
+                    <ArrowRight className="ml-1 h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
         ))}
         {challenges.data.length < 9 &&
           Array.from({ length: 9 - challenges.data.length }).map((_, index) => (
@@ -165,13 +182,19 @@ async function ChallengesList({
 }
 
 export default async function HomePage({
-  searchParams,
   params,
+  searchParams,
 }: {
-  searchParams: { [key: string]: string | undefined };
   params: { locale: string };
+  searchParams: {
+    page?: string;
+    difficulty?: string;
+    category?: string;
+    search?: string;
+    tags?: string;
+  };
 }) {
-  const { locale } = await params;
+  const { locale } = params;
   const t = await getTranslations("Home");
 
   return (
@@ -184,6 +207,18 @@ export default async function HomePage({
           {t("description")}
         </p>
       </div>
+
+      {/* Support Project Section */}
+      <div>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold tracking-tight">
+            {t("support.title")}
+          </h2>
+        </div>
+        <SupportProject />
+      </div>
+
+      <Separator />
 
       <ChallengeFilters />
 

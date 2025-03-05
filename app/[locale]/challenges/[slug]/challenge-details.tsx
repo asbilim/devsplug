@@ -5,12 +5,16 @@ import {
   subscribeToChallenge,
   unsubscribeFromChallenge,
   submitSolution,
+  checkChallengeSubscription,
+  checkChallengeRegistration,
+  registerForChallenge,
+  unregisterFromChallenge,
 } from "@/app/actions/challenges";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Trophy, Clock, Download, Code2, Copy, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { Link } from "@/src/i18n/routing";
 import { useSession } from "next-auth/react";
 import { Skeleton } from "@/components/ui/skeleton";
 import Markdown from "react-markdown";
@@ -26,7 +30,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { CodeEditor } from "@/components/code-editor";
@@ -52,7 +56,7 @@ const SUPPORTED_LANGUAGES = [
 ] as const;
 
 export function ChallengeDetails({ challenge }: ChallengeDetailsProps) {
-  const { data: session, status } = useSession();
+  const { data: session, status: sessionStatus } = useSession();
   const t = useTranslations("Challenge");
   const [selectedLanguage, setSelectedLanguage] = useState<string>("");
   const [code, setCode] = useState("");
@@ -60,7 +64,72 @@ export function ChallengeDetails({ challenge }: ChallengeDetailsProps) {
   const [isPrivate, setIsPrivate] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isSubscribing, setIsSubscribing] = useState(false);
+  const [isCheckingSubscription, setIsCheckingSubscription] = useState(false);
+  const [subscriptionStatus, setSubscriptionStatus] = useState({
+    is_subscribed: challenge.subscription_status?.is_subscribed || false,
+    authenticated: !!session,
+    message: "",
+  });
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [isCheckingRegistration, setIsCheckingRegistration] = useState(false);
+  const [registrationStatus, setRegistrationStatus] = useState({
+    is_registered: false,
+    authenticated: !!session,
+  });
   const params = useParams();
+
+  // Check subscription status when component mounts or session changes
+  useEffect(() => {
+    const checkSubscription = async () => {
+      if (session && session.backendTokens.accessToken) {
+        setIsCheckingSubscription(true);
+        try {
+          const result = await checkChallengeSubscription(
+            challenge.slug,
+            session.backendTokens.accessToken as string
+          );
+          setSubscriptionStatus(result);
+        } catch (error) {
+          console.error("Error checking subscription:", error);
+        } finally {
+          setIsCheckingSubscription(false);
+        }
+      }
+    };
+
+    if (sessionStatus !== "loading") {
+      checkSubscription();
+    }
+  }, [session, sessionStatus, challenge.slug]);
+
+  // Check registration status when component mounts or session changes
+  useEffect(() => {
+    const checkRegistration = async () => {
+      if (session && session.backendTokens.accessToken) {
+        setIsCheckingRegistration(true);
+        try {
+          const result = await checkChallengeRegistration(
+            challenge.slug,
+            session.backendTokens.accessToken as string
+          );
+          setRegistrationStatus(result);
+        } catch (error) {
+          console.error("Error checking registration:", error);
+          // Reset registration status on error to prevent UI inconsistency
+          setRegistrationStatus({
+            is_registered: false,
+            authenticated: !!session,
+          });
+        } finally {
+          setIsCheckingRegistration(false);
+        }
+      }
+    };
+
+    if (sessionStatus !== "loading") {
+      checkRegistration();
+    }
+  }, [session, sessionStatus, challenge.slug]);
 
   const handleSubscribe = async () => {
     if (!session) {
@@ -73,15 +142,21 @@ export function ChallengeDetails({ challenge }: ChallengeDetailsProps) {
       // Get access token from session
       const accessToken = session.backendTokens.accessToken as string;
 
-      if (challenge.subscription_status?.is_subscribed) {
+      if (subscriptionStatus.is_subscribed) {
         await unsubscribeFromChallenge(challenge.slug, accessToken);
         toast.success(t("unsubscribeSuccess"));
+        setSubscriptionStatus({
+          ...subscriptionStatus,
+          is_subscribed: false,
+        });
       } else {
         await subscribeToChallenge(challenge.slug, accessToken);
         toast.success(t("subscribeSuccess"));
+        setSubscriptionStatus({
+          ...subscriptionStatus,
+          is_subscribed: true,
+        });
       }
-      // Refresh the page to update the challenge status
-      window.location.reload();
     } catch (error) {
       toast.error(t("subscribeError"));
     } finally {
@@ -122,6 +197,39 @@ export function ChallengeDetails({ challenge }: ChallengeDetailsProps) {
       toast.error(t("submitError"));
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleRegister = async () => {
+    if (!session) {
+      toast.error(t("signInToSubmit"));
+      return;
+    }
+
+    try {
+      setIsRegistering(true);
+      // Get access token from session
+      const accessToken = session.backendTokens.accessToken as string;
+
+      if (registrationStatus.is_registered) {
+        await unregisterFromChallenge(challenge.slug, accessToken);
+        toast.success(t("unregisterSuccess"));
+        setRegistrationStatus({
+          ...registrationStatus,
+          is_registered: false,
+        });
+      } else {
+        await registerForChallenge(challenge.slug, accessToken);
+        toast.success(t("registerSuccess"));
+        setRegistrationStatus({
+          ...registrationStatus,
+          is_registered: true,
+        });
+      }
+    } catch (error) {
+      toast.error(t("registerError"));
+    } finally {
+      setIsRegistering(false);
     }
   };
 
@@ -187,9 +295,20 @@ export function ChallengeDetails({ challenge }: ChallengeDetailsProps) {
                   : "destructive"
               }
               className="text-sm md:text-base px-2 md:px-4 py-0.5 md:py-1">
-              {t(`difficulty.${challenge.difficulty}`)}
+              {t(`difficulty_${challenge.difficulty}`)}
             </Badge>
-            {challenge.subscription_status?.is_subscribed ? (
+
+            {/* Subscription Status with Loading State */}
+            {isCheckingSubscription ? (
+              <Button
+                variant="outline"
+                size="sm"
+                disabled
+                className="text-xs md:text-sm">
+                <Loader2 className="h-3 w-3 md:h-4 md:w-4 animate-spin mr-2" />
+                {t("checkingStatus")}
+              </Button>
+            ) : subscriptionStatus.is_subscribed ? (
               <div className="flex items-center gap-2">
                 <Badge
                   variant="secondary"
@@ -305,22 +424,61 @@ export function ChallengeDetails({ challenge }: ChallengeDetailsProps) {
               <CardTitle className="text-xl md:text-2xl">
                 {t("solution")}
               </CardTitle>
-              <Button asChild className="w-full sm:w-auto">
-                <Link
-                  href={`/${params.locale}/challenges/${challenge.slug}/solution`}>
-                  {t("writeSolution")}
-                </Link>
-              </Button>
+              <div className="flex flex-col sm:flex-row items-center gap-2">
+                {registrationStatus.is_registered ? (
+                  <>
+                    <Button
+                      asChild
+                      className="w-full sm:w-auto"
+                      disabled={isCheckingRegistration}>
+                      <Link
+                        href={`/${params.locale}/challenges/${challenge.slug}/solution`}>
+                        {t("writeSolution")}
+                      </Link>
+                    </Button>
+                  </>
+                ) : (
+                  <Button
+                    variant="default"
+                    className="w-full sm:w-auto"
+                    disabled={
+                      isRegistering || !subscriptionStatus.is_subscribed
+                    }
+                    onClick={handleRegister}>
+                    {isRegistering ? (
+                      <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                    ) : null}
+                    {t("register")}
+                  </Button>
+                )}
+              </div>
             </div>
           </CardHeader>
           <CardContent className="p-4 md:p-6">
-            {challenge.subscription_status?.is_subscribed ? (
+            {isCheckingRegistration ? (
+              <div className="text-center text-muted-foreground text-sm md:text-base flex items-center justify-center gap-2">
+                <Loader2 className="h-4 w-4 animate-spin" />
+                {t("checkingStatus")}
+              </div>
+            ) : registrationStatus.is_registered ? (
               <div className="text-center text-muted-foreground text-sm md:text-base">
+                <div className="flex items-center justify-center gap-2 mb-2"></div>
                 {t("clickToWriteSolution")}
+              </div>
+            ) : subscriptionStatus.is_subscribed ? (
+              <div className="text-center text-muted-foreground text-sm md:text-base">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Badge
+                    variant="outline"
+                    className="bg-yellow-100 dark:bg-yellow-900">
+                    {t("subscribed")}
+                  </Badge>
+                </div>
+                {t("registerToSubmit")}
               </div>
             ) : (
               <div className="text-center text-muted-foreground text-sm md:text-base">
-                {t("subscribeToSubmit")}
+                {t("subscribeFirstToRegister")}
               </div>
             )}
           </CardContent>

@@ -16,10 +16,18 @@ import {
   ChevronLeft,
   Settings,
   Save,
+  RotateCw,
+  SendHorizonal,
 } from "lucide-react";
 import { toast } from "sonner";
 import { CodeEditor } from "@/components/code-editor";
-import { submitSolution } from "@/app/actions/challenges";
+import {
+  saveSolutionToSession,
+  getSolutionFromSession,
+  clearSolutionFromSession,
+  submitSolution as apiSubmitSolution,
+  type SolutionSubmission,
+} from "@/app/services/api";
 import {
   Select,
   SelectContent,
@@ -51,10 +59,19 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
-import Link from "next/link";
+import { Link } from "@/src/i18n/routing";
 import type { Challenge } from "@/app/actions/challenges";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { useDebounce } from "@/hooks/use-debounce";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
 // Dynamically import MDEditor to avoid SSR issues
 const MDEditor = dynamic(
@@ -253,17 +270,15 @@ export function SolutionEditor({
 
     const saveTimer = setTimeout(() => {
       if (code.trim() || documentation.trim()) {
-        localStorage.setItem(
-          `editorState_${slug}`,
-          JSON.stringify({
-            code,
-            documentation,
-            selectedLanguage,
-            selectedTheme,
-            isPrivate,
-            lastSaved: new Date().toISOString(),
-          })
-        );
+        saveSolutionToSession({
+          challengeId: challenge.id,
+          challengeSlug: slug,
+          code,
+          documentation,
+          language: selectedLanguage,
+          isPrivate,
+          lastUpdated: new Date().toISOString(),
+        });
       }
     }, 3000);
 
@@ -276,29 +291,33 @@ export function SolutionEditor({
     isPrivate,
     slug,
     autoSave,
+    challenge.id,
   ]);
 
-  // Load saved state on mount
+  // Try to recover state from sessionStorage first (new implementation)
   useEffect(() => {
-    try {
+    const savedSolution = getSolutionFromSession(slug);
+    if (savedSolution) {
+      setSelectedLanguage(savedSolution.language || "python");
+      setCode(savedSolution.code || "");
+      setDocumentation(savedSolution.documentation || "");
+      setIsPrivate(savedSolution.isPrivate || false);
+      toast(t("recoveredSolution"));
+    } else {
+      // Fallback to localStorage for backward compatibility
       const savedState = localStorage.getItem(`editorState_${slug}`);
       if (savedState) {
-        const parsed = JSON.parse(savedState);
-        setCode(parsed.code || "");
-        setDocumentation(parsed.documentation || "");
-        setSelectedLanguage(parsed.selectedLanguage || "python");
-        setSelectedTheme(parsed.selectedTheme || "solarizeddark");
-        setIsPrivate(parsed.isPrivate || false);
-
-        // Show toast for recovered session
-        const lastSaved = parsed.lastSaved ? new Date(parsed.lastSaved) : null;
-        if (lastSaved) {
-          const timeAgo = getTimeAgo(lastSaved);
-          toast.info(t("sessionRecovered", { timeAgo }));
+        try {
+          const state = JSON.parse(savedState);
+          setSelectedLanguage(state.selectedLanguage || "python");
+          setCode(state.code || "");
+          setDocumentation(state.documentation || "");
+          setIsPrivate(state.isPrivate || false);
+          setSelectedTheme(state.selectedTheme || "solarizeddark");
+        } catch (e) {
+          console.error("Error parsing saved editor state", e);
         }
       }
-    } catch (error) {
-      console.error("Error loading saved state:", error);
     }
   }, [slug, t]);
 
@@ -326,22 +345,43 @@ export function SolutionEditor({
     }
   }, []);
 
+  // Fix the handle save toast implementation
+  const handleSave = () => {
+    if (!session?.user) {
+      toast(t("loginRequired"));
+      return;
+    }
+
+    if (!code.trim()) {
+      toast(t("missingCode"));
+      return;
+    }
+
+    // Save to session storage
+    saveSolutionToSession({
+      challengeId: challenge.id,
+      challengeSlug: slug,
+      code,
+      documentation,
+      language: selectedLanguage || "",
+      isPrivate,
+      lastUpdated: new Date().toISOString(),
+    });
+
+    // Show success message
+    toast(t("solutionSaved"));
+  };
+
   // Save editor preferences
   const saveEditorPreferences = () => {
     localStorage.setItem(
       "editorPreferences",
       JSON.stringify({
-        fontSize,
-        lineHeight,
-        selectedFont,
-        showLineNumbers,
-        enableLigatures,
-        tabSize,
-        wordWrap,
-        autoSave,
+        theme: selectedTheme,
+        language: selectedLanguage,
       })
     );
-    toast.success(t("preferenceSaved"));
+    toast(t("preferenceSaved"));
   };
 
   // Filter languages based on search
@@ -366,64 +406,85 @@ export function SolutionEditor({
     }
   }, [status, router, params.locale]);
 
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
+  const [submittedSolutionId, setSubmittedSolutionId] = useState<number | null>(
+    null
+  );
+
   const handleSubmit = async () => {
+    // Validation checks
     if (!session?.user) {
-      toast.error(t("signInToSubmit"));
+      toast(t("signInToSubmit"));
       return;
     }
 
     if (!selectedLanguage) {
-      toast.error(t("languageRequired"));
+      toast(t("languageRequired"));
       return;
     }
 
     if (!code.trim()) {
-      toast.error(t("codeRequired"));
+      toast(t("codeRequired"));
       return;
     }
 
     try {
       setIsLoading(true);
-      const accessToken = (session.user as any).backendTokens?.access_token;
 
-      if (!accessToken) {
-        toast.error(t("authenticationError"));
-        return;
-      }
-
-      await submitSolution(slug, {
+      // Use our API service to submit the solution
+      const submission: SolutionSubmission = {
+        challenge: challenge.id,
         code,
         documentation,
         language: selectedLanguage,
         is_private: isPrivate,
-      });
+      };
 
-      toast.success(t("submitSuccess"));
+      const response = await apiSubmitSolution(submission);
+
+      // Set the submitted solution ID for the success dialog
+      if (response && response.id) {
+        setSubmittedSolutionId(response.id);
+      }
+
+      // Show a toast notification
+      toast(t("submitSuccess"));
 
       // Clear saved state after successful submission
+      clearSolutionFromSession(slug);
       localStorage.removeItem(`editorState_${slug}`);
 
-      router.push(`/challenges/${slug}`);
+      // Show success dialog instead of redirecting immediately
+      setShowSuccessDialog(true);
     } catch (error) {
-      toast.error(t("submitError"));
+      toast(t("submitError"));
     } finally {
       setIsLoading(false);
     }
   };
 
+  const handleViewSolution = () => {
+    setShowSuccessDialog(false);
+    // Navigate to solution details page
+    router.push(`/challenges/${slug}/solutions/${submittedSolutionId}`);
+  };
+
+  const handleGoToDashboard = () => {
+    setShowSuccessDialog(false);
+    router.push("/dashboard");
+  };
+
   const handleFullScreen = () => {
-    // Save current state to localStorage before redirecting
-    localStorage.setItem(
-      `editorState_${slug}`,
-      JSON.stringify({
-        code,
-        documentation,
-        selectedLanguage,
-        selectedTheme,
-        isPrivate,
-        lastSaved: new Date().toISOString(),
-      })
-    );
+    // Save to session storage
+    saveSolutionToSession({
+      challengeId: challenge.id,
+      challengeSlug: slug,
+      code,
+      documentation,
+      language: selectedLanguage || "",
+      isPrivate,
+      lastUpdated: new Date().toISOString(),
+    });
 
     router.push(`/challenges/${slug}/solution/fullscreen`);
   };
@@ -455,582 +516,551 @@ export function SolutionEditor({
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="flex-1 flex flex-col">
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 md:p-6 border-b bg-background">
-          <div className="flex items-center gap-2 md:gap-4">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    onClick={() => router.back()}
-                    variant="ghost"
-                    size="icon"
-                    className="md:hidden">
-                    <ChevronLeft className="h-5 w-5" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>{t("back")}</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            <Button
-              onClick={() => router.back()}
-              variant="outline"
-              size="sm"
-              className="hidden md:flex">
-              {t("back")}
-            </Button>
-            <h1 className="text-lg md:text-xl font-bold truncate">
-              {t("submitSolution")}
-            </h1>
-          </div>
-          <div className="flex items-center gap-2">
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-9 w-9">
-                  <Settings className="h-5 w-5" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent>
-                <SheetHeader>
-                  <SheetTitle>{t("editorPreferences")}</SheetTitle>
-                  <SheetDescription>
-                    {t("editorPreferencesDesc")}
-                  </SheetDescription>
-                </SheetHeader>
-                <ScrollArea className="h-[calc(100vh-8rem)] pr-4 mt-6">
-                  <div className="space-y-6">
-                    <div className="space-y-2">
-                      <Label>
-                        {t("fontSize")}: {fontSize}px
-                      </Label>
-                      <Slider
-                        value={[fontSize]}
-                        min={10}
-                        max={24}
-                        step={1}
-                        onValueChange={(value) => setFontSize(value[0])}
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label>
-                        {t("lineHeight")}: {lineHeight}
-                      </Label>
-                      <Slider
-                        value={[lineHeight * 10]}
-                        min={10}
-                        max={30}
-                        step={1}
-                        onValueChange={(value) => setLineHeight(value[0] / 10)}
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="font">{t("font")}</Label>
-                      <Select
-                        value={selectedFont}
-                        onValueChange={(value) => setSelectedFont(value)}>
-                        <SelectTrigger id="font">
-                          <SelectValue
-                            placeholder={t("selectFontPlaceholder")}
-                          />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {FONT_OPTIONS.map((font) => (
-                            <SelectItem key={font.value} value={font.value}>
-                              {t(font.labelKey)}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="tabSize">{t("tabSize")}</Label>
-                      <Select
-                        value={tabSize.toString()}
-                        onValueChange={(value) => setTabSize(parseInt(value))}>
-                        <SelectTrigger id="tabSize">
-                          <SelectValue
-                            placeholder={t("selectTabSizePlaceholder")}
-                          />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {[2, 4, 8].map((size) => (
-                            <SelectItem key={size} value={size.toString()}>
-                              {size} {t("spaces")}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div className="flex items-center justify-between py-2">
-                      <Label htmlFor="showLineNumbers">
-                        {t("showLineNumbers")}
-                      </Label>
-                      <Switch
-                        id="showLineNumbers"
-                        checked={showLineNumbers}
-                        onCheckedChange={setShowLineNumbers}
-                      />
-                    </div>
-
-                    <div className="flex items-center justify-between py-2">
-                      <Label htmlFor="enableLigatures">
-                        {t("enableLigatures")}
-                      </Label>
-                      <Switch
-                        id="enableLigatures"
-                        checked={enableLigatures}
-                        onCheckedChange={setEnableLigatures}
-                      />
-                    </div>
-
-                    <div className="flex items-center justify-between py-2">
-                      <Label htmlFor="wordWrap">{t("wordWrap")}</Label>
-                      <Switch
-                        id="wordWrap"
-                        checked={wordWrap}
-                        onCheckedChange={setWordWrap}
-                      />
-                    </div>
-
-                    <div className="flex items-center justify-between py-2">
-                      <Label htmlFor="autoSave">{t("autoSave")}</Label>
-                      <Switch
-                        id="autoSave"
-                        checked={autoSave}
-                        onCheckedChange={setAutoSave}
-                      />
-                    </div>
-
-                    <Button className="w-full" onClick={saveEditorPreferences}>
-                      <Save className="h-4 w-4 mr-2" />
-                      {t("savePreferences")}
+    <>
+      <div className="min-h-screen flex flex-col">
+        <div className="flex-1 flex flex-col">
+          {/* Header */}
+          <div className="flex items-center justify-between p-4 md:p-6 border-b bg-background">
+            <div className="flex items-center gap-2 md:gap-4">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      onClick={() => router.back()}
+                      variant="ghost"
+                      size="icon"
+                      className="md:hidden">
+                      <ChevronLeft className="h-5 w-5" />
                     </Button>
-                  </div>
-                </ScrollArea>
-              </SheetContent>
-            </Sheet>
-
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={handleFullScreen}
-                    className="h-9 w-9">
-                    <Maximize2 className="h-5 w-5" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>{t("fullscreen")}</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
-        </div>
-
-        {/* Main Content */}
-        <div className="flex-1 grid grid-cols-1 md:grid-cols-2 overflow-hidden">
-          {/* Left Panel - Challenge Details */}
-          <div
-            className={cn(
-              "border-r overflow-auto h-full",
-              isMobile && activeTab !== "details" ? "hidden" : ""
-            )}>
-            <div className="p-4 md:p-6 space-y-4 md:space-y-6 h-full">
-              <Card className="mb-4">
-                <CardHeader className="p-4">
-                  <CardTitle className="flex items-center gap-2 text-base">
-                    <Download className="h-5 w-5" />
-                    {t("attachments")}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="grid gap-3 p-4">
-                  <div className="flex flex-col gap-2">
-                    {challenge?.attachments?.length > 0 ? (
-                      challenge.attachments.map((attachment) => (
-                        <Button
-                          key={attachment.id}
-                          variant="outline"
-                          size="sm"
-                          className="justify-start gap-2"
-                          asChild>
-                          <Link href={attachment.file} target="_blank" download>
-                            <Download className="h-4 w-4" />
-                            <span className="truncate">{attachment.title}</span>
-                          </Link>
-                        </Button>
-                      ))
-                    ) : (
-                      <p className="text-sm text-muted-foreground">
-                        {t("noAttachments")}
-                      </p>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="flex-1">
-                <CardHeader className="p-4">
-                  <CardTitle className="text-base">{t("stats")}</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4 p-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <p className="text-sm text-muted-foreground">
-                        {t("difficulty")}
-                      </p>
-                      <Badge
-                        variant={
-                          challenge?.difficulty === "easy"
-                            ? "default"
-                            : challenge?.difficulty === "medium"
-                            ? "secondary"
-                            : "destructive"
-                        }>
-                        {t(`difficulty_${challenge?.difficulty || "easy"}`)}
-                      </Badge>
-                    </div>
-                    <div className="space-y-1">
-                      <p className="text-sm text-muted-foreground">
-                        {t("points")}
-                      </p>
-                      <p className="font-medium">{challenge?.points} XP</p>
-                    </div>
-                    <div className="space-y-1">
-                      <p className="text-sm text-muted-foreground">
-                        {t("estimatedTime")}
-                      </p>
-                      <p className="font-medium">
-                        {challenge?.estimated_time} {t("timeUnit.minutes")}
-                      </p>
-                    </div>
-                    {challenge?.subscription_status?.max_attempts && (
-                      <div className="space-y-1">
-                        <p className="text-sm text-muted-foreground">
-                          {t("attempts")}
-                        </p>
-                        <Badge variant="outline">
-                          {t("attemptsRemaining", {
-                            current:
-                              challenge.subscription_status.attempts_count,
-                            max: challenge.subscription_status.max_attempts,
-                          })}
-                        </Badge>
-                      </div>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
+                  </TooltipTrigger>
+                  <TooltipContent>{t("back")}</TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <Button
+                onClick={() => router.back()}
+                variant="outline"
+                size="sm"
+                className="hidden md:flex">
+                {t("back")}
+              </Button>
+              <h1 className="text-lg md:text-xl font-bold truncate">
+                {t("submitSolution")}
+              </h1>
+            </div>
+            <div className="flex items-center gap-2">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={handleFullScreen}
+                      className="h-9 w-9">
+                      <Maximize2 className="h-5 w-5" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>{t("fullscreen")}</TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
           </div>
 
-          {/* Right Panel - Code Editor */}
-          <div className="flex flex-col h-full">
-            <Tabs
-              value={activeTab}
-              onValueChange={setActiveTab}
-              className="flex-1">
-              <div className="border-b px-4 md:px-6">
-                <TabsList className="h-12">
-                  {isMobile && (
-                    <TabsTrigger value="details">{t("details")}</TabsTrigger>
-                  )}
-                  <TabsTrigger value="editor">{t("code")}</TabsTrigger>
-                  <TabsTrigger value="documentation">
-                    {t("documentation")}
-                  </TabsTrigger>
-                </TabsList>
-              </div>
+          {/* Main Content */}
+          <div className="flex-1 grid grid-cols-1 md:grid-cols-2 overflow-hidden">
+            {/* Left Panel - Challenge Details */}
+            <div
+              className={cn(
+                "border-r overflow-auto h-full",
+                isMobile && activeTab !== "details" ? "hidden" : ""
+              )}>
+              <div className="p-4 md:p-6 space-y-4 md:space-y-6 h-full">
+                <Card className="mb-4">
+                  <CardHeader className="p-4">
+                    <CardTitle className="flex items-center gap-2 text-base">
+                      <Download className="h-5 w-5" />
+                      {t("attachments")}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="grid gap-3 p-4">
+                    <div className="space-y-2 p-2 bg-muted/50 rounded-md my-4">
+                      <h3 className="text-sm font-medium">
+                        {t("attachments")}
+                      </h3>
+                      <div className="flex flex-col gap-2">
+                        {challenge?.attachments &&
+                        challenge?.attachments.length > 0 ? (
+                          challenge.attachments.map((attachment) => (
+                            <a
+                              key={attachment.id}
+                              href={attachment.file}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-xs bg-primary/10 text-primary px-2 py-1 rounded hover:bg-primary/20 transition-colors">
+                              {attachment.title || t("downloadAttachment")}
+                            </a>
+                          ))
+                        ) : (
+                          <p className="text-xs text-muted-foreground">
+                            {t("noAttachments")}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
 
-              <TabsContent
-                value="editor"
-                className="flex-1 p-4 md:p-6 space-y-4 overflow-hidden">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 flex-wrap">
-                  <div className="space-y-2 w-full md:w-auto">
-                    <Label htmlFor="language">{t("selectLanguage")}</Label>
-                    <div className="relative">
-                      <Select
-                        value={selectedLanguage}
-                        onValueChange={(value) => {
-                          setSelectedLanguage(value);
-                          // Only reset code if explicitly changing to a different language
-                          if (value !== selectedLanguage) {
-                            // Ask for confirmation if there's existing code
-                            if (code.trim()) {
-                              if (window.confirm(t("confirmLanguageChange"))) {
-                                setCode("");
+                <Card className="flex-1">
+                  <CardHeader className="p-4">
+                    <CardTitle className="text-base">{t("stats")}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4 p-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-1">
+                        <p className="text-sm text-muted-foreground">
+                          {t("difficulty")}
+                        </p>
+                        <Badge
+                          variant={
+                            challenge?.difficulty === "easy"
+                              ? "default"
+                              : challenge?.difficulty === "medium"
+                              ? "secondary"
+                              : "destructive"
+                          }>
+                          {t(`difficulty_${challenge?.difficulty || "easy"}`)}
+                        </Badge>
+                      </div>
+                      <div className="space-y-1">
+                        <p className="text-sm text-muted-foreground">
+                          {t("points")}
+                        </p>
+                        <p className="font-medium">{challenge?.points} XP</p>
+                      </div>
+                      <div className="space-y-1">
+                        <p className="text-sm text-muted-foreground">
+                          {t("estimatedTime")}
+                        </p>
+                        <p className="font-medium">
+                          {challenge?.estimated_time} {t("timeUnit.minutes")}
+                        </p>
+                      </div>
+                      {challenge?.subscription_status?.max_attempts && (
+                        <div className="space-y-1">
+                          <p className="text-sm text-muted-foreground">
+                            {t("attempts")}
+                          </p>
+                          <Badge variant="outline">
+                            {t("attemptsRemaining", {
+                              current:
+                                challenge.subscription_status.attempts_count,
+                              max: challenge.subscription_status.max_attempts,
+                            })}
+                          </Badge>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+
+            {/* Right Panel - Code Editor */}
+            <div className="flex flex-col h-full">
+              <Tabs
+                value={activeTab}
+                onValueChange={setActiveTab}
+                className="flex-1">
+                <div className="border-b px-4 md:px-6">
+                  <TabsList className="h-12">
+                    {isMobile && (
+                      <TabsTrigger value="details">{t("details")}</TabsTrigger>
+                    )}
+                    <TabsTrigger value="editor">{t("code")}</TabsTrigger>
+                    <TabsTrigger value="documentation">
+                      {t("documentation")}
+                    </TabsTrigger>
+                  </TabsList>
+                </div>
+
+                <TabsContent
+                  value="editor"
+                  className="flex-1 p-4 md:p-6 space-y-4 overflow-hidden">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 flex-wrap">
+                    <div className="space-y-2 w-full md:w-auto">
+                      <Label htmlFor="language">{t("selectLanguage")}</Label>
+                      <div className="relative">
+                        <Select
+                          value={selectedLanguage}
+                          onValueChange={(value) => {
+                            setSelectedLanguage(value);
+                            // Only reset code if explicitly changing to a different language
+                            if (value !== selectedLanguage) {
+                              // Ask for confirmation if there's existing code
+                              if (code.trim()) {
+                                if (
+                                  window.confirm(t("confirmLanguageChange"))
+                                ) {
+                                  setCode("");
+                                } else {
+                                  // Reset the select to previous value
+                                  return;
+                                }
                               } else {
-                                // Reset the select to previous value
-                                return;
+                                setCode("");
                               }
-                            } else {
-                              setCode("");
                             }
-                          }
-                        }}>
+                          }}>
+                          <SelectTrigger
+                            id="language"
+                            className="w-full md:w-[200px]">
+                            <SelectValue
+                              placeholder={t("selectLanguagePlaceholder")}
+                            />
+                          </SelectTrigger>
+                          <SelectContent className="max-h-80">
+                            <div className="p-2">
+                              <Input
+                                placeholder={t("searchLanguages")}
+                                value={languageSearch}
+                                onChange={(e) =>
+                                  setLanguageSearch(e.target.value)
+                                }
+                                className="mb-2"
+                              />
+                            </div>
+                            <ScrollArea className="max-h-60">
+                              {filteredLanguages.map((group) => (
+                                <div key={group.group}>
+                                  <SelectGroup>
+                                    <SelectLabel>
+                                      {t(`languageGroup.${group.group}`)}
+                                    </SelectLabel>
+                                    {group.languages.map((lang) => (
+                                      <SelectItem
+                                        key={lang.value}
+                                        value={lang.value}>
+                                        {t(lang.labelKey)}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectGroup>
+                                </div>
+                              ))}
+                            </ScrollArea>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    <div className="space-y-2 w-full md:w-auto">
+                      <Label htmlFor="theme">{t("selectTheme")}</Label>
+                      <Select
+                        value={selectedTheme}
+                        onValueChange={(value) => setSelectedTheme(value)}>
                         <SelectTrigger
-                          id="language"
+                          id="theme"
                           className="w-full md:w-[200px]">
                           <SelectValue
-                            placeholder={t("selectLanguagePlaceholder")}
+                            placeholder={t("selectThemePlaceholder")}
                           />
                         </SelectTrigger>
-                        <SelectContent className="max-h-80">
-                          <div className="p-2">
-                            <Input
-                              placeholder={t("searchLanguages")}
-                              value={languageSearch}
-                              onChange={(e) =>
-                                setLanguageSearch(e.target.value)
-                              }
-                              className="mb-2"
-                            />
-                          </div>
+                        <SelectContent>
                           <ScrollArea className="max-h-60">
-                            {filteredLanguages.map((group) => (
-                              <div key={group.group}>
-                                <SelectGroup>
-                                  <SelectLabel>
-                                    {t(`languageGroup.${group.group}`)}
-                                  </SelectLabel>
-                                  {group.languages.map((lang) => (
-                                    <SelectItem
-                                      key={lang.value}
-                                      value={lang.value}>
-                                      {t(lang.labelKey)}
-                                    </SelectItem>
-                                  ))}
-                                </SelectGroup>
-                              </div>
+                            {THEME_OPTIONS.map((theme) => (
+                              <SelectItem key={theme.value} value={theme.value}>
+                                {t(theme.labelKey)}
+                              </SelectItem>
                             ))}
                           </ScrollArea>
                         </SelectContent>
                       </Select>
                     </div>
                   </div>
-                  <div className="space-y-2 w-full md:w-auto">
-                    <Label htmlFor="theme">{t("selectTheme")}</Label>
-                    <Select
-                      value={selectedTheme}
-                      onValueChange={(value) => setSelectedTheme(value)}>
-                      <SelectTrigger id="theme" className="w-full md:w-[200px]">
-                        <SelectValue
-                          placeholder={t("selectThemePlaceholder")}
-                        />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <ScrollArea className="max-h-60">
-                          {THEME_OPTIONS.map((theme) => (
-                            <SelectItem key={theme.value} value={theme.value}>
-                              {t(theme.labelKey)}
-                            </SelectItem>
-                          ))}
-                        </ScrollArea>
-                      </SelectContent>
-                    </Select>
+
+                  <div className="flex-1 min-h-[300px] relative">
+                    <CodeEditor
+                      value={code}
+                      onChange={(value: string | undefined) =>
+                        setCode(value || "")
+                      }
+                      language={selectedLanguage || "javascript"}
+                      height="600px"
+                    />
                   </div>
-                </div>
+                </TabsContent>
 
-                <div className="flex-1 min-h-[300px] relative">
-                  <CodeEditor
-                    value={code}
-                    onChange={setCode}
-                    language={selectedLanguage}
-                    theme={selectedTheme}
-                    options={{
-                      fontSize: fontSize,
-                      lineHeight: lineHeight,
-                      fontFamily:
-                        selectedFont !== "default" ? selectedFont : undefined,
-                      lineNumbers: showLineNumbers,
-                      fontLigatures: enableLigatures,
-                      tabSize: tabSize,
-                      wordWrap: wordWrap ? "on" : "off",
-                      defaultLanguage: selectedLanguage,
-                      syntaxHighlighting: true,
-                    }}
-                  />
-                </div>
-              </TabsContent>
-
-              <TabsContent
-                value="documentation"
-                className="flex-1 p-4 md:p-6 space-y-4 h-full overflow-auto">
-                <div className="flex flex-col md:flex-row md:items-center gap-4 mb-4">
-                  <h3 className="text-lg font-medium">
-                    {t("documentationTitle")}
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    {t("documentationDescription")}
-                  </p>
-                </div>
-
-                <div
-                  className="flex-1 min-h-[300px] rounded-md border"
-                  data-color-mode={theme === "dark" ? "dark" : "light"}>
-                  <MDEditor
-                    value={documentation}
-                    onChange={setDocumentation}
-                    preview="edit"
-                    height={500}
-                  />
-                </div>
-              </TabsContent>
-
-              {isMobile && (
                 <TabsContent
-                  value="details"
-                  className="flex-1 p-4 space-y-4 overflow-auto">
-                  <Card className="mb-4">
-                    <CardHeader className="p-4">
-                      <CardTitle className="flex items-center gap-2 text-base">
-                        <Download className="h-5 w-5" />
-                        {t("attachments")}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="grid gap-3 p-4">
-                      <div className="flex flex-col gap-2">
-                        {challenge?.attachments?.length > 0 ? (
-                          challenge.attachments.map((attachment) => (
-                            <Button
-                              key={attachment.id}
-                              variant="outline"
-                              size="sm"
-                              className="justify-start gap-2"
-                              asChild>
-                              <Link
-                                href={attachment.file}
-                                target="_blank"
-                                download>
-                                <Download className="h-4 w-4" />
-                                <span className="truncate">
-                                  {attachment.title}
-                                </span>
-                              </Link>
-                            </Button>
-                          ))
-                        ) : (
-                          <p className="text-sm text-muted-foreground">
-                            {t("noAttachments")}
-                          </p>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
+                  value="documentation"
+                  className="flex-1 p-4 md:p-6 space-y-4 h-full overflow-auto">
+                  <div className="flex flex-col md:flex-row md:items-center gap-4 mb-4">
+                    <h3 className="text-lg font-medium">
+                      {t("documentationTitle")}
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      {t("documentationDescription")}
+                    </p>
+                  </div>
 
-                  <Card>
-                    <CardHeader className="p-4">
-                      <CardTitle className="text-base">{t("stats")}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4 p-4">
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-1">
-                          <p className="text-sm text-muted-foreground">
-                            {t("difficulty")}
-                          </p>
-                          <Badge
-                            variant={
-                              challenge?.difficulty === "easy"
-                                ? "default"
-                                : challenge?.difficulty === "medium"
-                                ? "secondary"
-                                : "destructive"
-                            }>
-                            {t(`difficulty_${challenge?.difficulty || "easy"}`)}
-                          </Badge>
+                  <div
+                    className="flex-1 min-h-[300px] rounded-md border"
+                    data-color-mode={theme === "dark" ? "dark" : "light"}>
+                    <MDEditor
+                      value={documentation}
+                      onChange={(value?: string) =>
+                        setDocumentation(value || "")
+                      }
+                      preview="edit"
+                      height={500}
+                    />
+                  </div>
+                </TabsContent>
+
+                {isMobile && (
+                  <TabsContent
+                    value="details"
+                    className="flex-1 p-4 space-y-4 overflow-auto">
+                    <Card className="mb-4">
+                      <CardHeader className="p-4">
+                        <CardTitle className="flex items-center gap-2 text-base">
+                          <Download className="h-5 w-5" />
+                          {t("attachments")}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="grid gap-3 p-4">
+                        <div className="space-y-2 p-2 bg-muted/50 rounded-md mt-4">
+                          <h3 className="text-sm font-medium">
+                            {t("attachments")}
+                          </h3>
+                          <div className="flex flex-col gap-2">
+                            {challenge?.attachments &&
+                            challenge?.attachments.length > 0 ? (
+                              challenge.attachments.map((attachment) => (
+                                <a
+                                  key={attachment.id}
+                                  href={attachment.file}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-xs bg-primary/10 text-primary px-2 py-1 rounded hover:bg-primary/20 transition-colors">
+                                  {attachment.title || t("downloadAttachment")}
+                                </a>
+                              ))
+                            ) : (
+                              <p className="text-xs text-muted-foreground">
+                                {t("noAttachments")}
+                              </p>
+                            )}
+                          </div>
                         </div>
-                        <div className="space-y-1">
-                          <p className="text-sm text-muted-foreground">
-                            {t("points")}
-                          </p>
-                          <p className="font-medium">{challenge?.points} XP</p>
-                        </div>
-                        <div className="space-y-1">
-                          <p className="text-sm text-muted-foreground">
-                            {t("estimatedTime")}
-                          </p>
-                          <p className="font-medium">
-                            {challenge?.estimated_time} {t("timeUnit.minutes")}
-                          </p>
-                        </div>
-                        {challenge?.subscription_status?.max_attempts && (
+                      </CardContent>
+                    </Card>
+
+                    <Card>
+                      <CardHeader className="p-4">
+                        <CardTitle className="text-base">
+                          {t("stats")}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4 p-4">
+                        <div className="grid grid-cols-2 gap-4">
                           <div className="space-y-1">
                             <p className="text-sm text-muted-foreground">
-                              {t("attempts")}
+                              {t("difficulty")}
                             </p>
-                            <Badge variant="outline">
-                              {t("attemptsRemaining", {
-                                current:
-                                  challenge.subscription_status.attempts_count,
-                                max: challenge.subscription_status.max_attempts,
-                              })}
+                            <Badge
+                              variant={
+                                challenge?.difficulty === "easy"
+                                  ? "default"
+                                  : challenge?.difficulty === "medium"
+                                  ? "secondary"
+                                  : "destructive"
+                              }>
+                              {t(
+                                `difficulty_${challenge?.difficulty || "easy"}`
+                              )}
                             </Badge>
                           </div>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-              )}
-            </Tabs>
+                          <div className="space-y-1">
+                            <p className="text-sm text-muted-foreground">
+                              {t("points")}
+                            </p>
+                            <p className="font-medium">
+                              {challenge?.points} XP
+                            </p>
+                          </div>
+                          <div className="space-y-1">
+                            <p className="text-sm text-muted-foreground">
+                              {t("estimatedTime")}
+                            </p>
+                            <p className="font-medium">
+                              {challenge?.estimated_time}{" "}
+                              {t("timeUnit.minutes")}
+                            </p>
+                          </div>
+                          {challenge?.subscription_status?.max_attempts && (
+                            <div className="space-y-1">
+                              <p className="text-sm text-muted-foreground">
+                                {t("attempts")}
+                              </p>
+                              <Badge variant="outline">
+                                {t("attemptsRemaining", {
+                                  current:
+                                    challenge.subscription_status
+                                      .attempts_count,
+                                  max: challenge.subscription_status
+                                    .max_attempts,
+                                })}
+                              </Badge>
+                            </div>
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </TabsContent>
+                )}
+              </Tabs>
 
-            {/* Footer Actions */}
-            <div className="p-4 md:p-6 border-t">
-              <div className="flex flex-col md:flex-row justify-between gap-4">
-                <div className="flex items-center space-x-2">
-                  <Switch
-                    id="isPrivate"
-                    checked={isPrivate}
-                    onCheckedChange={setIsPrivate}
-                  />
-                  <Label htmlFor="isPrivate">{t("privateSubmission")}</Label>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger className="cursor-help">
-                        <span className="text-muted-foreground text-sm underline">
-                          (?)
-                        </span>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>{t("privateSubmissionHelp")}</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
-                <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    onClick={() => router.back()}
-                    className="flex-1 md:flex-none">
-                    {t("cancel")}
-                  </Button>
-                  <Button
-                    onClick={handleSubmit}
-                    disabled={isLoading}
-                    className="flex-1 md:flex-none">
-                    {isLoading ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        {t("submitting")}
-                      </>
-                    ) : (
-                      <>
-                        <Play className="mr-2 h-4 w-4" />
-                        {t("submit")}
-                      </>
-                    )}
-                  </Button>
+              {/* Footer Actions */}
+              <div className="p-4 md:p-6 border-t">
+                <div className="flex flex-col md:flex-row justify-between gap-4">
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      id="isPrivate"
+                      checked={isPrivate}
+                      onCheckedChange={setIsPrivate}
+                    />
+                    <Label htmlFor="isPrivate">{t("privateSubmission")}</Label>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger className="cursor-help">
+                          <span className="text-muted-foreground text-sm underline">
+                            (?)
+                          </span>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>{t("privateSubmissionHelp")}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      onClick={() => router.back()}
+                      className="flex-1 md:flex-none">
+                      {t("cancel")}
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={handleSave}
+                      className="flex-1 md:flex-none">
+                      <Save className="mr-2 h-4 w-4" />
+                      {t("saveProgress")}
+                    </Button>
+                    <Button
+                      onClick={handleSubmit}
+                      disabled={isLoading}
+                      className="flex-1 md:flex-none">
+                      {isLoading ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          {t("submitting")}
+                        </>
+                      ) : (
+                        <>
+                          <SendHorizonal className="mr-2 h-4 w-4" />
+                          {t("submit")}
+                        </>
+                      )}
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+
+      <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>
+              <div className="flex items-center gap-2">
+                <div className="text-green-500">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    className="lucide lucide-check-circle">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                    <polyline points="22 4 12 14.01 9 11.01" />
+                  </svg>
+                </div>
+                <span>{t("submitSuccess")}</span>
+              </div>
+            </DialogTitle>
+            <DialogDescription className="pt-2">
+              {t("submissionSuccessDesc")}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="bg-muted/50 p-4 rounded-lg my-4">
+            <div className="flex justify-between items-center mb-2">
+              <h3 className="font-medium">{challenge.title}</h3>
+              <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">
+                {selectedLanguage &&
+                  t(`Challenge.language.${selectedLanguage.toLowerCase()}`)}
+              </span>
+            </div>
+            <div className="text-sm text-muted-foreground">
+              <p>✅ {t("submissionSuccessDesc")}</p>
+              <p className="mt-2">
+                🚀 {t("Challenge.solutions.comingSoonDesc")}
+              </p>
+            </div>
+          </div>
+          <DialogFooter className="sm:justify-center gap-2 pt-2">
+            <Button variant="outline" onClick={handleGoToDashboard}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                className="lucide lucide-layout-dashboard mr-2">
+                <rect width="7" height="9" x="3" y="3" rx="1" />
+                <rect width="7" height="5" x="14" y="3" rx="1" />
+                <rect width="7" height="9" x="14" y="12" rx="1" />
+                <rect width="7" height="5" x="3" y="16" rx="1" />
+              </svg>
+              {t("viewDashboard")}
+            </Button>
+            <Button onClick={handleViewSolution}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                className="lucide lucide-eye mr-2">
+                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+              {t("viewSolution")}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
