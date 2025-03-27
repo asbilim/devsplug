@@ -450,7 +450,9 @@
       "eclipse": "Éclipse",
       "material": "Matériel",
       "solarizeddark": "Solarisé Sombre",
-      "solarizedlight": "Solarisé Clair"
+      "solarizedlight": "Solarisé Clair",
+      "oceanic": "Océanique",
+      "palenight": "Nuit Pâle"
     },
     "recoveredSolution": "Solution récupérée",
     "recoveredSolutionDesc": "Votre solution précédemment sauvegardée a été chargée",
@@ -504,12 +506,22 @@
       "postedOn": "Posté le {date}",
       "comingSoon": "Bientôt disponible",
       "comingSoonDesc": "La page complète de détails des solutions est en cours de développement"
-    }
+    },
+    "details": "Détails du défi",
+    "subscribeFirstToRegister": "Abonnez-vous à ce défi pour vous inscrire",
+    "documentationTitle": "Documentation de la solution",
+    "documentationDescription": "Expliquez votre approche, l'analyse de complexité et tout aspect notable de votre solution"
   },
   "editor": {
     "selectLanguage": "Sélectionner le Langage",
     "run": "Exécuter",
     "fullscreen": "Plein Écran",
     "exitFullscreen": "Quitter le Plein Écran"
+  },
+  "solutions": {
+    "title": "Solutions"
+  },
+  "Common": {
+    "codeCopied": "Code copié dans le presse-papiers"
   }
 }

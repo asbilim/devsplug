@@ -316,7 +316,7 @@
       "days": "days"
     },
     "privateSubmission": "Make solution private",
-    "privateSubmissionHelp": "The solution will not be visible to other users",
+    "privateSubmissionHelp": "Solution will not be visible to other users",
     "cancel": "Cancel",
     "submit": "Submit",
     "difficulty_easy": "Easy",
@@ -348,7 +348,7 @@
     "subscribeSuccess": "Successfully subscribed to challenge",
     "unsubscribeSuccess": "Successfully unsubscribed from challenge",
     "subscribeError": "Failed to subscribe to challenge",
-    "submitSuccess": "Solution submitted",
+    "submitSuccess": "Solution submitted successfully",
     "submitError": "Failed to submit solution",
     "codeRequired": "Please enter your solution code",
     "code": "Code",
@@ -364,7 +364,6 @@
     "examples": "Examples",
     "stats": "Challenge Stats",
     "attempts": "Attempts",
-    "viewChallenge": "View Challenge",
     "authenticationError": "Authentication error",
     "selectTheme": "Select Theme",
     "selectThemePlaceholder": "Select a theme",
@@ -455,28 +454,30 @@
       "eclipse": "Eclipse",
       "material": "Material",
       "solarizeddark": "Solarized Dark",
-      "solarizedlight": "Solarized Light"
+      "solarizedlight": "Solarized Light",
+      "oceanic": "Oceanic",
+      "palenight": "Palenight"
     },
     "recoveredSolution": "Solution recovered",
     "recoveredSolutionDesc": "Your previously saved solution has been loaded",
     "solutionSaved": "Solution saved",
     "solutionSavedDesc": "Your solution has been saved to session storage",
-    "savingError": "Error saving solution",
-    "savingErrorDesc": "There was an error saving your solution",
+    "savingError": "Error saving",
+    "savingErrorDesc": "An error occurred while saving your solution",
     "loginRequired": "Login required",
     "loginRequiredDesc": "You must be logged in to submit a solution",
     "missingCode": "Code required",
-    "missingCodeDesc": "Please enter some code before submitting",
+    "missingCodeDesc": "Please enter code before submitting",
     "submissionSuccess": "Solution submitted",
-    "submissionSuccessDesc": "Your solution has been submitted successfully",
+    "submissionSuccessDesc": "Your solution has been successfully submitted",
     "submissionError": "Submission error",
-    "submissionErrorDesc": "There was an error submitting your solution",
+    "submissionErrorDesc": "An error occurred while submitting your solution",
     "saving": "Saving...",
-    "saveProgress": "Save Progress",
-    "viewDashboard": "Go to Dashboard",
-    "viewSolution": "View Solution",
+    "saveProgress": "Save progress",
+    "viewDashboard": "Go to dashboard",
+    "viewSolution": "View solution",
     "solutions": {
-      "title": "Challenge Solutions",
+      "title": "Challenge solutions",
       "description": "Browse solutions submitted by the community",
       "empty": "No solutions found for this challenge",
       "page": "Page {page} of {total}",
@@ -487,16 +488,16 @@
       "sort": "Sort by",
       "newest": "Newest",
       "oldest": "Oldest",
-      "mostLiked": "Most Liked",
-      "back": "Back to Challenge",
-      "submit": "Submit Your Solution",
+      "mostLiked": "Most liked",
+      "back": "Back to challenge",
+      "submit": "Submit your solution",
       "comingSoon": "Coming Soon",
       "comingSoonDesc": "The full solutions listing page is under development"
     },
     "solutionDetails": {
-      "title": "Solution Details",
+      "title": "Solution details",
       "by": "by {username}",
-      "back": "Back to Solutions",
+      "back": "Back to solutions",
       "follow": "Follow",
       "unfollow": "Unfollow",
       "code": "Code",
@@ -509,12 +510,22 @@
       "postedOn": "Posted on {date}",
       "comingSoon": "Coming Soon",
       "comingSoonDesc": "The full solution details page is under development"
-    }
+    },
+    "details": "Challenge Details",
+    "subscribeFirstToRegister": "Subscribe to this challenge to register",
+    "documentationTitle": "Solution Documentation",
+    "documentationDescription": "Explain your approach, complexity analysis, and any notable aspects of your solution"
   },
   "editor": {
     "selectLanguage": "Select Language",
     "run": "Run",
     "fullscreen": "Fullscreen",
     "exitFullscreen": "Exit Fullscreen"
+  },
+  "solutions": {
+    "title": "Solutions"
+  },
+  "Common": {
+    "codeCopied": "Code copied to clipboard"
   }
 }
