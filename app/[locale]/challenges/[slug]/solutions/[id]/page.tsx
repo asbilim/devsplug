@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getTranslations, getNow } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import {
   Card,
   CardContent,
@@ -8,48 +8,30 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CodeBlock } from "@/components/ui/code-block";
 import { Markdown } from "@/components/markdown";
 import { formatDate, formatRelativeTime } from "@/lib/utils";
 import { Link } from "@/src/i18n/routing";
+import { Button } from "@/components/ui/button";
 import {
   ArrowLeft,
   Calendar,
-  Download,
   Github,
   Heart,
   MessageSquare,
-  Share,
-  Twitter,
   User,
-  Check,
-  Facebook,
-  Linkedin,
-  Mail,
-  Copy,
 } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Metadata } from "next";
 import { SolutionActions } from "@/components/solution-actions";
-import { toast } from "sonner";
 import { CopyButton } from "@/components/copy-button";
 import { ShareSolution } from "@/components/share-solution";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { getComments } from "@/app/actions/comments";
+import { CommentSection } from "@/components/comments/CommentSection";
+import { CommentsErrorBoundary } from "@/components/comments/CommentsErrorBoundary";
 
 interface SolutionDetailParams {
   params: {
@@ -82,6 +64,23 @@ interface Challenge {
   title: string;
   slug: string;
   difficulty: string;
+}
+
+// Define a type for transformed comments
+interface TransformedComment {
+  id: number;
+  author: {
+    id: number;
+    username: string;
+    avatar: string | null;
+  };
+  content: string;
+  createdAt: string;
+  updatedAt?: string;
+  likesCount: number;
+  repliesCount: number;
+  isLikedByUser: boolean;
+  parent: number | null;
 }
 
 // Fetch challenge data with authentication
@@ -194,6 +193,49 @@ export default async function SolutionDetailPage({
   // Fetch real data
   const solution = await getSolution(slug, id);
   const challenge = await getChallenge(slug);
+
+  // Get initial comments data with proper transformation
+  let initialComments: TransformedComment[] = [];
+  let commentCount = 0;
+
+  if (solution && challenge) {
+    try {
+      // Just fetch the first page - our client-side pagination code will handle the rest
+      const commentsData = await getComments(slug, id, 1, 10);
+
+      // Use optional chaining and nullish coalescing to safely handle potentially undefined values
+      const apiComments = commentsData?.comments ?? [];
+      commentCount = commentsData?.pagination?.total ?? 0;
+
+      // Transform API comments to match the expected format
+      initialComments = apiComments.map((comment: any): TransformedComment => {
+        return {
+          id: comment?.id ?? 0,
+          author: comment?.user
+            ? {
+                id: comment.user.id ?? 0,
+                username: comment.user.username ?? "Anonymous",
+                avatar: comment.user.profile ?? null,
+              }
+            : {
+                id: 0,
+                username: "Anonymous",
+                avatar: null,
+              },
+          content: comment?.content ?? "",
+          createdAt: comment?.created_at ?? new Date().toISOString(),
+          updatedAt: comment?.updated_at,
+          likesCount: comment?.likes_count ?? 0,
+          repliesCount: 0, // Will be calculated by CommentSection
+          isLikedByUser: comment?.is_liked_by_user ?? false,
+          parent: comment?.parent,
+        };
+      });
+    } catch (error) {
+      console.error("Error prefetching comments:", error);
+      // Keep default values in case of error
+    }
+  }
 
   // Handle 404
   if (!solution || !challenge) {
@@ -362,25 +404,14 @@ export default async function SolutionDetailPage({
           )}
         </Tabs>
 
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-base flex items-center gap-2">
-              {t("comments")}
-              <Badge variant="secondary">0</Badge>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex justify-center py-6 text-muted-foreground">
-              {t("noComments")}
-            </div>
-          </CardContent>
-          <CardFooter className="flex justify-center border-t pt-4">
-            <Button variant="outline" disabled>
-              <MessageSquare className="h-4 w-4 mr-2" />
-              {t("addComment")}
-            </Button>
-          </CardFooter>
-        </Card>
+        <CommentsErrorBoundary>
+          <CommentSection
+            challengeSlug={slug}
+            solutionId={id}
+            initialComments={initialComments}
+            commentCount={commentCount}
+          />
+        </CommentsErrorBoundary>
       </div>
     </div>
   );
