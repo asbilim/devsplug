@@ -210,7 +210,7 @@ export default async function HomePage({
       </div>
 
       {/* Solutions Section - using our new component */}
-      <SolutionsSection />
+      {/* <SolutionsSection /> */}
 
       {/* Support Project Section */}
       <div>
