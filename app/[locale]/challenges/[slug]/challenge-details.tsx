@@ -431,8 +431,7 @@ export function ChallengeDetails({ challenge }: ChallengeDetailsProps) {
                       asChild
                       className="w-full sm:w-auto"
                       disabled={isCheckingRegistration}>
-                      <Link
-                        href={`/${params.locale}/challenges/${challenge.slug}/solution`}>
+                      <Link href={`/challenges/${challenge.slug}/solution`}>
                         {t("writeSolution")}
                       </Link>
                     </Button>
