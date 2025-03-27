@@ -505,7 +505,27 @@
       "likes": "{count} j'aime",
       "postedOn": "Posté le {date}",
       "comingSoon": "Bientôt disponible",
-      "comingSoonDesc": "La page complète de détails des solutions est en cours de développement"
+      "comingSoonDesc": "La page complète de détails des solutions est en cours de développement",
+      "share": "Partager la solution",
+      "download": "Télécharger le code",
+      "downloadSuccess": "Code téléchargé avec succès",
+      "downloadError": "Échec du téléchargement du code",
+      "copyLink": "Copier le lien",
+      "linkCopied": "Lien copié dans le presse-papiers",
+      "copyLinkError": "Échec de la copie du lien",
+      "viewProfile": "Voir le profil",
+      "like": "Aimer la solution",
+      "backToChallenge": "Retour au défi",
+      "backToSolutions": "Retour aux solutions",
+      "submitYourSolution": "Soumettre votre solution",
+      "defaultTitle": "Programmeur",
+      "noDocumentation": "Aucune documentation fournie pour cette solution",
+      "solutionBy": "Solution par {username}",
+      "notFound": {
+        "title": "Solution Non Trouvée",
+        "description": "La solution demandée n'a pas pu être trouvée. Elle a peut-être été supprimée ou rendue privée par l'auteur."
+      },
+      "copyCode": "Copier le code"
     },
     "details": "Détails du défi",
     "subscribeFirstToRegister": "Abonnez-vous à ce défi pour vous inscrire",
@@ -522,6 +542,8 @@
     "title": "Solutions"
   },
   "Common": {
-    "codeCopied": "Code copié dans le presse-papiers"
+    "codeCopied": "Code copié dans le presse-papiers",
+    "copied": "Copié !",
+    "copyFailed": "Échec de la copie dans le presse-papiers"
   }
 }

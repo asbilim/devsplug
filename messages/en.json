@@ -509,7 +509,27 @@
       "likes": "{count} likes",
       "postedOn": "Posted on {date}",
       "comingSoon": "Coming Soon",
-      "comingSoonDesc": "The full solution details page is under development"
+      "comingSoonDesc": "The full solution details page is under development",
+      "share": "Share solution",
+      "download": "Download code",
+      "downloadSuccess": "Code downloaded successfully",
+      "downloadError": "Failed to download code",
+      "copyLink": "Copy link",
+      "linkCopied": "Link copied to clipboard",
+      "copyLinkError": "Failed to copy link",
+      "viewProfile": "View profile",
+      "like": "Like solution",
+      "backToChallenge": "Back to challenge",
+      "backToSolutions": "Back to solutions",
+      "submitYourSolution": "Submit your solution",
+      "defaultTitle": "Programmer",
+      "noDocumentation": "No documentation provided for this solution",
+      "solutionBy": "Solution by {username}",
+      "notFound": {
+        "title": "Solution Not Found",
+        "description": "The requested solution could not be found. It may have been removed or made private by the author."
+      },
+      "copyCode": "Copy code"
     },
     "details": "Challenge Details",
     "subscribeFirstToRegister": "Subscribe to this challenge to register",
@@ -526,6 +546,8 @@
     "title": "Solutions"
   },
   "Common": {
-    "codeCopied": "Code copied to clipboard"
+    "codeCopied": "Code copied to clipboard",
+    "copied": "Copied!",
+    "copyFailed": "Failed to copy to clipboard"
   }
 }

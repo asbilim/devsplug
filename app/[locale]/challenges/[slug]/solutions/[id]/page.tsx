@@ -1,14 +1,55 @@
 import { notFound } from "next/navigation";
-import { getTranslations } from "next-intl/server";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getTranslations, getNow } from "next-intl/server";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CodeBlock } from "@/components/ui/code-block";
 import { Markdown } from "@/components/markdown";
-import { formatDate } from "@/lib/utils";
+import { formatDate, formatRelativeTime } from "@/lib/utils";
 import { Link } from "@/src/i18n/routing";
+import {
+  ArrowLeft,
+  Calendar,
+  Download,
+  Github,
+  Heart,
+  MessageSquare,
+  Share,
+  Twitter,
+  User,
+  Check,
+  Facebook,
+  Linkedin,
+  Mail,
+  Copy,
+} from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Metadata } from "next";
+import { SolutionActions } from "@/components/solution-actions";
+import { toast } from "sonner";
+import { CopyButton } from "@/components/copy-button";
+import { ShareSolution } from "@/components/share-solution";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 
 interface SolutionDetailParams {
   params: {
@@ -18,187 +59,328 @@ interface SolutionDetailParams {
   };
 }
 
-// Mock solution data for now
-const mockSolution = {
-  id: 1,
-  challenge: {
-    id: 1,
-    title: "Sum of Two Numbers",
-    slug: "sum-of-two-numbers",
-    difficulty: "easy",
-  },
+interface Solution {
+  id: number;
   user: {
-    id: 1,
-    username: "johndoe",
-    image: null,
-    title: "Code Master",
-    bio: "Full-stack developer passionate about clean code",
-    followers_count: 32,
-    following: false,
-  },
-  code: `function sum(a, b) {
-  // Add two numbers and return the result
-  return a + b;
-}`,
-  documentation: `# Solution Explanation
+    id: number;
+    username: string;
+    email?: string;
+    profile?: string | null;
+    title?: string;
+  };
+  challenge: number;
+  code: string;
+  documentation: string;
+  language: string;
+  status: string;
+  created_at: string;
+  is_private: boolean;
+}
 
-I've implemented a simple function that takes two parameters:
-- a: First number
-- b: Second number
+interface Challenge {
+  id: number;
+  title: string;
+  slug: string;
+  difficulty: string;
+}
 
-The function adds these two numbers and returns the result. This is the most straightforward approach to solving this challenge.
+// Fetch challenge data with authentication
+async function getChallenge(slug: string): Promise<Challenge | null> {
+  try {
+    const session = await getServerSession(authOptions);
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
 
-## Time Complexity
-- O(1) - Constant time operation
+    // Add auth token if user is logged in
+    if (session?.backendTokens?.accessToken) {
+      headers["Authorization"] = `Bearer ${session.backendTokens.accessToken}`;
+    }
 
-## Space Complexity
-- O(1) - No additional space required
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/challenges/listings/${slug}/`,
+      {
+        next: { revalidate: 60 },
+        headers,
+      }
+    );
 
-## Edge Cases
-- Handles negative numbers
-- Handles zero values
-- Works with floating-point numbers as well
-  `,
-  language: "javascript",
-  is_private: false,
-  created_at: "2023-06-15T14:30:00Z",
-  updated_at: "2023-06-15T14:30:00Z",
-  status: "completed",
-  likes_count: 15,
-  comments_count: 3,
-};
+    if (!response.ok) {
+      return null;
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching challenge:", error);
+    return null;
+  }
+}
+
+// Fetch solution data with authentication
+async function getSolution(slug: string, id: string): Promise<Solution | null> {
+  try {
+    const session = await getServerSession(authOptions);
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
+
+    // Add auth token if user is logged in
+    if (session?.backendTokens?.accessToken) {
+      headers["Authorization"] = `Bearer ${session.backendTokens.accessToken}`;
+    }
+
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/challenges/listings/${slug}/solutions/${id}/`,
+      {
+        next: { revalidate: 60 },
+        headers,
+      }
+    );
+
+    if (!response.ok) {
+      console.error(`Error fetching solution: ${response.status}`);
+      return null;
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching solution:", error);
+    return null;
+  }
+}
+
+export async function generateMetadata({
+  params,
+}: SolutionDetailParams): Promise<Metadata> {
+  const { slug, id, locale } = params;
+  const t = await getTranslations({ locale, namespace: "Challenge" });
+
+  const solution = await getSolution(slug, id);
+  const challenge = await getChallenge(slug);
+
+  if (!solution || !challenge) {
+    return {
+      title: t("solutionDetails.notFound.title"),
+      description: t("solutionDetails.notFound.description"),
+    };
+  }
+
+  return {
+    title: `${challenge.title} - ${t("solutionDetails.solutionBy", {
+      username: solution.user.username,
+    })}`,
+    description: `${t("solutionDetails.language", {
+      language: solution.language,
+    })} - ${formatDate(solution.created_at)}`,
+    openGraph: {
+      type: "article",
+      title: `${challenge.title} - ${t("solutionDetails.solutionBy", {
+        username: solution.user.username,
+      })}`,
+      description: `${t("solutionDetails.language", {
+        language: solution.language,
+      })} - ${formatDate(solution.created_at)}`,
+    },
+  };
+}
 
 export default async function SolutionDetailPage({
   params,
 }: SolutionDetailParams) {
-  const t = await getTranslations("Challenge");
+  const t = await getTranslations("Challenge.solutionDetails");
+  const tChallenge = await getTranslations("Challenge");
   const { slug, id, locale } = params;
 
-  // In a real implementation, we would fetch the solution
-  // const solution = await getSolution(id);
-  // if (!solution) return notFound();
+  // Fetch real data
+  const solution = await getSolution(slug, id);
+  const challenge = await getChallenge(slug);
 
-  const solution = mockSolution; // Using mock data for now
+  // Handle 404
+  if (!solution || !challenge) {
+    return (
+      <div className="container mx-auto py-12 px-4 md:px-6 text-center">
+        <h1 className="text-3xl font-bold mb-4">{t("notFound.title")}</h1>
+        <p className="text-muted-foreground mb-8">
+          {t("notFound.description")}
+        </p>
+        <div className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4 justify-center">
+          <Button asChild>
+            <Link href={`/challenges/${slug}`}>{t("backToChallenge")}</Link>
+          </Button>
+          <Button variant="outline" asChild>
+            <Link href={`/challenges/${slug}/solution`}>
+              {t("submitYourSolution")}
+            </Link>
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto py-6 px-4 md:px-6">
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="bg-background/80 backdrop-blur-sm p-6 rounded-lg shadow-lg z-10 text-center">
-            <h2 className="text-3xl font-bold text-primary mb-2">
-              Coming Soon
-            </h2>
-            <p className="text-muted-foreground">
-              The full solution details page is under development
-            </p>
+      <div className="space-y-6">
+        <div className="flex flex-col md:flex-row justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2 mb-4">
+              <Button variant="ghost" size="sm" asChild className="group">
+                <Link href={`/challenges/${slug}/solutions`}>
+                  <ArrowLeft className="h-4 w-4 mr-2 group-hover:-translate-x-1 transition-transform" />
+                  {t("backToSolutions")}
+                </Link>
+              </Button>
+            </div>
+            <h1 className="text-2xl font-bold mb-2">{challenge.title}</h1>
+            <div className="flex items-center gap-2 mb-4 flex-wrap">
+              <Badge variant="outline" className="capitalize">
+                {tChallenge(`difficulty_${challenge.difficulty}`)}
+              </Badge>
+              <Badge variant="secondary" className="capitalize">
+                {solution.language}
+              </Badge>
+              <div className="text-muted-foreground text-sm flex items-center gap-1">
+                <Calendar className="h-3.5 w-3.5" />
+                {formatRelativeTime(solution.created_at)}
+              </div>
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <ShareSolution
+              title={challenge.title}
+              username={solution.user.username}
+              language={solution.language}
+            />
+            <Button variant="outline" asChild>
+              <Link href={`/challenges/${slug}`}>{t("backToChallenge")}</Link>
+            </Button>
           </div>
         </div>
 
-        <div className="space-y-6 filter blur-sm">
-          <div className="flex flex-col md:flex-row justify-between gap-4">
-            <div>
-              <h1 className="text-2xl font-bold mb-2">
-                {solution.challenge.title}
-              </h1>
-              <div className="flex items-center gap-2 mb-4">
-                <Badge variant="outline">
-                  {t(`difficulty_${solution.challenge.difficulty}`)}
-                </Badge>
-                <span className="text-muted-foreground text-sm">
-                  {formatDate(solution.created_at)}
-                </span>
+        <Card>
+          <CardHeader className="pb-3 border-b">
+            <div className="flex justify-between items-center">
+              <div className="flex items-center gap-3">
+                <Avatar className="h-10 w-10 border border-border">
+                  <AvatarImage
+                    src={solution.user.profile || ""}
+                    alt={solution.user.username}
+                  />
+                  <AvatarFallback className="bg-primary/10 text-primary font-medium">
+                    {solution.user.username.slice(0, 2).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+                <div>
+                  <p className="font-medium">{solution.user.username}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {solution.user.title || t("defaultTitle")}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm" className="hidden md:flex">
+                  <User className="h-4 w-4 mr-2" />
+                  {t("viewProfile")}
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-red-500 hover:text-red-600 hover:bg-red-100 dark:hover:bg-red-950/50">
+                  <Heart className="h-4 w-4 mr-2" />
+                  <span className="sr-only">{t("like")}</span>
+                </Button>
               </div>
             </div>
-            <Button variant="outline" asChild>
-              <Link href={`/challenges/${slug}`}>Back to Challenge</Link>
-            </Button>
-          </div>
+          </CardHeader>
+        </Card>
 
-          <Card>
-            <CardHeader className="pb-3">
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-3">
-                  <Avatar>
-                    <AvatarImage
-                      src={solution.user.image || ""}
-                      alt={solution.user.username}
-                    />
-                    <AvatarFallback>
-                      {solution.user.username.slice(0, 2).toUpperCase()}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <p className="font-medium">{solution.user.username}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {solution.user.title}
-                    </p>
-                  </div>
-                </div>
-                <Button variant="outline">Follow</Button>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">
-                {solution.user.bio}
-              </p>
-              <div className="flex gap-4 mt-3">
-                <div>
-                  <span className="text-sm text-muted-foreground">
-                    Followers
-                  </span>
-                  <p className="font-medium">{solution.user.followers_count}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Tabs defaultValue="code">
-            <TabsList className="mb-4">
-              <TabsTrigger value="code">Code</TabsTrigger>
-              <TabsTrigger value="documentation">Documentation</TabsTrigger>
-            </TabsList>
-            <TabsContent value="code" className="py-4">
-              <Card>
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-base">
-                    Solution in {solution.language}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CodeBlock
-                    language={solution.language}
+        <Tabs defaultValue="code">
+          <TabsList className="mb-4">
+            <TabsTrigger value="code" className="flex items-center gap-2">
+              <Github className="h-4 w-4" />
+              {t("code")}
+            </TabsTrigger>
+            {solution.documentation && (
+              <TabsTrigger
+                value="documentation"
+                className="flex items-center gap-2">
+                <MessageSquare className="h-4 w-4" />
+                {t("documentation")}
+              </TabsTrigger>
+            )}
+          </TabsList>
+          <TabsContent value="code" className="py-4">
+            <Card>
+              <CardHeader className="pb-3 flex flex-row justify-between items-center">
+                <CardTitle className="text-base flex items-center gap-2">
+                  {t("language", { language: solution.language })}
+                </CardTitle>
+                <div className="flex items-center gap-2">
+                  <SolutionActions
                     code={solution.code}
-                    showLineNumbers
+                    language={solution.language}
+                    filename={`${challenge.title
+                      .toLowerCase()
+                      .replace(/\s+/g, "-")}-solution`}
                   />
-                </CardContent>
-              </Card>
-            </TabsContent>
+                  <CopyButton text={solution.code} showLabel={true} />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <CodeBlock
+                  language={solution.language.toLowerCase()}
+                  code={solution.code}
+                  showLineNumbers
+                />
+              </CardContent>
+              <CardFooter className="text-xs text-muted-foreground pt-2 pb-4 border-t">
+                <div className="flex items-center gap-1">
+                  <Calendar className="h-3.5 w-3.5" />
+                  {t("postedOn", { date: formatDate(solution.created_at) })}
+                </div>
+              </CardFooter>
+            </Card>
+          </TabsContent>
+          {solution.documentation && (
             <TabsContent value="documentation" className="py-4">
               <Card>
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-base">Documentation</CardTitle>
+                  <CardTitle className="text-base">
+                    {t("documentation")}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <Markdown content={solution.documentation} />
+                  {solution.documentation ? (
+                    <Markdown content={solution.documentation} />
+                  ) : (
+                    <div className="py-8 text-center text-muted-foreground">
+                      {t("noDocumentation")}
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </TabsContent>
-          </Tabs>
+          )}
+        </Tabs>
 
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base flex items-center gap-2">
-                Discussion
-                <Badge variant="secondary">{solution.comments_count}</Badge>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex justify-center py-6 text-muted-foreground">
-                Comments will be available soon
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base flex items-center gap-2">
+              {t("comments")}
+              <Badge variant="secondary">0</Badge>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex justify-center py-6 text-muted-foreground">
+              {t("noComments")}
+            </div>
+          </CardContent>
+          <CardFooter className="flex justify-center border-t pt-4">
+            <Button variant="outline" disabled>
+              <MessageSquare className="h-4 w-4 mr-2" />
+              {t("addComment")}
+            </Button>
+          </CardFooter>
+        </Card>
       </div>
     </div>
   );

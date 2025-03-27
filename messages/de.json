@@ -505,7 +505,27 @@
       "likes": "{count} Likes",
       "postedOn": "Gepostet am {date}",
       "comingSoon": "Bald verfügbar",
-      "comingSoonDesc": "Die vollständige Lösungsdetailseite ist in Entwicklung"
+      "comingSoonDesc": "Die vollständige Lösungsdetailseite ist in Entwicklung",
+      "share": "Lösung teilen",
+      "download": "Code herunterladen",
+      "downloadSuccess": "Code erfolgreich heruntergeladen",
+      "downloadError": "Fehler beim Herunterladen des Codes",
+      "copyLink": "Link kopieren",
+      "linkCopied": "Link in die Zwischenablage kopiert",
+      "copyLinkError": "Fehler beim Kopieren des Links",
+      "viewProfile": "Profil anzeigen",
+      "like": "Lösung liken",
+      "backToChallenge": "Zurück zur Herausforderung",
+      "backToSolutions": "Zurück zu den Lösungen",
+      "submitYourSolution": "Reichen Sie Ihre Lösung ein",
+      "defaultTitle": "Programmierer",
+      "noDocumentation": "Keine Dokumentation für diese Lösung vorhanden",
+      "solutionBy": "Lösung von {username}",
+      "notFound": {
+        "title": "Lösung Nicht Gefunden",
+        "description": "Die angeforderte Lösung konnte nicht gefunden werden. Sie wurde möglicherweise entfernt oder vom Autor privat gemacht."
+      },
+      "copyCode": "Code kopieren"
     },
     "details": "Herausforderungsdetails",
     "subscribeFirstToRegister": "Abonnieren Sie diese Herausforderung, um sich zu registrieren",
@@ -522,6 +542,8 @@
     "title": "Lösungen"
   },
   "Common": {
-    "codeCopied": "Code in die Zwischenablage kopiert"
+    "codeCopied": "Code in die Zwischenablage kopiert",
+    "copied": "Kopiert!",
+    "copyFailed": "Fehler beim Kopieren in die Zwischenablage"
   }
 }
