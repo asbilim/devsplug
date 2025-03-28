@@ -241,6 +241,7 @@
     "bio": "Biographie",
     "noBio": "Aucune biographie fournie",
     "bioPlaceholder": "Écrivez une courte biographie à propos de vous...",
+    "bioMarkdownSupport": "Le formatage Markdown est pris en charge",
     "uploadPhoto": "Télécharger une photo",
     "profileUpdated": "Profil mis à jour avec succès",
     "profileUpdateError": "Échec de la mise à jour du profil",

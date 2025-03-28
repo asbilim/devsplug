@@ -159,11 +159,12 @@ export default function UserProfile() {
           <div className="relative mb-4">
             <Avatar className="h-24 w-24 border-4 border-background">
               <AvatarImage
-                src={profileImage || undefined}
-                alt={user.username || ""}
+                src={user?.profile || profileImage || undefined}
+                alt={user?.username || ""}
+                className="object-cover"
               />
               <AvatarFallback className="text-xl">
-                {getInitials(user.username || "")}
+                {getInitials(user?.username || "")}
               </AvatarFallback>
             </Avatar>
             {isEditing && (
