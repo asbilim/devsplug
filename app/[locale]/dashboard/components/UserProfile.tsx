@@ -17,9 +17,10 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { updateUserProfile } from "@/app/services/api";
 import { toast } from "sonner";
-import { Pencil, Check, X, Upload, Loader2 } from "lucide-react";
+import { Pencil, Check, X, Upload, Loader2, ExternalLink } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import dynamic from "next/dynamic";
+import { Link } from "@/src/i18n/routing";
 
 // Dynamically import the correct markdown editor
 const MDEditor = dynamic(
@@ -160,7 +161,7 @@ export default function UserProfile() {
         toast.success(t("profileUpdated"));
 
         // Reload the page to ensure header and other components refresh with new session data
-        window.location.reload();
+        // window.location.reload(); // Removed as per user request for modal approach
 
         // Note: Code below this might not execute due to reload, but kept for clarity
         setIsEditing(false);
@@ -233,14 +234,24 @@ export default function UserProfile() {
               </Button>
             </div>
           ) : (
-            <Button
-              size="sm"
-              variant="ghost"
-              className="h-8 w-8 rounded-full p-0"
-              onClick={() => setIsEditing(true)}>
-              <Pencil className="h-4 w-4" />
-              <span className="sr-only">{t("editProfile")}</span>
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                size="sm"
+                variant="outline"
+                className="h-8 flex items-center rounded-md px-2 text-xs"
+                onClick={() => window.open(`/u/${user?.username}`, "_blank")}>
+                <ExternalLink className="mr-1 h-3 w-3" />
+                {t("viewPublicProfile")}
+              </Button>
+              <Button
+                size="sm"
+                variant="ghost"
+                className="h-8 w-8 rounded-full p-0"
+                onClick={() => setIsEditing(true)}>
+                <Pencil className="h-4 w-4" />
+                <span className="sr-only">{t("editProfile")}</span>
+              </Button>
+            </div>
           )}
         </div>
         <div className="flex flex-col items-center pb-6">

@@ -333,3 +333,96 @@ export function clearSolutionFromSession(challengeSlug: string): void {
     window.sessionStorage.removeItem(key);
   }
 }
+
+export async function getUserPublicProfile(
+  username: string
+): Promise<UserProfile | null> {
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/users/api/user/users/${username}/`,
+      {
+        cache: "no-store",
+      }
+    );
+
+    if (!response.ok) {
+      console.error(`Error fetching user profile: ${response.statusText}`);
+      return null;
+    }
+
+    const data = await response.json();
+
+    // Map motivation back to bio if needed for consistency
+    if (data.motivation) {
+      data.bio = data.motivation;
+    }
+
+    return data;
+  } catch (error) {
+    console.error(`Failed to fetch user profile for ${username}:`, error);
+    return null;
+  }
+}
+
+/**
+ * Follow or unfollow a user
+ * @param username Username of the user to follow/unfollow
+ * @param action 'follow' or 'unfollow'
+ * @returns Success status and response data
+ */
+export async function toggleFollowUser(
+  username: string,
+  action: "follow" | "unfollow"
+): Promise<{ success: boolean; message?: string }> {
+  try {
+    // For now, this is a stub since the endpoint isn't implemented
+    console.log(
+      `${action} user ${username} (API endpoint not implemented yet)`
+    );
+
+    const session = await getSession();
+    if (!session?.user) {
+      return {
+        success: false,
+        message: "You must be logged in to perform this action",
+      };
+    }
+
+    // This would be the actual implementation once the API endpoint exists
+    /*
+    const response = await fetch(
+      `${API_BASE_URL}/users/api/user/users/${username}/${action}/`,
+      {
+        method: 'POST',
+        headers: getAuthHeaders(session),
+      }
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      return { 
+        success: false, 
+        message: errorData.message || `Failed to ${action} user` 
+      };
+    }
+
+    const data = await response.json();
+    return { success: true, ...data };
+    */
+
+    // Simulate a successful response for now
+    return {
+      success: true,
+      message:
+        action === "follow"
+          ? `You are now following ${username}`
+          : `You have unfollowed ${username}`,
+    };
+  } catch (error) {
+    console.error(`Failed to ${action} user ${username}:`, error);
+    return {
+      success: false,
+      message: `An error occurred while trying to ${action} this user`,
+    };
+  }
+}
