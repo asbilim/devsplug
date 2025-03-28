@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -17,7 +17,20 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { updateUserProfile } from "@/app/services/api";
 import { toast } from "sonner";
-import { Pencil, Check, X, Upload } from "lucide-react";
+import { Pencil, Check, X, Upload, Loader2 } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+import dynamic from "next/dynamic";
+
+// Dynamically import the correct markdown editor
+const MDEditor = dynamic(
+  () => import("@uiw/react-md-editor").then((mod) => mod.default),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-[200px] w-full border rounded-md bg-muted/50"></div>
+    ),
+  }
+);
 
 // Extend the session user type to include our custom properties
 interface ExtendedUser {
@@ -30,24 +43,55 @@ interface ExtendedUser {
   bio?: string;
   followers_count?: number;
   following_count?: number;
+  motivation?: string;
+  profile?: string;
 }
 
 export default function UserProfile() {
   const t = useTranslations("Dashboard");
   const { data: session, update } = useSession();
   const [isEditing, setIsEditing] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const user = session?.user as ExtendedUser;
+
+  // Get bio from either motivation or bio field
+  const userBio = user?.motivation || user?.bio || "";
 
   const [formData, setFormData] = useState({
     username: user?.username || "",
     email: user?.email || "",
     title: user?.title || "",
-    bio: user?.bio || "",
+    bio: userBio,
   });
-  const [profileImage, setProfileImage] = useState<string | null>(
+
+  // Store the File object or null
+  const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
+  // Store the preview URL for the avatar
+  const [profileImagePreview, setProfileImagePreview] = useState<string | null>(
     user?.image || null
   );
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Update form data and preview when session changes or editing stops
+  useEffect(() => {
+    if (user) {
+      const currentBio = user.motivation || user.bio || "";
+      // Only reset form data if NOT currently editing
+      // This prevents losing changes if session updates while editing
+      if (!isEditing) {
+        setFormData({
+          username: user.username || "",
+          email: user.email || "",
+          title: user.title || "",
+          bio: currentBio,
+        });
+        // Update preview based on session user image when not editing
+        setProfileImagePreview(user.image || null);
+        setProfileImageFile(null); // Clear any staged file if editing is cancelled
+      }
+    }
+    // Depend on user object and isEditing state
+  }, [user, isEditing]);
 
   if (!session?.user) {
     return null;
@@ -60,13 +104,18 @@ export default function UserProfile() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleBioChange = (value?: string) => {
+    setFormData((prev) => ({ ...prev, bio: value || "" }));
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
         const result = e.target?.result as string;
-        setProfileImage(result);
+        setProfileImageFile(file);
+        setProfileImagePreview(result);
       };
       reader.readAsDataURL(file);
     }
@@ -74,27 +123,57 @@ export default function UserProfile() {
 
   const handleSubmit = async () => {
     try {
-      // In a real implementation, you would upload the image to a server
-      // and get back a URL to store in the profile
-      const updatedProfile = await updateUserProfile({
+      setIsSubmitting(true); // Set loading state
+      console.log("Submitting profile update:", formData, profileImageFile);
+
+      // Prepare data object - pass the File object if it exists
+      const updateData: Record<string, any> = {
         ...formData,
-        profile_picture: profileImage || undefined,
-      });
+        profile_file: profileImageFile, // Pass the actual File object
+      };
+
+      const updatedProfile = await updateUserProfile(updateData);
 
       if (updatedProfile) {
-        // Update the session with new user data
+        console.log("Profile updated successfully:", updatedProfile);
+
+        // Construct the new user object for the session update
+        const newUserSessionData = {
+          ...session?.user, // Start with existing session user data
+          // Explicitly override with updated fields from the API response
+          title: updatedProfile.title,
+          // Map motivation back to bio for consistency if needed by other parts of the app
+          bio: updatedProfile.motivation || updatedProfile.bio,
+          motivation: updatedProfile.motivation, // Keep motivation if present
+          // Use the 'profile' key from backend response for image
+          // Fallback to existing image if 'profile' isn't in the response
+          image: updatedProfile.profile || session?.user?.image,
+          profile: updatedProfile.profile, // Also store the direct profile field if needed
+        };
+
+        // Update the session with the carefully constructed user data
         await update({
           ...session,
-          user: {
-            ...session.user,
-            ...updatedProfile,
-          },
+          user: newUserSessionData,
         });
+
         toast.success(t("profileUpdated"));
+
+        // Reload the page to ensure header and other components refresh with new session data
+        window.location.reload();
+
+        // Note: Code below this might not execute due to reload, but kept for clarity
         setIsEditing(false);
+        setProfileImageFile(null); // Clear the file state
+      } else {
+        console.error("Profile update failed: API returned null");
+        toast.error(t("profileUpdateError"));
       }
     } catch (error) {
+      console.error("Profile update error:", error);
       toast.error(t("profileUpdateError"));
+    } finally {
+      setIsSubmitting(false); // Reset loading state
     }
   };
 
@@ -104,9 +183,11 @@ export default function UserProfile() {
       username: user?.username || "",
       email: user?.email || "",
       title: user?.title || "",
-      bio: user?.bio || "",
+      bio: userBio,
     });
-    setProfileImage(user?.image || null);
+    // Reset image states on cancel
+    setProfileImageFile(null);
+    setProfileImagePreview(user?.image || null);
   };
 
   const getInitials = (name: string = "") => {
@@ -132,6 +213,7 @@ export default function UserProfile() {
                 size="sm"
                 variant="outline"
                 className="h-8 w-8 rounded-full p-0"
+                disabled={isSubmitting} // Disable during submit
                 onClick={handleCancel}>
                 <X className="h-4 w-4" />
                 <span className="sr-only">{t("cancel")}</span>
@@ -139,8 +221,14 @@ export default function UserProfile() {
               <Button
                 size="sm"
                 className="h-8 w-8 rounded-full p-0"
+                disabled={isSubmitting} // Disable during submit
                 onClick={handleSubmit}>
-                <Check className="h-4 w-4" />
+                {/* Show loader when submitting */}
+                {isSubmitting ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Check className="h-4 w-4" />
+                )}
                 <span className="sr-only">{t("save")}</span>
               </Button>
             </div>
@@ -159,7 +247,13 @@ export default function UserProfile() {
           <div className="relative mb-4">
             <Avatar className="h-24 w-24 border-4 border-background">
               <AvatarImage
-                src={user?.profile || profileImage || undefined}
+                // Use profileImagePreview if editing and it exists.
+                // Otherwise, use user.profile (from backend) or fallback to user.image (from session).
+                src={
+                  isEditing && profileImagePreview
+                    ? profileImagePreview
+                    : user?.profile || user?.image || undefined
+                }
                 alt={user?.username || ""}
                 className="object-cover"
               />
@@ -172,7 +266,9 @@ export default function UserProfile() {
                 size="sm"
                 variant="secondary"
                 className="absolute -bottom-2 right-0 h-8 w-8 rounded-full p-0"
-                onClick={triggerFileInput}>
+                onClick={triggerFileInput}
+                disabled={isSubmitting} // Disable during submit
+              >
                 <Upload className="h-4 w-4" />
                 <span className="sr-only">{t("uploadPhoto")}</span>
               </Button>
@@ -230,15 +326,30 @@ export default function UserProfile() {
               {t("bio")}
             </div>
             {isEditing ? (
-              <Textarea
-                name="bio"
-                value={formData.bio}
-                onChange={handleChange}
-                className="min-h-[100px] resize-none"
-                placeholder={t("bioPlaceholder")}
-              />
+              <div data-color-mode="light" className="w-full">
+                <MDEditor
+                  value={formData.bio}
+                  onChange={handleBioChange}
+                  preview="edit"
+                  height={200}
+                  className="w-full"
+                  textareaProps={{ disabled: isSubmitting }}
+                />
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {t("bioMarkdownSupport")}
+                </p>
+              </div>
             ) : (
-              <p className="text-sm">{user.bio || t("noBio")}</p>
+              // Restore Markdown rendering here, use formData.bio for display consistency
+              <div className="prose prose-sm max-w-none dark:prose-invert">
+                {formData.bio ? (
+                  <ReactMarkdown>{formData.bio}</ReactMarkdown>
+                ) : (
+                  <p className="text-sm italic text-muted-foreground">
+                    {t("noBio")}
+                  </p>
+                )}
+              </div>
             )}
           </div>
         </div>
