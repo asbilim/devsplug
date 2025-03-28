@@ -237,16 +237,17 @@
     "email": "Email address",
     "score": "Score",
     "titleAlt": "Title",
-    "bio": "Bio",
-    "noBio": "No bio provided yet",
-    "bioPlaceholder": "Write a short bio about yourself...",
+    "bio": "Biography",
+    "noBio": "No biography provided",
+    "bioPlaceholder": "Write a short biography about yourself...",
+    "bioMarkdownSupport": "Markdown formatting is supported",
     "uploadPhoto": "Upload photo",
     "profileUpdated": "Profile updated successfully",
     "profileUpdateError": "Failed to update profile",
     "save": "Save",
     "cancel": "Cancel",
     "editProfile": "Edit profile",
-    "defaultTitle": "Novice",
+    "defaultTitle": "Beginner",
     "stats": {
       "title": "Statistics",
       "description": "Your activity overview",
@@ -500,7 +501,8 @@
       "notFound": {
         "title": "Solutions Not Found",
         "description": "The solutions for this challenge could not be found. It may have been removed or the URL is incorrect."
-      }
+      },
+      "viewAll": "View All"
     },
     "solutionDetails": {
       "title": "Solution details",
@@ -588,7 +590,38 @@
     "exitFullscreen": "Exit Fullscreen"
   },
   "solutions": {
-    "title": "Solutions"
+    "title": "Solutions",
+    "pageTitle": "Community Solutions",
+    "pageDescription": "Browse solutions submitted by the Devsplug community across all challenges",
+    "exploreByChallenge": "Explore Solutions by Challenge",
+    "loadingError": "Failed to load solutions. Please try again.",
+    "tryAgain": "Try Again",
+    "noSolutions": "No solutions have been submitted yet.",
+    "empty": "No solutions found matching your criteria.",
+    "backToHome": "Back to Home",
+    "browse": "Browse Solutions",
+    "mostRecent": "Most Recent Solutions",
+    "mostPopular": "Most Popular Solutions",
+    "byLanguage": "Solutions by Language",
+    "byDifficulty": "Solutions by Difficulty",
+    "activity": "Recent Solution Activity",
+    "author": "Author",
+    "challenge": "Challenge",
+    "language": "Language",
+    "submitted": "Submitted",
+    "likes": "Likes",
+    "comments": "Comments",
+    "viewMore": "View more solutions",
+    "viewAll": "View all solutions",
+    "searchPlaceholder": "Search solutions...",
+    "filterByLanguage": "Filter by language",
+    "filterByDifficulty": "Filter by difficulty",
+    "all": "All",
+    "filters": "Filters",
+    "sort": "Sort by",
+    "newest": "Newest first",
+    "oldest": "Oldest first",
+    "mostLiked": "Most liked"
   },
   "Common": {
     "codeCopied": "Code copied to clipboard",

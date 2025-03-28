@@ -300,6 +300,11 @@
     "source": "Quellcode"
   },
   "Challenge": {
+    "fullscreen": "Vollbild",
+    "submitting": "Wird eingereicht...",
+    "sessionRecovered": "Sitzung wiederhergestellt",
+    "register": "Herausforderung registrieren",
+    "checkingStatus": "Status wird überprüft...",
     "exitFullscreen": "Vollbild Beenden",
     "selectChallenge": "Herausforderung Auswählen",
     "darkTheme": "Dunkles Thema",
@@ -452,7 +457,8 @@
       "solarizeddark": "Solarisiert Dunkel",
       "solarizedlight": "Solarisiert Hell",
       "oceanic": "Ozeanisch",
-      "palenight": "Palenacht"
+      "palenight": "Palenacht",
+      "tokyonight": "Tokyo Nacht"
     },
     "recoveredSolution": "Lösung wiederhergestellt",
     "recoveredSolutionDesc": "Ihre zuvor gespeicherte Lösung wurde geladen",
@@ -496,7 +502,8 @@
       "notFound": {
         "title": "Lösungen nicht gefunden",
         "description": "Die Lösungen für diese Herausforderung konnten nicht gefunden werden. Möglicherweise wurde sie entfernt oder die URL ist falsch."
-      }
+      },
+      "comingSoonDesc": "Die Lösungsseite wird bald verfügbar sein"
     },
     "solutionDetails": {
       "title": "Lösungsdetails",
@@ -584,7 +591,39 @@
     "exitFullscreen": "Vollbild Beenden"
   },
   "solutions": {
-    "title": "Lösungen"
+    "title": "Lösungen",
+    "viewAll": "Alle anzeigen",
+    "pageTitle": "Community-Lösungen",
+    "pageDescription": "Durchsuchen Sie Lösungen, die von der Devsplug-Community für alle Herausforderungen eingereicht wurden",
+    "exploreByChallenge": "Lösungen nach Herausforderung erkunden",
+    "loadingError": "Fehler beim Laden der Lösungen. Bitte versuchen Sie es erneut.",
+    "tryAgain": "Erneut versuchen",
+    "noSolutions": "Es wurden noch keine Lösungen eingereicht.",
+    "empty": "Keine Lösungen gefunden, die Ihren Kriterien entsprechen.",
+    "backToHome": "Zurück zur Startseite",
+    "browse": "Lösungen durchsuchen",
+    "mostRecent": "Neueste Lösungen",
+    "mostPopular": "Beliebteste Lösungen",
+    "byLanguage": "Lösungen nach Sprache",
+    "byDifficulty": "Lösungen nach Schwierigkeit",
+    "activity": "Aktuelle Lösungsaktivität",
+    "author": "Autor",
+    "challenge": "Herausforderung",
+    "language": "Sprache",
+    "submitted": "Eingereicht",
+    "likes": "Likes",
+    "comments": "Kommentare",
+    "viewMore": "Weitere Lösungen anzeigen",
+    "viewAll": "Alle Lösungen anzeigen",
+    "searchPlaceholder": "Lösungen suchen...",
+    "filterByLanguage": "Nach Sprache filtern",
+    "filterByDifficulty": "Nach Schwierigkeit filtern",
+    "all": "Alle",
+    "filters": "Filter",
+    "sort": "Sortieren nach",
+    "newest": "Neueste zuerst",
+    "oldest": "Älteste zuerst",
+    "mostLiked": "Meist geliked"
   },
   "Common": {
     "codeCopied": "Code in die Zwischenablage kopiert",

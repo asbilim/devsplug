@@ -227,11 +227,12 @@ export function Header() {
                     className="relative h-8 w-8 rounded-full ring-2 ring-primary/20 hover:ring-primary/30">
                     <Avatar className="h-8 w-8">
                       <AvatarImage
-                        src={session.user?.image || ""}
-                        alt={session.user?.name || ""}
+                        src={session.user?.profile || session.user?.image || ""}
+                        alt={session.user?.name || session.user?.username || ""}
+                        className="object-cover"
                       />
                       <AvatarFallback>
-                        {session.user?.name?.charAt(0) || "U"}
+                        {(session.user?.name || session.user?.username || "U").charAt(0)}
                       </AvatarFallback>
                     </Avatar>
                   </Button>

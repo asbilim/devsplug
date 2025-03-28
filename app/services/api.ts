@@ -61,7 +61,9 @@ export interface UserProfile {
   followers_count: number;
   following_count: number;
   profile_picture?: string;
+  profile?: string;
   bio?: string;
+  motivation?: string;
   social_links?: {
     github?: string;
     twitter?: string;
@@ -84,9 +86,14 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 // Helper function to get auth headers from session
 function getAuthHeaders(session: any): Record<string, string> {
   if (!session?.backendTokens?.accessToken) {
+    console.warn("No access token found in session", session);
     return { "Content-Type": "application/json" };
   }
 
+  console.log(
+    "Using access token from session",
+    session.backendTokens.accessToken.substring(0, 20) + "..."
+  );
   return {
     Authorization: `Bearer ${session.backendTokens.accessToken}`,
     "Content-Type": "application/json",
@@ -114,22 +121,105 @@ export async function getUserChallenges(): Promise<ChallengeSubscription[]> {
 }
 
 export async function updateUserProfile(
-  data: Partial<UserProfile>
+  // Accept a broader type that includes the potential file
+  data: Record<string, any>
 ): Promise<UserProfile | null> {
   try {
     const session = await getSession();
-    const headers = getAuthHeaders(session);
-    const response = await fetch(`${API_BASE_URL}/users/profile/`, {
-      method: "PATCH",
-      headers,
-      body: JSON.stringify(data),
-    });
+    let headers = getAuthHeaders(session);
 
-    if (!response.ok) {
-      throw new Error(`Error updating profile: ${response.statusText}`);
+    // Log the session and initial headers for debugging
+    console.log("Session data:", session);
+    console.log("Auth headers (initial):", headers);
+
+    let requestBody: BodyInit;
+    let isFormData = false;
+
+    // Check if profile_file exists in the data
+    if (data.profile_file instanceof File) {
+      isFormData = true;
+      const formData = new FormData();
+
+      // Append other fields to FormData
+      if (data.bio !== undefined) {
+        formData.append("motivation", data.bio);
+      }
+      if (data.title !== undefined) {
+        formData.append("title", data.title);
+      }
+      // The backend expects the file under the 'profile' key based on the error
+      formData.append("profile", data.profile_file);
+
+      requestBody = formData;
+
+      // IMPORTANT: Remove Content-Type header when sending FormData
+      // The browser will automatically set it correctly with the boundary
+      if (headers["Content-Type"]) {
+        delete headers["Content-Type"];
+        console.log("Removed Content-Type header for FormData");
+      }
+    } else {
+      // Prepare JSON data if no file is uploaded
+      const jsonData: Record<string, any> = {};
+      if (data.bio !== undefined) {
+        jsonData.motivation = data.bio;
+      }
+      if (data.title !== undefined) {
+        jsonData.title = data.title;
+      }
+      // Handle profile_picture if it's just a URL or undefined (but not a File)
+      if (data.profile_picture !== undefined) {
+        jsonData.profile = data.profile_picture; // Assuming backend expects 'profile' for URL too?
+      }
+
+      requestBody = JSON.stringify(jsonData);
     }
 
-    return await response.json();
+    // Get the username from the session
+    const username = session?.user?.username;
+    if (!username) {
+      throw new Error("Username not found in session");
+    }
+
+    // Log the data being sent
+    console.log(
+      "Sending data to API (isFormData:",
+      isFormData,
+      "):",
+      requestBody
+    );
+    console.log("Final Headers:", headers);
+
+    // Use the user-specific endpoint
+    const apiUrl = `${API_BASE_URL}/users/api/user/users/${username}/`;
+    console.log("API URL:", apiUrl);
+
+    const response = await fetch(apiUrl, {
+      method: "PATCH",
+      headers,
+      body: requestBody, // Use the prepared body (FormData or JSON string)
+    });
+
+    // Log the full response for debugging
+    console.log("API response status:", response.status, response.statusText);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("API error response:", errorText);
+      throw new Error(
+        `Error updating profile: ${response.statusText} - ${errorText}`
+      );
+    }
+
+    const result = await response.json();
+    console.log("API response data:", result);
+
+    // Map motivation back to bio in the response
+    if (result.motivation !== undefined) {
+      result.bio = result.motivation;
+    }
+
+    return result;
   } catch (error) {
     console.error("Failed to update profile:", error);
     return null;

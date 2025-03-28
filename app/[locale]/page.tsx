@@ -18,6 +18,7 @@ import { SupportProject } from "./components/support-project";
 import { Separator } from "@/components/ui/separator";
 import { getChallenges } from "@/app/actions/challenges";
 import { Pagination } from "@/components/pagination";
+import { SolutionsSection } from "@/components/solutions/SolutionsSection";
 
 export async function generateMetadata({
   params,
@@ -207,6 +208,9 @@ export default async function HomePage({
           {t("description")}
         </p>
       </div>
+
+      {/* Solutions Section - using our new component */}
+      {/* <SolutionsSection /> */}
 
       {/* Support Project Section */}
       <div>
