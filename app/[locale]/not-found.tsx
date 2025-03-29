@@ -1,81 +1,64 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/src/i18n/routing";
-import { useCallback } from "react";
-import Particles from "react-tsparticles";
-import type { Engine } from "tsparticles-engine";
-import { loadSlim } from "tsparticles-slim";
-import { NotFoundSVG } from "@/components/not-found-svg";
+import { Home, AlertTriangle, Search } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function NotFound() {
   const t = useTranslations("NotFound");
 
-  const particlesInit = useCallback(async (engine: Engine) => {
-    await loadSlim(engine);
-  }, []);
-
   return (
-    <div className="relative flex min-h-[calc(100vh-4rem)] items-center justify-center">
-      {/* Particles Background */}
-      <Particles
-        id="tsparticles"
-        init={particlesInit}
-        options={{
-          background: {
-            opacity: 0,
-          },
-          particles: {
-            color: {
-              value: "var(--primary)",
-            },
-            links: {
-              color: "var(--primary)",
-              distance: 150,
-              enable: true,
-              opacity: 0.2,
-              width: 1,
-            },
-            move: {
-              enable: true,
-              speed: 1,
-            },
-            number: {
-              density: {
-                enable: true,
-                area: 800,
-              },
-              value: 80,
-            },
-            opacity: {
-              value: 0.3,
-            },
-            size: {
-              value: { min: 1, max: 3 },
-            },
-          },
-        }}
-        className="absolute inset-0"
-      />
+    <div className="container flex min-h-[calc(100vh-10rem)] items-center justify-center py-16 px-4">
+      <motion.div
+        className="w-full max-w-md"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}>
+        <Card className="overflow-hidden border-none shadow-xl">
+          <div className="relative h-32 bg-gradient-to-r from-destructive/20 to-yellow-500/20 overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent" />
+          </div>
 
-      {/* Content */}
-      <div className="relative z-10 flex flex-col items-center space-y-8 text-center">
-        <div className="w-full max-w-[600px] px-4">
-          <NotFoundSVG className="h-auto w-full" />
-        </div>
-        <div className="space-y-4">
-          <h1 className="font-mono text-4xl font-bold tracking-tight md:text-6xl">
-            {t("title")}
-          </h1>
-          <p className="mx-auto max-w-[500px] text-muted-foreground">
-            {t("description")}
-          </p>
-        </div>
-        <Button asChild size="lg">
-          <Link href="/">{t("backHome")}</Link>
-        </Button>
-      </div>
+          <div className="relative px-6 pb-6">
+            <div className="flex justify-center">
+              <motion.div
+                className="h-20 w-20 rounded-full bg-background flex items-center justify-center border-4 border-background -mt-10 shadow-lg"
+                initial={{ scale: 0.8 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}>
+                <AlertTriangle className="h-10 w-10 text-destructive" />
+              </motion.div>
+            </div>
+
+            <CardHeader className="text-center pt-4 px-0">
+              <CardTitle className="text-2xl">{t("title")}</CardTitle>
+            </CardHeader>
+
+            <CardContent className="text-center space-y-6 px-0">
+              <p className="text-muted-foreground">{t("description")}</p>
+
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <Button asChild variant="default" className="gap-2">
+                  <Link href="/">
+                    <Home className="h-4 w-4" />
+                    {t("backHome")}
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" className="gap-2">
+                  <Link href="/challenges">
+                    <Search className="h-4 w-4" />
+                    {/* Assuming a general "explore" key exists or add one */}
+                    Explore Challenges
+                  </Link>
+                </Button>
+              </div>
+            </CardContent>
+          </div>
+        </Card>
+      </motion.div>
     </div>
   );
 }

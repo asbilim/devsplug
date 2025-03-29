@@ -20,7 +20,7 @@ import { toast } from "sonner";
 import { Pencil, Check, X, Upload, Loader2, ExternalLink } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import dynamic from "next/dynamic";
-import { Link } from "@/src/i18n/routing";
+import { Link, useRouter } from "@/src/i18n/routing";
 
 // Dynamically import the correct markdown editor
 const MDEditor = dynamic(
@@ -54,6 +54,8 @@ export default function UserProfile() {
   const [isEditing, setIsEditing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const user = session?.user as ExtendedUser;
+
+  const router = useRouter();
 
   // Get bio from either motivation or bio field
   const userBio = user?.motivation || user?.bio || "";
@@ -239,7 +241,7 @@ export default function UserProfile() {
                 size="sm"
                 variant="outline"
                 className="h-8 flex items-center rounded-md px-2 text-xs"
-                onClick={() => window.open(`/u/${user?.username}`, "_blank")}>
+                onClick={() => router.push(`/u/${user?.username}`)}>
                 <ExternalLink className="mr-1 h-3 w-3" />
                 {t("viewPublicProfile")}
               </Button>

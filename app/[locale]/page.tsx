@@ -55,7 +55,6 @@ export async function generateMetadata({
 
 async function ChallengesList({
   searchParams,
-  locale,
 }: {
   searchParams: {
     page?: string;
@@ -64,7 +63,6 @@ async function ChallengesList({
     search?: string;
     tags?: string;
   };
-  locale: string;
 }) {
   const t = await getTranslations("Home");
 
@@ -176,7 +174,6 @@ async function ChallengesList({
         className="mt-8"
         currentPage={challenges.currentPage}
         totalPages={challenges.totalPages}
-        locale={locale}
       />
     </>
   );
@@ -235,7 +232,7 @@ export default async function HomePage({
             ))}
           </div>
         }>
-        <ChallengesList searchParams={searchParams} locale={locale} />
+        <ChallengesList searchParams={searchParams} />
       </Suspense>
     </div>
   );

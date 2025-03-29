@@ -1,23 +1,21 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useRouter } from "@/src/i18n/routing";
+import { useRouter, usePathname } from "@/src/i18n/routing";
 
 interface PaginationProps extends React.HTMLAttributes<HTMLDivElement> {
   currentPage: number;
   totalPages: number;
-  locale: string;
 }
 
 export function Pagination({
   currentPage,
   totalPages,
   className,
-  locale,
   ...props
 }: PaginationProps) {
   const t = useTranslations("Home.pagination");
@@ -32,7 +30,12 @@ export function Pagination({
   };
 
   const handlePageChange = (page: number) => {
-    router.push(`${pathname}?${createQueryString(page)}`);
+    router.push({
+      query: {
+        ...Object.fromEntries(searchParams.entries()),
+        page: page.toString(),
+      },
+    });
   };
 
   return (
