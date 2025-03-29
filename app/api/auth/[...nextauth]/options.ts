@@ -230,7 +230,7 @@ export const authOptions: NextAuthOptions = {
       }
       return true;
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       // Initial sign in
       if (user) {
         return {
@@ -248,18 +248,37 @@ export const authOptions: NextAuthOptions = {
             followers_count: user.followers_count,
             following_count: user.following_count,
           },
-          backendTokens: user.backendTokens,
+          backendTokens: (user as ExtendedUser).backendTokens,
         };
       }
+
+      // Handle session updates triggered by client-side update() function
+      if (trigger === "update" && session?.user) {
+        console.log("JWT Callback: Handling update trigger", session.user);
+        // Merge the updated data from the client-side 'update' call into the token
+        token.user = {
+          ...token.user, // Keep existing token user data
+          ...session.user, // Overwrite with new data from update() call
+        };
+        // Also update backendTokens if they were part of the update (less common)
+        if (session.backendTokens) {
+          token.backendTokens = session.backendTokens;
+        }
+      }
+
+      // Return the possibly updated token
       return token;
     },
     async session({ session, token }) {
+      // Send properties to the client, like user details and access token
       if (token.user) {
-        session.user = { ...session.user, ...token.user };
+        session.user = token.user;
       }
       if (token.backendTokens) {
         session.backendTokens = token.backendTokens;
       }
+
+      console.log("Session Callback: Final session data", session);
       return session;
     },
   },

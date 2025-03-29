@@ -29,6 +29,7 @@ import {
   Wand2,
   LogOut,
   User,
+  ExternalLink,
 } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -232,7 +233,11 @@ export function Header() {
                         className="object-cover"
                       />
                       <AvatarFallback>
-                        {(session.user?.name || session.user?.username || "U").charAt(0)}
+                        {(
+                          session.user?.name ||
+                          session.user?.username ||
+                          "U"
+                        ).charAt(0)}
                       </AvatarFallback>
                     </Avatar>
                   </Button>
@@ -242,6 +247,14 @@ export function Header() {
                     <Link href="/dashboard" className="flex items-center">
                       <User className="mr-2 h-4 w-4" />
                       <span>Dashboard</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link
+                      href={`/u/${session.user?.username}`}
+                      className="flex items-center">
+                      <ExternalLink className="mr-2 h-4 w-4" />
+                      <span>Public Profile</span>
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />

@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import debounce from "lodash/debounce";
 import {
@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, X } from "lucide-react";
-import { useRouter } from "@/src/i18n/routing";
+import { useRouter, usePathname } from "@/src/i18n/routing";
 
 const difficulties = ["easy", "medium", "hard"] as const;
 const categories = [
